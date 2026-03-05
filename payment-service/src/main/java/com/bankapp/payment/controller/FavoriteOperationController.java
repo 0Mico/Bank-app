@@ -2,14 +2,13 @@ package com.bankapp.payment.controller;
 
 import com.bankapp.common.dto.FavoriteOperationDTO;
 import com.bankapp.payment.service.FavoriteOperationService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/payments/favorites")
+@RequestMapping("/api/payments/favorites")
 public class FavoriteOperationController {
 
     private final FavoriteOperationService favoriteOperationService;
@@ -25,7 +24,7 @@ public class FavoriteOperationController {
 
     @PostMapping
     public ResponseEntity<FavoriteOperationDTO> createFavorite(@RequestBody FavoriteOperationDTO dto) {
-        return new ResponseEntity<>(favoriteOperationService.createFavorite(dto), HttpStatus.CREATED);
+        return ResponseEntity.ok(favoriteOperationService.createFavorite(dto));
     }
 
     @DeleteMapping("/{id}")

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../AuthContext';
 import { paymentApi, accountApi } from '../api';
 import type { Payment, Account } from '../types';
+import type { FavoriteOperation } from '../api';
 
 const CATEGORIES = ['SALARY', 'TRANSFER', 'PAYMENT', 'FOOD', 'TRANSPORT', 'ENTERTAINMENT', 'UTILITIES', 'HEALTHCARE', 'SHOPPING', 'OTHER'];
 
@@ -20,17 +21,27 @@ const Payments: React.FC = () => {
 
     const [transferMode, setTransferMode] = useState<'INTERNAL' | 'EXTERNAL'>('INTERNAL');
     const [selectedDestinationAccountId, setSelectedDestinationAccountId] = useState<number | ''>('');
+    const [favorites, setFavorites] = useState<FavoriteOperation[]>([]);
+    const [saveAsFavorite, setSaveAsFavorite] = useState(false);
+    const [favoriteName, setFavoriteName] = useState('');
 
     const load = async () => {
         if (!user) return;
         try {
-            const accRes = await accountApi.get(user.id);
+            const [accRes, favRes] = await Promise.all([
+                accountApi.get(user.id),
+                paymentApi.favorites.list(user.id).catch(() => ({ data: [] }))
+            ]);
+            
             if (accRes.data) {
                 const fetchedAccounts = accRes.data;
                 setAccounts(fetchedAccounts);
                 if (fetchedAccounts.length > 0 && selectedAccountId === null) {
                     setSelectedAccountId(fetchedAccounts[0].id);
                 }
+            }
+            if (favRes && favRes.data) {
+                setFavorites(favRes.data);
             }
         } finally {
             setLoading(false);
@@ -80,14 +91,59 @@ const Payments: React.FC = () => {
                 category: form.category || 'TRANSFER',
                 description: finalDescription,
             });
-            setSuccess('Payment sent successfully!');
+
+            if (saveAsFavorite && favoriteName.trim() && user) {
+                await paymentApi.favorites.create({
+                    userId: user.id,
+                    name: favoriteName.trim(),
+                    recipientIban: targetIban,
+                    amount: Number(form.amount),
+                    category: form.category || 'TRANSFER',
+                    description: finalDescription,
+                });
+            }
+
+            setSuccess('Payment sent successfully!' + (saveAsFavorite ? ' Favorite saved.' : ''));
             setForm({ toIban: '', amount: '', category: '', description: '' });
+            setSaveAsFavorite(false);
+            setFavoriteName('');
             setShowForm(false);
             load();
         } catch (err: any) {
             setError(err.response?.data?.message || err.message || 'Payment failed');
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    const handleApplyFavorite = (fav: FavoriteOperation) => {
+        setForm({
+            toIban: fav.recipientIban,
+            amount: fav.amount.toString(),
+            category: fav.category,
+            description: fav.description || ''
+        });
+
+        const matchedAccount = accounts.find(a => a.iban === fav.recipientIban);
+        if (matchedAccount) {
+            setTransferMode('INTERNAL');
+            setSelectedDestinationAccountId(matchedAccount.id);
+        } else {
+            setTransferMode('EXTERNAL');
+        }
+
+        setShowForm(true);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    };
+
+    const handleDeleteFavorite = async (id: number) => {
+        if (!window.confirm('Are you sure you want to delete this favorite operation?')) return;
+        try {
+            await paymentApi.favorites.delete(id);
+            load();
+            setSuccess('Favorite operation deleted.');
+        } catch (err: any) {
+            setError('Failed to delete favorite operation.');
         }
     };
 
@@ -175,6 +231,41 @@ const Payments: React.FC = () => {
             {error && <div className="alert alert-error">{error}</div>}
             {success && <div className="alert alert-success">{success}</div>}
 
+            {favorites.length > 0 && (
+                <div className="card" style={{ marginBottom: 24 }}>
+                    <div className="card-header">
+                        <h3>Favorite Operations</h3>
+                    </div>
+                    <div className="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>IBAN</th>
+                                    <th>Amount</th>
+                                    <th>Category</th>
+                                    <th style={{ textAlign: 'right', minWidth: '150px' }}>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {favorites.map(fav => (
+                                    <tr key={fav.id}>
+                                        <td><strong>{fav.name}</strong></td>
+                                        <td style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>{fav.recipientIban}</td>
+                                        <td>{activeAccount?.currency || 'EUR'} {fav.amount.toLocaleString('en', { minimumFractionDigits: 2 })}</td>
+                                        <td>{fav.category}</td>
+                                        <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                                            <button className="btn btn-sm btn-primary" onClick={() => handleApplyFavorite(fav)} style={{ marginRight: '8px' }}>Use</button>
+                                            <button className="btn btn-sm btn-danger" onClick={() => handleDeleteFavorite(fav.id)}>Delete</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+
             {activeAccount && (
                 <div className="card" style={{ marginBottom: 24 }}>
                     <div className="card-header">
@@ -255,6 +346,34 @@ const Payments: React.FC = () => {
                                     <label htmlFor="pay-desc">Description (Optional)</label>
                                     <input id="pay-desc" placeholder={transferMode === 'INTERNAL' ? "e.g. Savings transfer" : "Payment description"} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} disabled={transferMode === 'INTERNAL' && availableDestinationAccounts.length === 0} />
                                 </div>
+                                
+                                {!(transferMode === 'INTERNAL' && availableDestinationAccounts.length === 0) && (
+                                    <div className="form-group" style={{ background: 'var(--bg-input)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: saveAsFavorite ? '12px' : '0' }}>
+                                            <input 
+                                                type="checkbox" 
+                                                checked={saveAsFavorite} 
+                                                onChange={e => setSaveAsFavorite(e.target.checked)} 
+                                                style={{ width: 'auto' }}
+                                            />
+                                            <strong>Save as Favorite Operation</strong>
+                                        </label>
+                                        
+                                        {saveAsFavorite && (
+                                            <div>
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="e.g., Mom's Rent, Gym Membership" 
+                                                    className="form-control"
+                                                    value={favoriteName}
+                                                    onChange={e => setFavoriteName(e.target.value)}
+                                                    required={saveAsFavorite}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
                                 <button className="btn btn-primary" type="submit" disabled={submitting || (transferMode === 'INTERNAL' && availableDestinationAccounts.length === 0)}>
                                     {submitting ? 'Processing...' : (transferMode === 'INTERNAL' ? 'Complete Transfer' : 'Send Payment')}
                                 </button>

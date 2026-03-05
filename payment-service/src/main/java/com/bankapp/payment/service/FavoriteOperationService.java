@@ -32,7 +32,6 @@ public class FavoriteOperationService {
         op.setAmount(dto.getAmount());
         op.setCategory(dto.getCategory());
         op.setDescription(dto.getDescription());
-        
         op = favOpRepo.save(op);
         return toDTO(op);
     }

@@ -25,8 +25,19 @@ public class AccountService {
     private final TransactionServiceClient transactionClient;
     private final Random random = new Random();
 
-    public AccountService(AccountRepository accountRepository,
-            TransactionServiceClient transactionClient) {
+    private String createMockIban() {
+        String bankCode = "NEXS";
+        String countryCode = "IT";
+        String checkDigits = String.format("%02d", random.nextInt(100));
+        StringBuilder bban = new StringBuilder();
+        for (int i = 0; i < 22; i++) {
+            bban.append(random.nextInt(10));
+        }
+        String iban = (countryCode + checkDigits + bankCode + bban.toString().substring(0, 18)); // Total 27 chars
+        return iban;
+    }
+
+    public AccountService(AccountRepository accountRepository, TransactionServiceClient transactionClient) {
         this.accountRepository = accountRepository;
         this.transactionClient = transactionClient;
     }
@@ -35,24 +46,15 @@ public class AccountService {
         Account account = new Account();
         account.setUserId(dto.getUserId());
         account.setBalance(dto.getBalance() != null ? dto.getBalance() : BigDecimal.ZERO);
-        account.setCurrency(dto.getCurrency() != null ? dto.getCurrency() : "EUR");
-
-        // Generate a random mock IBAN for testing
-        String bankCode = "NEXS";
-        String countryCode = "IT";
-        String checkDigits = String.format("%02d", random.nextInt(100));
-        StringBuilder bban = new StringBuilder();
-        for (int i = 0; i < 22; i++) {
-            bban.append(random.nextInt(10));
-        }
-        account.setIban(countryCode + checkDigits + bankCode + bban.toString().substring(0, 18)); // Total 27 chars
-
+        account.setCurrency(dto.getCurrency() != null ? dto.getCurrency() : "EUR");        
+        account.setIban(createMockIban()); 
         account = accountRepository.save(account);
         return toDTO(account);
     }
 
     public List<AccountDTO> getAccountsByUserId(Long userId) {
-        List<Account> accounts = accountRepository.findAllByUserId(userId);
+        List<Account> accounts = accountRepository.findAllByUserId(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("Didn't find any account associated to the user"));
         return accounts.stream().map(AccountService::toDTO).toList();
     }
 
@@ -108,7 +110,12 @@ public class AccountService {
 
     public static AccountDTO toDTO(Account account) {
         return new AccountDTO(
-                account.getId(), account.getUserId(), account.getIban(), account.getBalance(),
-                account.getCurrency(), account.getName(), account.getCreatedAt());
+                account.getId(),
+                account.getUserId(),
+                account.getIban(),
+                account.getBalance(),
+                account.getCurrency(),
+                account.getName(),
+                account.getCreatedAt());
     }
 }
