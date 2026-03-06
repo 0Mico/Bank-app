@@ -8,7 +8,6 @@ import com.bankapp.common.dto.*;
 import com.bankapp.common.enums.UserRole;
 import com.bankapp.common.exception.BadRequestException;
 import com.bankapp.common.exception.UnauthorizedException;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,9 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final AccountServiceClient accountServiceClient;
     private final PasswordEncoder passwordEncoder;
     private final ReferenceMonitor referenceMonitor;
-    private final AccountServiceClient accountServiceClient;
 
     public AuthService(UserRepository userRepository, TokenService tokenService,
             PasswordEncoder passwordEncoder, ReferenceMonitor referenceMonitor,
@@ -44,15 +43,13 @@ public class AuthService {
         user.setLastName(request.getLastName());
         user.setPhone(request.getPhone());
         user.setRole(UserRole.USER);
-
         user = userRepository.save(user);
 
         // Auto-create an account for the new user over in Payment Service
         try {
             accountServiceClient.createAccount(user.getId());
         } catch (Exception e) {
-            System.err
-                    .println("Warning: Could not create account for new user " + user.getId() + " - " + e.getMessage());
+            System.err.println("Warning: Could not create account for new user " + user.getId() + " - " + e.getMessage());
         }
 
         String token = tokenService.generateToken(user.getId(), user.getEmail(), user.getRole());
@@ -61,10 +58,10 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
+                .orElseThrow(() -> new UnauthorizedException("No user foud with this email"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new UnauthorizedException("Invalid email or password");
+            throw new UnauthorizedException("Wrong password");
         }
 
         String token = tokenService.generateToken(user.getId(), user.getEmail(), user.getRole());
@@ -77,15 +74,15 @@ public class AuthService {
      */
     public TokenValidationResponse validateToken(TokenValidationRequest request) {
         try {
-            Claims claims = tokenService.parseToken(request.getToken());
-
-            if (tokenService.isTokenExpired(claims)) {
+            String token = request.getToken();
+            
+            if (tokenService.isTokenExpired(token)) {
                 return TokenValidationResponse.invalid("Token has expired");
             }
 
-            Long userId = tokenService.getUserIdFromClaims(claims);
-            String email = tokenService.getEmailFromClaims(claims);
-            UserRole role = tokenService.getRoleFromClaims(claims);
+            Long userId = tokenService.getUserIdFromClaims(token);
+            String email = tokenService.getEmailFromClaims(token);
+            UserRole role = tokenService.getRoleFromClaims(token);
 
             // Ensure the user still exists in the database
             if (!userRepository.existsById(userId)) {
@@ -94,8 +91,7 @@ public class AuthService {
 
             // Reference Monitor — check authorization
             if (request.getRequestPath() != null && request.getHttpMethod() != null) {
-                boolean authorized = referenceMonitor.isAuthorized(role, request.getRequestPath(),
-                        request.getHttpMethod());
+                boolean authorized = referenceMonitor.isAuthorized(role, request.getRequestPath(), request.getHttpMethod());
                 if (!authorized) {
                     return TokenValidationResponse.invalid("Access denied: insufficient permissions");
                 }

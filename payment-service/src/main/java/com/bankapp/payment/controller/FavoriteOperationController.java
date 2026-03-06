@@ -17,14 +17,16 @@ public class FavoriteOperationController {
         this.favoriteOperationService = favoriteOperationService;
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<FavoriteOperationDTO>> getFavoritesByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(favoriteOperationService.getFavoriteByUserId(userId));
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<List<FavoriteOperationDTO>> getFavoritesByAccountId(@PathVariable Long accountId) {
+        List<FavoriteOperationDTO> favorites = favoriteOperationService.getFavoriteByAccountId(accountId);
+        return ResponseEntity.ok(favorites);
     }
 
     @PostMapping
     public ResponseEntity<FavoriteOperationDTO> createFavorite(@RequestBody FavoriteOperationDTO dto) {
-        return ResponseEntity.ok(favoriteOperationService.createFavorite(dto));
+        FavoriteOperationDTO favorite = favoriteOperationService.createFavorite(dto);
+        return ResponseEntity.ok(favorite);
     }
 
     @DeleteMapping("/{id}")

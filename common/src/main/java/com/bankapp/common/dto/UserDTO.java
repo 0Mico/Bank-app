@@ -16,7 +16,6 @@ public class UserDTO {
     private LocalDateTime createdAt;
 
     public UserDTO() {}
-
     public UserDTO(Long id, String email, String firstName, String lastName, String phone, UserRole role, LocalDateTime createdAt) {
         this.id = id;
         this.email = email;

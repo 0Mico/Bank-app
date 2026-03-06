@@ -21,32 +21,38 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+        UserDTO user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/by-email")
     public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) {
-        return ResponseEntity.ok(userService.getUserByEmail(email));
+        UserDTO user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/by-iban")
     public ResponseEntity<UserDTO> getUserByIban(@RequestParam String iban) {
-        return ResponseEntity.ok(userService.getUserByIban(iban));
+        UserDTO user = userService.getUserByIban(iban);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/by-account")
     public ResponseEntity<UserDTO> getUserByAccountId(@RequestParam Long accountId) {
-        return ResponseEntity.ok(userService.getUserByAccountId(accountId));
+        UserDTO user = userService.getUserByAccountId(accountId);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.updateUser(id, userDTO));
+        UserDTO user = userService.updateUser(id, userDTO);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")

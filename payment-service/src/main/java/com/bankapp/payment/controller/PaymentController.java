@@ -19,18 +19,21 @@ public class PaymentController {
 
     @PostMapping
     public ResponseEntity<PaymentDTO> processPayment(@RequestBody PaymentDTO dto) {
-        return ResponseEntity.ok(paymentService.processPayment(dto));
+        PaymentDTO payment = paymentService.processPayment(dto);
+        return ResponseEntity.ok(payment);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PaymentDTO> getPayment(@PathVariable Long id) {
-        return ResponseEntity.ok(paymentService.getPaymentById(id));
+        PaymentDTO payment = paymentService.getPaymentById(id);
+        return ResponseEntity.ok(payment);
     }
 
     @GetMapping
     public ResponseEntity<List<PaymentDTO>> getPayments(@RequestParam(required = false) Long userId) {
         if (userId != null) {
-            return ResponseEntity.ok(paymentService.getPaymentsByUserId(userId));
+            List<PaymentDTO> payments = paymentService.getPaymentsByUserId(userId);
+            return ResponseEntity.ok(payments);
         }
         return ResponseEntity.ok(List.of());
     }

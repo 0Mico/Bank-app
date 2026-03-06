@@ -17,7 +17,7 @@ public class FavoriteOperation {
     private Long id;
 
     @Column(nullable = false)
-    private Long userId;
+    private Long accountId;
 
     @Column(nullable = false)
     private String name;
@@ -35,10 +35,10 @@ public class FavoriteOperation {
     private String description;
 
     public FavoriteOperation(){}
-    public FavoriteOperation(Long id, Long userId, String name, String recipientIban, BigDecimal amount,
+    public FavoriteOperation(Long id, Long accountId, String name, String recipientIban, BigDecimal amount,
             String category, String description) {
         this.id = id;
-        this.userId = userId;
+        this.accountId = accountId;
         this.name = name;
         this.recipientIban = recipientIban;
         this.amount = amount;
@@ -47,8 +47,8 @@ public class FavoriteOperation {
     }
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    public Long getAccountId() { return accountId; }
+    public void setAccountId(Long accountId) { this.accountId = accountId; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getRecipientIban() { return recipientIban; }

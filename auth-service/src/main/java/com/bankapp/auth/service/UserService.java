@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AccountServiceClient accountServiceClient;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
                        AccountServiceClient accountServiceClient) {
@@ -42,18 +42,19 @@ public class UserService {
 
     public UserDTO getUserByIban(String iban) {
         AccountDTO account = accountServiceClient.getAccountByIban(iban);
-        return getUserById(account.getUserId());
+        Long userId = account.getUserId();
+        return getUserById(userId);
     }
 
     public UserDTO getUserByAccountId(Long accountId) {
         AccountDTO account = accountServiceClient.getAccountById(accountId);
-        return getUserById(account.getUserId());
+        Long userId = account.getUserId();
+        return getUserById(userId);
     }
 
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(AuthService::toDTO)
-                .collect(Collectors.toList());
+                .map(AuthService::toDTO).collect(Collectors.toList());
     }
 
     public UserDTO updateUser(Long id, UserDTO userDTO) {

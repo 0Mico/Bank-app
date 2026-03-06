@@ -11,11 +11,12 @@ import org.springframework.http.MediaType;
 public class AccountServiceClient {
 
     private final RestClient restClient;
-    private final String paymentServiceUrl;
 
-    public AccountServiceClient(RestClient restClient, @Value("${services.payment.url}") String paymentServiceUrl) {
+    @Value("${services.payment.url}")
+    private String paymentServiceUrl;
+
+    public AccountServiceClient(RestClient restClient) {
         this.restClient = restClient;
-        this.paymentServiceUrl = paymentServiceUrl;
     }
 
     public AccountDTO createAccount(Long userId) {

@@ -6,7 +6,6 @@ public class TokenValidationRequest {
     private String httpMethod;
 
     public TokenValidationRequest() {}
-
     public TokenValidationRequest(String token, String requestPath, String httpMethod) {
         this.token = token;
         this.requestPath = requestPath;

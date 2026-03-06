@@ -20,13 +20,12 @@ import java.util.List;
 public class AuthFilter extends OncePerRequestFilter {
 
     private final RestClient authClient;
-    
+
     private final List<String> openEndpoints = List.of(
             "/api/auth/login",
             "/api/auth/register"
     );
 
-     
     public AuthFilter(@Value("${services.auth.url}") String authServiceUrl) {
         this.authClient = RestClient.builder()
                 .baseUrl(authServiceUrl)

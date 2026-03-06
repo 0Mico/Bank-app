@@ -37,7 +37,7 @@ public class TokenService {
                 .compact();
     }
 
-    public Claims parseToken(String token) {
+    private Claims parseToken(String token) {
         return Jwts.parser()
                 .verifyWith(key)
                 .build()
@@ -45,19 +45,23 @@ public class TokenService {
                 .getPayload();
     }
 
-    public boolean isTokenExpired(Claims claims) {
+    public boolean isTokenExpired(String token) {
+        Claims claims = parseToken(token);
         return claims.getExpiration().before(new Date());
     }
 
-    public Long getUserIdFromClaims(Claims claims) {
+    public Long getUserIdFromClaims(String token) {
+        Claims claims = parseToken(token);
         return Long.parseLong(claims.getSubject());
     }
 
-    public String getEmailFromClaims(Claims claims) {
+    public String getEmailFromClaims(String token) {
+        Claims claims = parseToken(token);
         return claims.get("email", String.class);
     }
 
-    public UserRole getRoleFromClaims(Claims claims) {
+    public UserRole getRoleFromClaims(String token) {
+        Claims claims = parseToken(token);
         return UserRole.valueOf(claims.get("role", String.class));
     }
 }

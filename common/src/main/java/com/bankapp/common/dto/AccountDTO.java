@@ -37,60 +37,18 @@ public class AccountDTO {
         this.name = name;
         this.createdAt = createdAt;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getIban() {
-        return iban;
-    }
-
-    public void setIban(String iban) {
-        this.iban = iban;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
+    public String getIban() { return iban; }
+    public void setIban(String iban) { this.iban = iban; }
+    public BigDecimal getBalance() { return balance; }
+    public void setBalance(BigDecimal balance) { this.balance = balance; }
+    public String getCurrency() { return currency; }
+    public void setCurrency(String currency) { this.currency = currency; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

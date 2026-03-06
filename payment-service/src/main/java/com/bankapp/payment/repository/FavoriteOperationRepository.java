@@ -10,6 +10,6 @@ import com.bankapp.payment.entity.FavoriteOperation;
 
 @Repository
 public interface FavoriteOperationRepository extends JpaRepository<FavoriteOperation, Long> {
-    List<FavoriteOperation> findByUserId(Long userId);
+    List<FavoriteOperation> findByAccountId(Long accountId);
     Optional<FavoriteOperation> findByCategory(String category);
 }

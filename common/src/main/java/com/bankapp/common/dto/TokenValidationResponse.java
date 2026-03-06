@@ -10,7 +10,6 @@ public class TokenValidationResponse {
     private String message;
 
     public TokenValidationResponse() {}
-
     public TokenValidationResponse(boolean valid, Long userId, String email, UserRole role) {
         this.valid = valid;
         this.userId = userId;

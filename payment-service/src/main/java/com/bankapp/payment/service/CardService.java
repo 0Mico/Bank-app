@@ -26,28 +26,6 @@ public class CardService {
         this.accountRepo = accountRepo;
     }
 
-    public List<CardDTO> getCardsByAccountId(Long accountId) {
-        ArrayList<Card> cards = cardRepo.findAllByAccountId(accountId)
-            .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
-        return cards.stream().map(this::mapToDTO).collect(Collectors.toList());
-    }
-
-    public CardDTO associateCard(Long accountId) {
-        Account account = accountRepo.findById(accountId)
-            .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
-        
-        Card card = new Card();
-        card.setAccountId(account.getId());
-        card.setCardNumber(generateCardNumber());
-        
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, 5);
-        card.setExpiration(cal.getTime());
-        
-        Card savedCard = cardRepo.save(card);
-        return mapToDTO(savedCard);
-    }
-
     private String generateCardNumber() {
         StringBuilder cardNumber = new StringBuilder();
         Random random = new Random();
@@ -59,6 +37,32 @@ public class CardService {
             }
         }
         return cardNumber.toString();
+    }
+
+    private Card createNewCard(Account account) {
+        Card card = new Card();
+        card.setAccountId(account.getId());
+        card.setCardNumber(generateCardNumber());
+        
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 5);
+        card.setExpiration(cal.getTime());
+        return card;
+    }
+
+    public List<CardDTO> getCardsByAccountId(Long accountId) {
+        ArrayList<Card> cards = cardRepo.findAllByAccountId(accountId)
+            .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
+        return cards.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    public CardDTO associateCard(Long accountId) {
+        Account account = accountRepo.findById(accountId)
+            .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
+        
+        Card card = createNewCard(account);
+        Card savedCard = cardRepo.save(card);
+        return mapToDTO(savedCard);
     }
 
     public CardDTO toggleBlockState(Long cardId) {

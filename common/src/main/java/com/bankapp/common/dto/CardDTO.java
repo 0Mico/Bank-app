@@ -18,44 +18,14 @@ public class CardDTO {
         this.expiration = expiration;
         this.isBlocked = isBlocked;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public Date getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(Date expiration) {
-        this.expiration = expiration;
-    }
-
-    public boolean isBlocked() {
-        return isBlocked;
-    }
-
-    public void setBlocked(boolean isBlocked) {
-        this.isBlocked = isBlocked;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Long getAccountId() { return accountId; }
+    public void setAccountId(Long accountId) { this.accountId = accountId; }
+    public String getCardNumber() { return cardNumber; }
+    public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
+    public Date getExpiration() { return expiration; }
+    public void setExpiration(Date expiration) { this.expiration = expiration; }
+    public boolean isBlocked() { return isBlocked; }
+    public void setBlocked(boolean isBlocked) { this.isBlocked = isBlocked; }
 }

@@ -54,12 +54,14 @@ export const transactionApi = {
 
 export interface FavoriteOperation {
     id: number;
-    userId: number;
+    accountId: number;
     name: string;
     recipientIban: string;
     amount: number;
     category: string;
     description: string;
+    type?: 'INTERNAL' | 'EXTERNAL';
+    recipientAccountName?: string;
 }
 
 // Payments
@@ -68,7 +70,7 @@ export const paymentApi = {
     list: (userId: number) => api.get<Payment[]>(`/payments?userId=${userId}`),
     get: (id: number) => api.get<Payment>(`/payments/${id}`),
     favorites: {
-        list: (userId: number) => api.get<FavoriteOperation[]>(`/payments/favorites/user/${userId}`),
+        list: (accountId: number) => api.get<FavoriteOperation[]>(`/payments/favorites/account/${accountId}`),
         create: (data: Partial<FavoriteOperation>) => api.post<FavoriteOperation>('/payments/favorites', data),
         delete: (id: number) => api.delete(`/payments/favorites/${id}`),
     }

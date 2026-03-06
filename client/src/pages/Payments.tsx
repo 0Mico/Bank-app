@@ -28,20 +28,13 @@ const Payments: React.FC = () => {
     const load = async () => {
         if (!user) return;
         try {
-            const [accRes, favRes] = await Promise.all([
-                accountApi.get(user.id),
-                paymentApi.favorites.list(user.id).catch(() => ({ data: [] }))
-            ]);
-            
+            const accRes = await accountApi.get(user.id);
             if (accRes.data) {
                 const fetchedAccounts = accRes.data;
                 setAccounts(fetchedAccounts);
                 if (fetchedAccounts.length > 0 && selectedAccountId === null) {
                     setSelectedAccountId(fetchedAccounts[0].id);
                 }
-            }
-            if (favRes && favRes.data) {
-                setFavorites(favRes.data);
             }
         } finally {
             setLoading(false);
@@ -52,6 +45,23 @@ const Payments: React.FC = () => {
 
     const activeAccount = accounts.find(a => a.id === selectedAccountId);
     const availableDestinationAccounts = accounts.filter(a => a.id !== activeAccount?.id);
+
+    const loadFavorites = async (accountId: number) => {
+        try {
+            const res = await paymentApi.favorites.list(accountId);
+            setFavorites(res.data || []);
+        } catch {
+            setFavorites([]);
+        }
+    };
+
+    useEffect(() => {
+        if (activeAccount) {
+            loadFavorites(activeAccount.id);
+        } else {
+            setFavorites([]);
+        }
+    }, [activeAccount]);
 
     // Reset destination account if active account changes
     useEffect(() => {
@@ -92,9 +102,9 @@ const Payments: React.FC = () => {
                 description: finalDescription,
             });
 
-            if (saveAsFavorite && favoriteName.trim() && user) {
+            if (saveAsFavorite && favoriteName.trim() && activeAccount) {
                 await paymentApi.favorites.create({
-                    userId: user.id,
+                    accountId: activeAccount.id,
                     name: favoriteName.trim(),
                     recipientIban: targetIban,
                     amount: Number(form.amount),
@@ -108,6 +118,9 @@ const Payments: React.FC = () => {
             setSaveAsFavorite(false);
             setFavoriteName('');
             setShowForm(false);
+            if (activeAccount) {
+                loadFavorites(activeAccount.id);
+            }
             load();
         } catch (err: any) {
             setError(err.response?.data?.message || err.message || 'Payment failed');
@@ -140,7 +153,9 @@ const Payments: React.FC = () => {
         if (!window.confirm('Are you sure you want to delete this favorite operation?')) return;
         try {
             await paymentApi.favorites.delete(id);
-            load();
+            if (activeAccount) {
+                loadFavorites(activeAccount.id);
+            }
             setSuccess('Favorite operation deleted.');
         } catch (err: any) {
             setError('Failed to delete favorite operation.');
@@ -241,7 +256,8 @@ const Payments: React.FC = () => {
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>IBAN</th>
+                                    <th>Type</th>
+                                    <th>Recipient</th>
                                     <th>Amount</th>
                                     <th>Category</th>
                                     <th style={{ textAlign: 'right', minWidth: '150px' }}>Actions</th>
@@ -251,7 +267,14 @@ const Payments: React.FC = () => {
                                 {favorites.map(fav => (
                                     <tr key={fav.id}>
                                         <td><strong>{fav.name}</strong></td>
-                                        <td style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>{fav.recipientIban}</td>
+                                        <td>
+                                            <span className={`badge ${fav.type === 'INTERNAL' ? 'badge-primary' : 'badge-secondary'}`}>
+                                                {fav.type || 'EXTERNAL'}
+                                            </span>
+                                        </td>
+                                        <td style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                                            {fav.recipientAccountName || fav.recipientIban}
+                                        </td>
                                         <td>{activeAccount?.currency || 'EUR'} {fav.amount.toLocaleString('en', { minimumFractionDigits: 2 })}</td>
                                         <td>{fav.category}</td>
                                         <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>

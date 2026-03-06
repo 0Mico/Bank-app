@@ -5,53 +5,86 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.bankapp.common.dto.AccountDTO;
 import com.bankapp.common.dto.FavoriteOperationDTO;
 import com.bankapp.common.exception.ResourceNotFoundException;
 import com.bankapp.payment.entity.FavoriteOperation;
+import com.bankapp.payment.entity.Account;
 import com.bankapp.payment.repository.FavoriteOperationRepository;
 
 @Service
 public class FavoriteOperationService {
 
     private final FavoriteOperationRepository favOpRepo;
+    private final AccountService accountService;
 
-    public FavoriteOperationService(FavoriteOperationRepository favOpRepo) {
+    public FavoriteOperationService(FavoriteOperationRepository favOpRepo, AccountService accountService) {
         this.favOpRepo = favOpRepo;
+        this.accountService = accountService;
     }
 
-    public List<FavoriteOperationDTO> getFavoriteByUserId(Long id) {
-        List<FavoriteOperation> operations = favOpRepo.findByUserId(id);
-        return operations.stream().map(this::toDTO).collect(Collectors.toList());
+    public List<FavoriteOperationDTO> getFavoriteByAccountId(Long accountId) {
+        List<FavoriteOperation> operations = favOpRepo.findByAccountId(accountId);
+        
+        if (operations.isEmpty()) {
+            return List.of();
+        }
+
+        // We need the user's accounts to determine "INTERNAL" vs "EXTERNAL" transfer
+        // Get the account first to find its userId
+        Account account = accountService.getAccountEntityById(accountId);
+        List<AccountDTO> userAccounts = accountService.getAccountsByUserId(account.getUserId());
+        
+        return operations.stream().map(op -> toDTO(op, userAccounts)).collect(Collectors.toList());
     }
 
     public FavoriteOperationDTO createFavorite(FavoriteOperationDTO dto) {
         FavoriteOperation op = new FavoriteOperation();
-        op.setUserId(dto.getUserId());
+        op.setAccountId(dto.getAccountId());
         op.setName(dto.getName());
         op.setRecipientIban(dto.getRecipientIban());
         op.setAmount(dto.getAmount());
         op.setCategory(dto.getCategory());
         op.setDescription(dto.getDescription());
         op = favOpRepo.save(op);
-        return toDTO(op);
+        
+        
+        Account account = accountService.getAccountEntityById(dto.getAccountId()); // Changed from op.getAccountId() to dto.getAccountId()
+        List<AccountDTO> userAccounts = accountService.getAccountsByUserId(account.getUserId());
+        return toDTO(op, userAccounts);
     }
     
     public void deleteFavorite(Long id) {
         if (!favOpRepo.existsById(id)) {
-            throw new ResourceNotFoundException("FavoriteOperation", id);
+            throw new ResourceNotFoundException("Operation not found among favorites", id);
         }
         favOpRepo.deleteById(id);
     }
 
-    private FavoriteOperationDTO toDTO(FavoriteOperation favOp) {
+    private FavoriteOperationDTO toDTO(FavoriteOperation favOp, List<AccountDTO> userAccounts) {
         FavoriteOperationDTO dto = new FavoriteOperationDTO();
         dto.setId(favOp.getId());
-        dto.setUserId(favOp.getUserId());
+        dto.setAccountId(favOp.getAccountId());
         dto.setName(favOp.getName());
         dto.setRecipientIban(favOp.getRecipientIban());
         dto.setAmount(favOp.getAmount());
         dto.setCategory(favOp.getCategory());
         dto.setDescription(favOp.getDescription());
+
+        AccountDTO matchingAccount = userAccounts.stream()
+            .filter(acc -> acc.getIban().equals(favOp.getRecipientIban()))
+            .findFirst()
+            .orElse(null);
+
+        if (matchingAccount != null) {
+            dto.setType("INTERNAL");
+            dto.setRecipientAccountName(matchingAccount.getName() != null && !matchingAccount.getName().isEmpty() 
+                ? matchingAccount.getName() 
+                : matchingAccount.getIban());
+        } else {
+            dto.setType("EXTERNAL");
+        }
+
         return dto;
     }
 }

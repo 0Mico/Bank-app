@@ -12,9 +12,7 @@ public class ChangePasswordRequest {
     @Size(min = 6, message = "New password must be at least 6 characters long")
     private String newPassword;
 
-    public ChangePasswordRequest() {
-    }
-
+    public ChangePasswordRequest() {}
     public ChangePasswordRequest(String currentPassword, String newPassword) {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;

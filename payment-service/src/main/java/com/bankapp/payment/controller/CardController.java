@@ -20,17 +20,20 @@ public class CardController {
 
     @GetMapping("/{accountId}/cards")
     public ResponseEntity<List<CardDTO>> getCardsByAccountId(@PathVariable Long accountId) {
-        return ResponseEntity.ok(cardService.getCardsByAccountId(accountId));
+        List<CardDTO> cards = cardService.getCardsByAccountId(accountId);
+        return ResponseEntity.ok(cards);
     }
 
     @PostMapping("/{accountId}/cards")
     public ResponseEntity<CardDTO> associateCard(@PathVariable Long accountId) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(cardService.associateCard(accountId));
+        CardDTO newCard = cardService.associateCard(accountId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newCard);
     }
 
     @PatchMapping("/{accountId}/cards/{cardId}/block")
     public ResponseEntity<CardDTO> toggleBlockState(@PathVariable Long accountId, @PathVariable Long cardId) {
-        return ResponseEntity.ok(cardService.toggleBlockState(cardId));
+        CardDTO blockedCard = cardService.toggleBlockState(cardId);
+        return ResponseEntity.ok(blockedCard);
     }
 
     @DeleteMapping("/{accountId}/cards/{cardId}")

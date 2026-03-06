@@ -22,22 +22,22 @@ import java.net.URI;
 public class ProxyController {
 
     private static final Set<String> EXCLUDED_HEADERS = Set.of(
-            "host", "connection", "content-length", "transfer-encoding");
+        "host", "connection", "content-length", "transfer-encoding");
 
     private final RestClient authClient;
     private final RestClient transactionClient;
     private final RestClient paymentClient;
-    private final String authUrl;
-    private final String transactionUrl;
-    private final String paymentUrl;
 
-    public ProxyController( @Value("${services.auth.url}") String authUrl,
-                            @Value("${services.transaction.url}") String transactionUrl,
-                            @Value("${services.payment.url}") String paymentUrl
-                            ) {
-        this.authUrl = authUrl;
-        this.transactionUrl = transactionUrl;
-        this.paymentUrl = paymentUrl;
+    @Value("${services.auth.url}")
+    private String authUrl;
+
+    @Value("${services.transaction.url}")
+    private String transactionUrl;
+
+    @Value("${services.payment.url}")
+    private String paymentUrl;
+
+    public ProxyController() {
         this.authClient = RestClient.builder().build();
         this.transactionClient = RestClient.builder().build();
         this.paymentClient = RestClient.builder().build();
