@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../AuthContext';
 import { paymentApi, accountApi } from '../api';
-import type { Payment, Account } from '../types';
-import type { FavoriteOperation } from '../api';
+import type { Payment, Account, FavoriteOperation } from '../types';
 
 const CATEGORIES = ['SALARY', 'TRANSFER', 'PAYMENT', 'FOOD', 'TRANSPORT', 'ENTERTAINMENT', 'UTILITIES', 'HEALTHCARE', 'SHOPPING', 'OTHER'];
 
@@ -28,7 +27,7 @@ const Payments: React.FC = () => {
     const load = async () => {
         if (!user) return;
         try {
-            const accRes = await accountApi.get(user.id);
+            const accRes = await accountApi.getByUserId(user.id);
             if (accRes.data) {
                 const fetchedAccounts = accRes.data;
                 setAccounts(fetchedAccounts);

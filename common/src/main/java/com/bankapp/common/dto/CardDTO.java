@@ -1,17 +1,17 @@
 package com.bankapp.common.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class CardDTO {
     private Long id;
     private Long accountId;
     private String cardNumber;
-    private Date expiration;
+    private LocalDate expiration;
     private boolean isBlocked;
 
     public CardDTO() {}
 
-    public CardDTO(Long id, Long accountId, String cardNumber, Date expiration, boolean isBlocked) {
+    public CardDTO(Long id, Long accountId, String cardNumber, LocalDate expiration, boolean isBlocked) {
         this.id = id;
         this.accountId = accountId;
         this.cardNumber = cardNumber;
@@ -24,8 +24,8 @@ public class CardDTO {
     public void setAccountId(Long accountId) { this.accountId = accountId; }
     public String getCardNumber() { return cardNumber; }
     public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
-    public Date getExpiration() { return expiration; }
-    public void setExpiration(Date expiration) { this.expiration = expiration; }
+    public LocalDate getExpiration() { return expiration; }
+    public void setExpiration(LocalDate expiration) { this.expiration = expiration; }
     public boolean isBlocked() { return isBlocked; }
     public void setBlocked(boolean isBlocked) { this.isBlocked = isBlocked; }
 }

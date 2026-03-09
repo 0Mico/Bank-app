@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AuthResponse, LoginRequest, RegisterRequest, User, Account, Transaction, Payment, Card } from './types';
+import type { AuthResponse, LoginRequest, RegisterRequest, User, Account, Transaction, Payment, FavoriteOperation, Card } from './types';
 
 const api = axios.create({
     baseURL: '/api',
@@ -36,9 +36,9 @@ export const userApi = {
     getProfile: (id: number) => api.get<User>(`/auth/users/${id}`),
     updateProfile: (id: number, data: Partial<User>) => api.put<User>(`/auth/users/${id}`, data),
     deleteProfile: (id: number) => api.delete(`/auth/users/${id}`),
-    getByEmail: (email: string) => api.get<User>(`/auth/users/by-email?email=${encodeURIComponent(email)}`),
-    getByIban: (iban: string) => api.get<User>(`/auth/users/by-iban?iban=${encodeURIComponent(iban)}`),
-    getByAccountId: (accountId: number) => api.get<User>(`/auth/users/by-account?accountId=${accountId}`),
+    getByEmail: (email: string) => api.get<User>(`/auth/users/email?email=${encodeURIComponent(email)}`),
+    getByIban: (iban: string) => api.get<User>(`/auth/users/iban?iban=${encodeURIComponent(iban)}`),
+    getByAccountId: (accountId: number) => api.get<User>(`/auth/users/account?accountId=${accountId}`),
     changePassword: (id: number, data: { currentPassword: string; newPassword: string }) => api.post(`/auth/users/${id}/password`, data),
 };
 
@@ -51,18 +51,6 @@ export const transactionApi = {
     delete: (id: number) => api.delete(`/transactions/${id}`),
     categories: () => api.get<string[]>('/transactions/categories'),
 };
-
-export interface FavoriteOperation {
-    id: number;
-    accountId: number;
-    name: string;
-    recipientIban: string;
-    amount: number;
-    category: string;
-    description: string;
-    type?: 'INTERNAL' | 'EXTERNAL';
-    recipientAccountName?: string;
-}
 
 // Payments
 export const paymentApi = {
@@ -78,19 +66,21 @@ export const paymentApi = {
 
 // Accounts
 export const accountApi = {
-    get: (userId: number) => api.get<Account[]>(`/payments/accounts/${userId}`),
-    create: (data: Partial<Account>) => api.post<Account>('/payments/accounts', data),
-    deposit: (accountId: number, amount: number) => api.post<Account>(`/payments/accounts/${accountId}/deposit`, { amount }),
-    updateName: (accountId: number, name: string) => api.patch<Account>(`/payments/accounts/${accountId}/name`, { name }),
-    getByIban: (iban: string) => api.get<Account>(`/payments/accounts/by-iban?iban=${encodeURIComponent(iban)}`),
+    getById: (accountId: number) => api.get<Account>(`/accounts/${accountId}`),
+    getByUserId: (userId: number) => api.get<Account[]>(`/accounts/userId?userId=${userId}`),
+    getByIban: (iban: string) => api.get<Account>(`/accounts/iban?iban=${encodeURIComponent(iban)}`),
+    create: (data: Partial<Account>) => api.post<Account>('/accounts', data),
+    deposit: (accountId: number, amount: number) => api.post<Account>(`/accounts/${accountId}/deposit`, { amount }),
+    updateName: (accountId: number, name: string) => api.patch<Account>(`/accounts/${accountId}/name`, { name }),
+    delete: (accountId: number) => api.delete(`/accounts/${accountId}`),
 };
 
 // Cards
 export const cardApi = {
-    list: (accountId: number) => api.get<Card[]>(`/payments/accounts/${accountId}/cards`),
-    create: (accountId: number, data: Partial<Card>) => api.post<Card>(`/payments/accounts/${accountId}/cards`, data),
-    toggleBlock: (accountId: number, cardId: number) => api.patch<Card>(`/payments/accounts/${accountId}/cards/${cardId}/block`),
-    delete: (accountId: number, cardId: number) => api.delete(`/payments/accounts/${accountId}/cards/${cardId}`),
+    list: (accountId: number) => api.get<Card[]>(`/accounts/cards/${accountId}/cards`),
+    create: (accountId: number, data: Partial<Card>) => api.post<Card>(`/accounts/cards/${accountId}/cards`, data),
+    toggleBlock: (accountId: number, cardId: number) => api.patch<Card>(`/accounts/cards/${accountId}/cards/${cardId}/block`),
+    delete: (accountId: number, cardId: number) => api.delete(`/accounts/cards/${accountId}/cards/${cardId}`),
 };
 
 export default api;

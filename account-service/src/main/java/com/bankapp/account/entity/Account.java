@@ -1,4 +1,4 @@
-package com.bankapp.payment.entity;
+package com.bankapp.account.entity;
 
 import jakarta.persistence.*;
 

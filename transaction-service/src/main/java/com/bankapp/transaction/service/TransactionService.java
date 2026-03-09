@@ -33,7 +33,6 @@ public class TransactionService implements TransactionServiceApi {
         txn.setDescription(dto.getDescription());
         txn.setReferenceId(dto.getReferenceId());
         txn.setCounterpartyIban(dto.getCounterpartyIban());
-
         txn = transactionRepository.save(txn);
         return toDTO(txn);
     }

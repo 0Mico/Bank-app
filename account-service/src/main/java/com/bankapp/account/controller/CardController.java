@@ -1,7 +1,7 @@
-package com.bankapp.payment.controller;
+package com.bankapp.account.controller;
 
 import com.bankapp.common.dto.CardDTO;
-import com.bankapp.payment.service.CardService;
+import com.bankapp.account.service.CardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/payments/accounts")
+@RequestMapping("/api/accounts/cards")
 public class CardController {
 
     private final CardService cardService;
@@ -32,13 +32,13 @@ public class CardController {
 
     @PatchMapping("/{accountId}/cards/{cardId}/block")
     public ResponseEntity<CardDTO> toggleBlockState(@PathVariable Long accountId, @PathVariable Long cardId) {
-        CardDTO blockedCard = cardService.toggleBlockState(cardId);
+        CardDTO blockedCard = cardService.toggleBlockState(accountId, cardId);
         return ResponseEntity.ok(blockedCard);
     }
 
     @DeleteMapping("/{accountId}/cards/{cardId}")
     public ResponseEntity<Void> deleteCard(@PathVariable Long accountId, @PathVariable Long cardId) {
-        cardService.deleteCard(cardId);
+        cardService.deleteCard(accountId, cardId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,6 @@
-package com.bankapp.payment.repository;
+package com.bankapp.account.repository;
 
-import com.bankapp.payment.entity.Account;
+import com.bankapp.account.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

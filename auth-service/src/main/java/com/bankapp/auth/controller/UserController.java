@@ -25,19 +25,19 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/by-email")
+    @GetMapping("/email")
     public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) {
         UserDTO user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/by-iban")
+    @GetMapping("/iban")
     public ResponseEntity<UserDTO> getUserByIban(@RequestParam String iban) {
         UserDTO user = userService.getUserByIban(iban);
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/by-account")
+    @GetMapping("/account")
     public ResponseEntity<UserDTO> getUserByAccountId(@RequestParam Long accountId) {
         UserDTO user = userService.getUserByAccountId(accountId);
         return ResponseEntity.ok(user);

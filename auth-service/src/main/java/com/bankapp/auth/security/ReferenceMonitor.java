@@ -29,6 +29,7 @@ public class ReferenceMonitor {
         upsertPermission("USER", "/api/auth/users/**", "GET,POST,PUT,DELETE");
         upsertPermission("USER", "/api/transactions/**", "GET,POST,PUT,DELETE");
         upsertPermission("USER", "/api/payments/**", "GET,POST,PUT,PATCH,DELETE");
+        upsertPermission("USER", "/api/accounts/**", "GET,POST,PUT,PATCH,DELETE");
 
         // ADMIN role permissions (full access)
         upsertPermission("ADMIN", "/api/**", "GET,POST,PUT,PATCH,DELETE");

@@ -12,8 +12,8 @@ public class AccountServiceClient {
 
     private final RestClient restClient;
 
-    @Value("${services.payment.url}")
-    private String paymentServiceUrl;
+    @Value("${services.account.url}")
+    private String accountServiceUrl;
 
     public AccountServiceClient(RestClient restClient) {
         this.restClient = restClient;
@@ -26,7 +26,7 @@ public class AccountServiceClient {
             dto.setCurrency("EUR");
 
             return restClient.post()
-                    .uri(paymentServiceUrl + "/api/payments/accounts")
+                    .uri(accountServiceUrl + "/api/accounts")
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(dto)
                     .retrieve()
@@ -39,7 +39,7 @@ public class AccountServiceClient {
     public AccountDTO getAccountByIban(String iban) {
         try {
             return restClient.get()
-                    .uri(paymentServiceUrl + "/api/payments/accounts/by-iban?iban=" + iban)
+                    .uri(accountServiceUrl + "/api/accounts/" + iban)
                     .retrieve()
                     .body(AccountDTO.class);
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class AccountServiceClient {
     public AccountDTO getAccountById(Long accountId) {
         try {
             return restClient.get()
-                    .uri(paymentServiceUrl + "/api/payments/accounts/account/" + accountId)
+                    .uri(accountServiceUrl + "/api/accounts/" + accountId)
                     .retrieve()
                     .body(AccountDTO.class);
         } catch (Exception e) {

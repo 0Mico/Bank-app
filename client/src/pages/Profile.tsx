@@ -38,7 +38,7 @@ const Profile: React.FC = () => {
     const fetchAccounts = async () => {
         if (!user) return;
         try {
-            const res = await accountApi.get(user.id);
+            const res = await accountApi.getByUserId(user.id);
             setAccounts(res.data);
         } catch {
             // User may not have accounts yet (new user), show empty
@@ -136,6 +136,15 @@ const Profile: React.FC = () => {
             setAccountError(err.response?.data?.message || 'Failed to rename account');
         } finally {
             setRenameSaving(false);
+        }
+    };
+    const handleDeleteAccount = async (accountId: number) => {
+        if (!window.confirm("Are you sure you want to delete this account? This action cannot be undone.")) return;
+        try {
+            await accountApi.delete(accountId);
+            setAccounts(prev => prev.filter(a => a.id !== accountId));
+        } catch (err: any) {
+            setAccountError(err.response?.data?.message || 'Failed to delete account');
         }
     };
 
@@ -362,12 +371,21 @@ const Profile: React.FC = () => {
                                             Created {new Date(account.createdAt).toLocaleDateString()}
                                         </div>
                                     </div>
-                                    {/* Balance */}
-                                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                                        <div style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                                            {Number(account.balance).toFixed(2)}
+                                    {/* Balance & Delete */}
+                                    <div style={{ textAlign: 'right', flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
+                                        <div>
+                                            <div style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                                                {Number(account.balance).toFixed(2)}
+                                            </div>
+                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{account.currency}</div>
                                         </div>
-                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{account.currency}</div>
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            style={{ padding: '4px 8px', fontSize: '0.75rem' }}
+                                            onClick={() => handleDeleteAccount(account.id)}
+                                        >
+                                            🗑️ Delete
+                                        </button>
                                     </div>
                                 </div>
                             ))}

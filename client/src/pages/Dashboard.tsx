@@ -15,7 +15,7 @@ const Dashboard: React.FC = () => {
         if (!user) return;
         const load = async () => {
             try {
-                const accRes = await accountApi.get(user.id);
+                const accRes = await accountApi.getByUserId(user.id);
                 setAccounts(accRes.data);
                 if (accRes.data.length > 0 && selectedAccountId === null) {
                     setSelectedAccountId(accRes.data[0].id);

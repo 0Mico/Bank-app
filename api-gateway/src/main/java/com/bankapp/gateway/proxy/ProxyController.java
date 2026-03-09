@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Set;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Simple reverse-proxy controller: forwards incoming /api/** requests
@@ -27,6 +28,7 @@ public class ProxyController {
     private final RestClient authClient;
     private final RestClient transactionClient;
     private final RestClient paymentClient;
+    private final RestClient accountClient;
 
     @Value("${services.auth.url}")
     private String authUrl;
@@ -37,10 +39,14 @@ public class ProxyController {
     @Value("${services.payment.url}")
     private String paymentUrl;
 
+    @Value("${services.account.url}")
+    private String accountUrl;
+
     public ProxyController() {
         this.authClient = RestClient.builder().build();
         this.transactionClient = RestClient.builder().build();
         this.paymentClient = RestClient.builder().build();
+        this.accountClient = RestClient.builder().build();
     }
 
     @RequestMapping("/api/auth/**")
@@ -58,19 +64,37 @@ public class ProxyController {
         return forward(paymentClient, paymentUrl, request);
     }
 
-    private ResponseEntity<byte[]> forward(RestClient client, String baseUrl, HttpServletRequest request)
-            throws IOException {
+    @RequestMapping("/api/accounts/**")
+    public ResponseEntity<byte[]> proxyAccounts(HttpServletRequest request) throws IOException {
+        return forward(accountClient, accountUrl, request);
+    }
+
+    private URI assembleUri(String baseUrl, HttpServletRequest request) {
         String uri = request.getRequestURI();
         String query = request.getQueryString();
-        String fullUrl = baseUrl + uri;
-        if (query != null) {
-            fullUrl += "?" + query;
+        String normalizedPath = URI.create(uri).normalize().getPath();
+        URI base = URI.create(baseUrl);
+        try {
+            URI finalUri = new URI(
+                base.getScheme(),
+                base.getAuthority(),
+                normalizedPath,
+                query,
+                null
+            );
+            return finalUri;
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Error assembling requests uri: " + e.getMessage(), e);
         }
+    }
 
+    private ResponseEntity<byte[]> forward(RestClient client, String baseUrl, HttpServletRequest request)
+            throws IOException {
+
+        URI uri = assembleUri(baseUrl, request); 
         HttpMethod method = HttpMethod.valueOf(request.getMethod());
-
         return client.method(method)
-                .uri(URI.create(fullUrl))
+                .uri(uri)
                 .headers(headers -> {
                     // Forward original request headers
                     Enumeration<String> names = request.getHeaderNames();

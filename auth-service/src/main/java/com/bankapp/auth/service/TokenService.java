@@ -16,9 +16,8 @@ public class TokenService {
     private final SecretKey key;
     private final long expiration;
 
-    public TokenService(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration}") long expiration) {
+    public TokenService( @Value("${jwt.secret}") String secret,
+                        @Value("${jwt.expiration}") long expiration) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expiration = expiration;
     }

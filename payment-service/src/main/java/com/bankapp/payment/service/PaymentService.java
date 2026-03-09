@@ -9,46 +9,43 @@ import com.bankapp.common.enums.TransactionType;
 import com.bankapp.common.exception.BadRequestException;
 import com.bankapp.common.exception.InsufficientFundsException;
 import com.bankapp.common.exception.ResourceNotFoundException;
-import com.bankapp.common.interfaces.PaymentServiceApi;
-import com.bankapp.payment.client.TransactionServiceClient;
-import com.bankapp.payment.entity.Account;
+import com.bankapp.common.interfaces.AccountServiceApi;
+import com.bankapp.common.interfaces.TransactionServiceApi;
 import com.bankapp.payment.entity.Payment;
 import com.bankapp.payment.repository.PaymentRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
-public class PaymentService implements PaymentServiceApi {
+public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-    private final AccountService accountService;
-    private final TransactionServiceClient transactionClient;
+    private final AccountServiceApi accountServiceClient;
+    private final TransactionServiceApi transactionClient;
 
-    public PaymentService(PaymentRepository paymentRepository, AccountService accountService,
-            TransactionServiceClient transactionClient) {
+    public PaymentService(PaymentRepository paymentRepository, AccountServiceApi accountServiceClient,
+            TransactionServiceApi transactionClient) {
         this.paymentRepository = paymentRepository;
-        this.accountService = accountService;
+        this.accountServiceClient = accountServiceClient;
         this.transactionClient = transactionClient;
     }
 
-    @Override
     @Transactional
     public PaymentDTO processPayment(PaymentDTO dto) {
         if (dto.getAmount() == null || dto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             throw new BadRequestException("Payment amount must be positive");
         }
-
-        Account fromAccount = accountService.getAccountEntityById(dto.getFromAccountId());
-
         if (dto.getToIban() == null || dto.getToIban().isBlank()) {
             throw new BadRequestException("Recipient IBAN is required");
         }
-        Account toAccount = accountService.getAccountEntityByIban(dto.getToIban());
+
+        AccountDTO fromAccount = accountServiceClient.getAccountById(dto.getFromAccountId());   
+        AccountDTO toAccount = accountServiceClient.getAccountByIban(dto.getToIban());
 
         if (fromAccount.getId().equals(toAccount.getId())) {
             throw new BadRequestException("Cannot send payment to yourself");
@@ -57,8 +54,8 @@ public class PaymentService implements PaymentServiceApi {
             throw new InsufficientFundsException("Insufficient balance. Available: " + fromAccount.getBalance());
         }
 
-        debitSender(fromAccount, dto.getAmount());
-        creditReceiver(toAccount, dto.getAmount());
+        debitSender(fromAccount.getId(), dto.getAmount());
+        creditReceiver(toAccount.getId(), dto.getAmount());
 
         String userDesc = dto.getDescription();
         boolean hasDesc = userDesc != null && !userDesc.trim().isEmpty();
@@ -93,41 +90,37 @@ public class PaymentService implements PaymentServiceApi {
             // Log error but don't fail the payment — transactions are supplementary
             System.err.println("Warning: Failed to record transaction: " + e.getMessage());
         }
-
         return toDTO(payment, fromAccount, toAccount);
     }
 
-    @Override
     public PaymentDTO getPaymentById(Long id) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment", id));
-        Account from = accountService.getAccountEntityById(payment.getFromAccountId());
-        Account to = accountService.getAccountEntityById(payment.getToAccountId());
+        AccountDTO from = accountServiceClient.getAccountById(payment.getFromAccountId());
+        AccountDTO to = accountServiceClient.getAccountById(payment.getToAccountId());
         return toDTO(payment, from, to);
     }
 
-    @Override
     public List<PaymentDTO> getPaymentsByUserId(Long userId) {
-        return paymentRepository.findByUserId(userId).stream()
+        List<Long> accountIds = accountServiceClient.getAccountsByUserId(userId).stream()
+                .map(AccountDTO::getId).toList();
+        if (accountIds.isEmpty()) {
+            return List.of();
+        }
+        return paymentRepository.findByFromAccountIdInOrToAccountIdInOrderByCreatedAtDesc(accountIds, accountIds).stream()
                 .map(p -> {
-                    Account from = accountService.getAccountEntityById(p.getFromAccountId());
-                    Account to = accountService.getAccountEntityById(p.getToAccountId());
+                    AccountDTO from = accountServiceClient.getAccountById(p.getFromAccountId());
+                    AccountDTO to = accountServiceClient.getAccountById(p.getToAccountId());
                     return toDTO(p, from, to);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    @Override
     public List<AccountDTO> getAccountsByUserId(Long userId) {
-        return accountService.getAccountsByUserId(userId);
+        return accountServiceClient.getAccountsByUserId(userId);
     }
 
-    @Override
-    public AccountDTO createAccount(AccountDTO account) {
-        return accountService.createAccount(account);
-    }
-
-    private PaymentDTO toDTO(Payment payment, Account from, Account to) {
+    private PaymentDTO toDTO(Payment payment, AccountDTO from, AccountDTO to) {
         PaymentDTO dto = new PaymentDTO();
         dto.setId(payment.getId());
         dto.setFromAccountId(payment.getFromAccountId());
@@ -143,17 +136,15 @@ public class PaymentService implements PaymentServiceApi {
         return dto;
     }
 
-    private void debitSender(Account fromAccount, BigDecimal amount) {
-        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
-        accountService.saveAccount(fromAccount);
+    private void debitSender(Long fromAccountId, BigDecimal amount) {
+        accountServiceClient.updateBalanceInternal(fromAccountId, amount.negate());
     }
 
-    private void creditReceiver(Account toAccount, BigDecimal amount) {
-        toAccount.setBalance(toAccount.getBalance().add(amount));
-        accountService.saveAccount(toAccount);
+    private void creditReceiver(Long toAccountId, BigDecimal amount) {
+         accountServiceClient.updateBalanceInternal(toAccountId, amount);
     }
 
-    private Payment createPayment(Account fromAccount, Account toAccount, PaymentDTO dto, boolean hasDesc) {
+    private Payment createPayment(AccountDTO fromAccount, AccountDTO toAccount, PaymentDTO dto, boolean hasDesc) {
         Payment payment = new Payment();
         payment.setFromAccountId(fromAccount.getId());
         payment.setToAccountId(toAccount.getId());

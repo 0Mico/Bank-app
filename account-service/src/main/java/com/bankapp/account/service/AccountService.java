@@ -1,4 +1,4 @@
-package com.bankapp.payment.service;
+package com.bankapp.account.service;
 
 import com.bankapp.common.dto.AccountDTO;
 import com.bankapp.common.dto.TransactionDTO;
@@ -6,15 +6,16 @@ import com.bankapp.common.enums.TransactionCategory;
 import com.bankapp.common.enums.TransactionType;
 import com.bankapp.common.exception.BadRequestException;
 import com.bankapp.common.exception.ResourceNotFoundException;
-import com.bankapp.payment.client.TransactionServiceClient;
-import com.bankapp.payment.entity.Account;
-import com.bankapp.payment.repository.AccountRepository;
+import com.bankapp.account.client.TransactionServiceClient;
+import com.bankapp.account.entity.Account;
+import com.bankapp.account.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.Random;
 import java.util.List;
 
@@ -23,7 +24,13 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final TransactionServiceClient transactionClient;
+    private final Logger logger = Logger.getLogger(getClass().getName());
     private final Random random = new Random();
+
+    public AccountService(AccountRepository accountRepository, TransactionServiceClient transactionClient) {
+        this.accountRepository = accountRepository;
+        this.transactionClient = transactionClient;
+    }
 
     private String createMockIban() {
         String bankCode = "NEXS";
@@ -35,11 +42,6 @@ public class AccountService {
         }
         String iban = (countryCode + checkDigits + bankCode + bban.toString().substring(0, 18)); // Total 27 chars
         return iban;
-    }
-
-    public AccountService(AccountRepository accountRepository, TransactionServiceClient transactionClient) {
-        this.accountRepository = accountRepository;
-        this.transactionClient = transactionClient;
     }
 
     public AccountDTO createAccount(AccountDTO dto) {
@@ -77,7 +79,6 @@ public class AccountService {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new BadRequestException("Deposit amount must be positive");
         }
-
         Account account = getAccountEntityById(accountId);
         account.setBalance(account.getBalance().add(amount));
         account = accountRepository.save(account);
@@ -94,10 +95,16 @@ public class AccountService {
             depositTxn.setReferenceId(UUID.randomUUID().toString());
             transactionClient.createTransaction(depositTxn);
         } catch (Exception e) {
-            System.err.println("Warning: Failed to record deposit transaction: " + e.getMessage());
+            logger.warning("Failed to register deposit to " + getAccountEntityById(accountId).getIban());
         }
-
         return toDTO(account);
+    }
+
+    @Transactional
+    public void updateBalanceInternal(Long accountId, BigDecimal amountToAdd) {
+        Account account = getAccountEntityById(accountId);
+        account.setBalance(account.getBalance().add(amountToAdd));
+        accountRepository.save(account);
     }
 
     @Transactional
@@ -106,6 +113,12 @@ public class AccountService {
         account.setName(name);
         account = accountRepository.save(account);
         return toDTO(account);
+    }
+
+    public void deleteAccount(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
+        accountRepository.delete(account);
     }
 
     public static AccountDTO toDTO(Account account) {

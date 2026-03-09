@@ -37,7 +37,7 @@ const Cards: React.FC = () => {
     const fetchAccounts = async (userId: number) => {
         try {
             setLoading(true);
-            const response = await accountApi.get(userId);
+            const response = await accountApi.getByUserId(userId);
             setAccounts(response.data);
             if (response.data.length > 0) {
                 setSelectedAccountId(response.data[0].id);

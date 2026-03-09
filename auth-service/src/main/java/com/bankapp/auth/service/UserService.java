@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -54,7 +53,7 @@ public class UserService {
 
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(AuthService::toDTO).collect(Collectors.toList());
+                .map(AuthService::toDTO).toList();
     }
 
     public UserDTO updateUser(Long id, UserDTO userDTO) {
@@ -81,11 +80,9 @@ public class UserService {
     public void changePassword(Long id, ChangePasswordRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", id));
-
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
             throw new BadRequestException("Invalid current password");
         }
-
         user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }

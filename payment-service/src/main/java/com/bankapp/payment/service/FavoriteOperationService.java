@@ -1,41 +1,37 @@
 package com.bankapp.payment.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.bankapp.common.dto.AccountDTO;
 import com.bankapp.common.dto.FavoriteOperationDTO;
 import com.bankapp.common.exception.ResourceNotFoundException;
+import com.bankapp.common.interfaces.AccountServiceApi;
 import com.bankapp.payment.entity.FavoriteOperation;
-import com.bankapp.payment.entity.Account;
 import com.bankapp.payment.repository.FavoriteOperationRepository;
 
 @Service
 public class FavoriteOperationService {
 
     private final FavoriteOperationRepository favOpRepo;
-    private final AccountService accountService;
+    private final AccountServiceApi accountServiceClient;
 
-    public FavoriteOperationService(FavoriteOperationRepository favOpRepo, AccountService accountService) {
+    public FavoriteOperationService(FavoriteOperationRepository favOpRepo, AccountServiceApi accountServiceClient) {
         this.favOpRepo = favOpRepo;
-        this.accountService = accountService;
+        this.accountServiceClient = accountServiceClient;
     }
 
     public List<FavoriteOperationDTO> getFavoriteByAccountId(Long accountId) {
         List<FavoriteOperation> operations = favOpRepo.findByAccountId(accountId);
-        
         if (operations.isEmpty()) {
             return List.of();
         }
-
-        // We need the user's accounts to determine "INTERNAL" vs "EXTERNAL" transfer
-        // Get the account first to find its userId
-        Account account = accountService.getAccountEntityById(accountId);
-        List<AccountDTO> userAccounts = accountService.getAccountsByUserId(account.getUserId());
-        
-        return operations.stream().map(op -> toDTO(op, userAccounts)).collect(Collectors.toList());
+        // Fetch account to get userId. Then use it to fetch all account to see if a payment is
+        // Internal or External
+        AccountDTO account = accountServiceClient.getAccountById(accountId);
+        List<AccountDTO> userAccounts = accountServiceClient.getAccountsByUserId(account.getUserId());
+        return operations.stream().map(op -> toDTO(op, userAccounts)).toList();
     }
 
     public FavoriteOperationDTO createFavorite(FavoriteOperationDTO dto) {
@@ -49,8 +45,8 @@ public class FavoriteOperationService {
         op = favOpRepo.save(op);
         
         
-        Account account = accountService.getAccountEntityById(dto.getAccountId()); // Changed from op.getAccountId() to dto.getAccountId()
-        List<AccountDTO> userAccounts = accountService.getAccountsByUserId(account.getUserId());
+        AccountDTO account = accountServiceClient.getAccountById(dto.getAccountId());
+        List<AccountDTO> userAccounts = accountServiceClient.getAccountsByUserId(account.getUserId());
         return toDTO(op, userAccounts);
     }
     

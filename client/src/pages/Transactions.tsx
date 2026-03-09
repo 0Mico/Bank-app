@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../AuthContext';
 import { transactionApi, accountApi, userApi } from '../api';
-import type { Transaction, User } from '../types';
+import type { Transaction, User, Account } from '../types';
 
 const CATEGORIES = ['', 'SALARY', 'TRANSFER', 'PAYMENT', 'DEPOSIT', 'FOOD', 'TRANSPORT', 'ENTERTAINMENT', 'UTILITIES', 'HEALTHCARE', 'SHOPPING', 'OTHER'];
 const TYPES = ['', 'CREDIT', 'DEBIT'];
@@ -102,8 +102,8 @@ const Transactions: React.FC<{ hideHeader?: boolean; accountId?: number }> = ({ 
         setLoading(true);
         try {
             // Fetch user's accounts to determine internal transactions
-            const accRes = await accountApi.get(user.id);
-            const ibans = new Set(accRes.data.map(a => a.iban).filter(Boolean));
+            const accRes = await accountApi.getByUserId(user.id);
+            const ibans = new Set(accRes.data.map((a: Account) => a.iban).filter(Boolean) as string[]);
             setUserIbans(ibans);
 
             const params: Record<string, string> = { userId: String(user.id) };

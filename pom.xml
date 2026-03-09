@@ -22,6 +22,7 @@
         <java.version>21</java.version>
         <spring-cloud.version>2025.1.0</spring-cloud.version>
         <jjwt.version>0.12.6</jjwt.version>
+        <sonar.organization>0mico</sonar.organization>
     </properties>
 
     <modules>
@@ -31,6 +32,7 @@
         <module>transaction-service</module>
         <module>payment-service</module>
         <module>client</module>
+        <module>account-service</module>
     </modules>
 
     <dependencyManagement>

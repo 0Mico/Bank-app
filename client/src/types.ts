@@ -58,6 +58,18 @@ export interface Payment {
     createdAt: string;
 }
 
+export interface FavoriteOperation {
+    id: number;
+    accountId: number;
+    name: string;
+    recipientIban: string;
+    amount: number;
+    category: string;
+    description: string;
+    type?: 'INTERNAL' | 'EXTERNAL';
+    recipientAccountName?: string;
+}
+
 export interface LoginRequest {
     email: string;
     password: string;

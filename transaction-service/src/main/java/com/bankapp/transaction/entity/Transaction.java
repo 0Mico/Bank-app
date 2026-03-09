@@ -47,84 +47,25 @@ public class Transaction {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public TransactionType getType() {
-        return type;
-    }
-
-    public void setType(TransactionType type) {
-        this.type = type;
-    }
-
-    public TransactionCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(TransactionCategory category) {
-        this.category = category;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getReferenceId() {
-        return referenceId;
-    }
-
-    public void setReferenceId(String referenceId) {
-        this.referenceId = referenceId;
-    }
-
-    public String getCounterpartyIban() {
-        return counterpartyIban;
-    }
-
-    public void setCounterpartyIban(String counterpartyIban) {
-        this.counterpartyIban = counterpartyIban;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
+    public Long getAccountId() { return accountId; }
+    public void setAccountId(Long accountId) { this.accountId = accountId; }
+    public TransactionType getType() { return type; }
+    public void setType(TransactionType type) { this.type = type; }
+    public TransactionCategory getCategory() { return category; }
+    public void setCategory(TransactionCategory category) { this.category = category; }
+    public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getReferenceId() { return referenceId; }
+    public void setReferenceId(String referenceId) { this.referenceId = referenceId; }
+    public String getCounterpartyIban() { return counterpartyIban; }
+    public void setCounterpartyIban(String counterpartyIban) { this.counterpartyIban = counterpartyIban; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

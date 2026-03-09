@@ -45,7 +45,7 @@ public class AuthService {
         user.setRole(UserRole.USER);
         user = userRepository.save(user);
 
-        // Auto-create an account for the new user over in Payment Service
+        // Auto-create an account for the new user over in Account Service
         try {
             accountServiceClient.createAccount(user.getId());
         } catch (Exception e) {
@@ -75,7 +75,6 @@ public class AuthService {
     public TokenValidationResponse validateToken(TokenValidationRequest request) {
         try {
             String token = request.getToken();
-            
             if (tokenService.isTokenExpired(token)) {
                 return TokenValidationResponse.invalid("Token has expired");
             }

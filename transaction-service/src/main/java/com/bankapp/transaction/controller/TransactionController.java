@@ -23,12 +23,14 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionDTO dto) {
-        return ResponseEntity.ok(transactionService.createTransaction(dto));
+        TransactionDTO transaction = transactionService.createTransaction(dto);
+        return ResponseEntity.ok(transaction);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TransactionDTO> getTransaction(@PathVariable Long id) {
-        return ResponseEntity.ok(transactionService.getTransactionById(id));
+        TransactionDTO transaction = transactionService.getTransactionById(id);
+        return ResponseEntity.ok(transaction);
     }
 
     @GetMapping
@@ -39,12 +41,14 @@ public class TransactionController {
             @RequestParam(required = false) TransactionType type,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to) {
-        return ResponseEntity.ok(transactionService.getTransactions(userId, accountId, category, type, from, to));
+        List<TransactionDTO> transactions = transactionService.getTransactions(userId, accountId, category, type, from, to);
+        return ResponseEntity.ok(transactions);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TransactionDTO> updateTransaction(@PathVariable Long id, @RequestBody TransactionDTO dto) {
-        return ResponseEntity.ok(transactionService.updateTransaction(id, dto));
+        TransactionDTO transaction = transactionService.updateTransaction(id, dto);
+        return ResponseEntity.ok(transaction);
     }
 
     @DeleteMapping("/{id}")

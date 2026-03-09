@@ -1,25 +1,26 @@
-package com.bankapp.payment.service;
+package com.bankapp.account.service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.Calendar;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
 import com.bankapp.common.exception.ResourceNotFoundException;
+import com.bankapp.common.exception.UnauthorizedException;
 import com.bankapp.common.dto.CardDTO;
-import com.bankapp.payment.entity.Card;
-import com.bankapp.payment.entity.Account;
-import com.bankapp.payment.repository.CardRepository;
-import com.bankapp.payment.repository.AccountRepository;
+import com.bankapp.account.entity.Card;
+import com.bankapp.account.entity.Account;
+import com.bankapp.account.repository.CardRepository;
+import com.bankapp.account.repository.AccountRepository;
 
 @Service
 public class CardService {
 
     private final CardRepository cardRepo;
     private final AccountRepository accountRepo;
+    private final Random random = new Random();
+
 
     public CardService(CardRepository cardRepo, AccountRepository accountRepo) {
         this.cardRepo = cardRepo;
@@ -28,7 +29,6 @@ public class CardService {
 
     private String generateCardNumber() {
         StringBuilder cardNumber = new StringBuilder();
-        Random random = new Random();
         for (int i = 0; i < 4; i++) {
             int block = random.nextInt(10000);
             cardNumber.append(String.format("%04d", block));
@@ -44,16 +44,14 @@ public class CardService {
         card.setAccountId(account.getId());
         card.setCardNumber(generateCardNumber());
         
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, 5);
-        card.setExpiration(cal.getTime());
+        card.setExpiration(LocalDate.now().plusYears(5));
         return card;
     }
 
     public List<CardDTO> getCardsByAccountId(Long accountId) {
-        ArrayList<Card> cards = cardRepo.findAllByAccountId(accountId)
+        List<Card> cards = cardRepo.findAllByAccountId(accountId)
             .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
-        return cards.stream().map(this::mapToDTO).collect(Collectors.toList());
+        return cards.stream().map(this::mapToDTO).toList();
     }
 
     public CardDTO associateCard(Long accountId) {
@@ -65,15 +63,21 @@ public class CardService {
         return mapToDTO(savedCard);
     }
 
-    public CardDTO toggleBlockState(Long cardId) {
+    public CardDTO toggleBlockState(Long accountId, Long cardId) {
         Card card = cardRepo.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card", cardId));
+        if(!card.getAccountId().equals(accountId)){
+            throw new UnauthorizedException("Card does not belong to this account");
+        }
         card.setBlocked(!card.isBlocked());
         Card savedCard = cardRepo.save(card);
         return mapToDTO(savedCard);
     }
 
-    public void deleteCard(Long cardId) {
+    public void deleteCard(Long accountId, Long cardId) {
         Card card = cardRepo.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card", cardId));
+        if(!card.getAccountId().equals(accountId)){
+            throw new UnauthorizedException("Card does not belong to this account");
+        }
         cardRepo.delete(card);
     }
 

@@ -7,12 +7,7 @@ import java.util.List;
 
 public interface PaymentServiceApi {
     PaymentDTO processPayment(PaymentDTO payment);
-
     PaymentDTO getPaymentById(Long id);
-
     List<PaymentDTO> getPaymentsByUserId(Long userId);
-
     List<AccountDTO> getAccountsByUserId(Long userId);
-
-    AccountDTO createAccount(AccountDTO account);
 }
