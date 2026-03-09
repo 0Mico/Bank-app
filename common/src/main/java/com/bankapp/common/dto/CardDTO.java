@@ -13,7 +13,6 @@ public class CardDTO {
     private boolean isBlocked;
 
     public CardDTO() {}
-
     public CardDTO(Long id, Long accountId, String cardNumber, LocalDate expiration, boolean isBlocked) {
         this.id = id;
         this.accountId = accountId;
@@ -21,6 +20,7 @@ public class CardDTO {
         this.expiration = expiration;
         this.isBlocked = isBlocked;
     }
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getAccountId() { return accountId; }
