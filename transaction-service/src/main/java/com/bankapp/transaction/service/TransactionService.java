@@ -4,7 +4,6 @@ import com.bankapp.common.dto.TransactionDTO;
 import com.bankapp.common.enums.TransactionCategory;
 import com.bankapp.common.enums.TransactionType;
 import com.bankapp.common.exception.ResourceNotFoundException;
-import com.bankapp.common.interfaces.TransactionServiceApi;
 import com.bankapp.transaction.entity.Transaction;
 import com.bankapp.transaction.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TransactionService implements TransactionServiceApi {
+public class TransactionService {
 
     private final TransactionRepository transactionRepository;
 
@@ -22,7 +21,6 @@ public class TransactionService implements TransactionServiceApi {
         this.transactionRepository = transactionRepository;
     }
 
-    @Override
     public TransactionDTO createTransaction(TransactionDTO dto) {
         Transaction txn = new Transaction();
         txn.setUserId(dto.getUserId());
@@ -37,14 +35,12 @@ public class TransactionService implements TransactionServiceApi {
         return toDTO(txn);
     }
 
-    @Override
     public TransactionDTO getTransactionById(Long id) {
         Transaction txn = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction", id));
         return toDTO(txn);
     }
 
-    @Override
     public List<TransactionDTO> getTransactions(Long userId, Long accountId, TransactionCategory category,
             TransactionType type, LocalDateTime from, LocalDateTime to) {
         return transactionRepository.findWithFilters(userId, accountId, category, type, from, to)
@@ -53,7 +49,6 @@ public class TransactionService implements TransactionServiceApi {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public TransactionDTO updateTransaction(Long id, TransactionDTO dto) {
         Transaction txn = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction", id));
@@ -69,7 +64,6 @@ public class TransactionService implements TransactionServiceApi {
         return toDTO(txn);
     }
 
-    @Override
     public void deleteTransaction(Long id) {
         if (!transactionRepository.existsById(id)) {
             throw new ResourceNotFoundException("Transaction", id);

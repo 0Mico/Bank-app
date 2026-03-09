@@ -1,16 +1,10 @@
 package com.bankapp.payment.client;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.bankapp.common.dto.TransactionDTO;
-import com.bankapp.common.enums.TransactionCategory;
-import com.bankapp.common.enums.TransactionType;
 import com.bankapp.common.exception.ServiceUnavailableException;
 import com.bankapp.common.interfaces.TransactionServiceApi;
 
@@ -47,19 +41,6 @@ public class TransactionServiceClient implements TransactionServiceApi {
                 .body(TransactionDTO.class);
         } catch (Exception e) {
             throw new ServiceUnavailableException("transaction-service", e);
-        }
-    }
-
-    @Override
-    public List<TransactionDTO> getTransactions(Long userId, Long accountId, TransactionCategory category,
-            TransactionType type, LocalDateTime from, LocalDateTime to) {
-        try {
-            return restClient.get()
-                .uri(transactionServiceUrl + "/api/transactions")
-                .retrieve()
-                .body(new ParameterizedTypeReference<List<TransactionDTO>>() {});
-        } catch (Exception e) {
-            throw new ServiceUnavailableException("transaction-service", e);            
         }
     }
 
