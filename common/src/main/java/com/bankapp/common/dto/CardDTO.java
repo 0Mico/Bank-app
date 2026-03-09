@@ -2,6 +2,9 @@ package com.bankapp.common.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CardDTO {
     private Long id;
     private Long accountId;

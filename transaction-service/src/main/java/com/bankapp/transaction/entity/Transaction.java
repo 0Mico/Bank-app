@@ -18,7 +18,7 @@ public class Transaction {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "account_id")
+    @Column(name = "account_id", nullable = false)
     private Long accountId;
 
     @Enumerated(EnumType.STRING)

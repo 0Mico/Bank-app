@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PaymentDTO {
+public class PaymentResponse {
     private Long id;
     private Long fromAccountId;
     private Long toAccountId;
@@ -22,7 +22,7 @@ public class PaymentDTO {
     private String description;
     private LocalDateTime createdAt;
 
-    public PaymentDTO() {}
+    public PaymentResponse() {}
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

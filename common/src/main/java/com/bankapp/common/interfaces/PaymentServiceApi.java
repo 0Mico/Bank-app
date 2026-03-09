@@ -1,13 +1,14 @@
 package com.bankapp.common.interfaces;
 
 import com.bankapp.common.dto.AccountDTO;
-import com.bankapp.common.dto.PaymentDTO;
+import com.bankapp.common.dto.PaymentRequest;
+import com.bankapp.common.dto.PaymentResponse;
 
 import java.util.List;
 
 public interface PaymentServiceApi {
-    PaymentDTO processPayment(PaymentDTO payment);
-    PaymentDTO getPaymentById(Long id);
-    List<PaymentDTO> getPaymentsByUserId(Long userId);
+    PaymentResponse processPayment(PaymentRequest payment);
+    PaymentResponse getPaymentById(Long id);
+    List<PaymentResponse> getPaymentsByUserId(Long userId);
     List<AccountDTO> getAccountsByUserId(Long userId);
 }

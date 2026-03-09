@@ -187,12 +187,14 @@ body {
   flex: 1;
   margin-left: 260px;
   padding: 40px;
-  max-width: 1200px;
-  transition: margin-left 0.3s ease;
+  max-width: none;
+  min-width: 0;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
 }
 
 .main-content.expanded {
-  margin-left: 0;
+  margin-left: 80px;
 }
 
 /* Add a floating menu button when sidebar is hidden */
@@ -716,14 +718,62 @@ tr:hover td {
 }
 
 /* ===== Responsive ===== */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px !important;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 auto 16px;
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+@media (max-width: 1024px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .sidebar {
-    display: none;
+    transform: translateX(-100%);
+    width: 260px;
+    box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
   }
 
   .main-content {
-    margin-left: 0;
-    padding: 20px;
+    margin-left: 0 !important;
+    padding: 24px;
+    padding-top: 80px;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
   }
 
   .card-grid {
@@ -736,7 +786,75 @@ tr:hover td {
 
   .filters {
     flex-direction: column;
+    align-items: stretch;
   }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 16px;
+    padding-top: 70px;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .credit-card {
+    height: 200px;
+    padding: 16px;
+  }
+  
+  .card-number {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+  
+  .profile-account-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .profile-account-item div:last-child {
+    text-align: left;
+    width: 100%;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+}
+
+/* Tab wrapping for mobile */
+.tabs {
+  flex-wrap: wrap;
+}
+
+/* Sidebar Backdrop */
+.sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 99;
+    animation: fadeIn 0.3s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ===== Credit Card UI ===== */

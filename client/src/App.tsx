@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import Login from './pages/Login';
@@ -16,7 +16,21 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user, logout } = useAuth();
     const location = useLocation();
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const mobile = window.innerWidth <= 768;
+            setIsMobile(mobile);
+            if (!mobile && !sidebarOpen && window.innerWidth > 1024) {
+                // Auto-open on large screens if collapsed but not by user choice? 
+                // Actually let's just keep it simple.
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [sidebarOpen]);
 
     const navItems = [
         { path: '/dashboard', label: 'Dashboard', icon: '📊' },
@@ -29,9 +43,9 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
     return (
         <div className="app-layout">
-            <aside className={`sidebar ${!sidebarOpen ? 'hidden' : ''}`}>
+            <aside className={`sidebar ${!sidebarOpen ? 'hidden' : 'active'}`}>
                 <div className="sidebar-brand">
-                    <Link to="/dashboard" className="sidebar-brand-text" style={{ textDecoration: 'none' }}>
+                    <Link to="/dashboard" className="sidebar-brand-text" style={{ textDecoration: 'none' }} onClick={() => window.innerWidth <= 768 && setSidebarOpen(false)}>
                         <h1>NexusBank</h1>
                         <span>Digital Banking</span>
                     </Link>
@@ -48,6 +62,7 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                             key={item.path}
                             to={item.path}
                             className={location.pathname === item.path ? 'active' : ''}
+                            onClick={() => window.innerWidth <= 768 && setSidebarOpen(false)}
                         >
                             <span className="nav-icon">{item.icon}</span>
                             {item.label}
@@ -62,7 +77,14 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 </div>
             </aside>
             
-            {!sidebarOpen && (
+            {sidebarOpen && isMobile && (
+                <div 
+                    className="sidebar-backdrop" 
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+            
+            {(isMobile || !sidebarOpen) && (
                 <button className="mobile-menu-btn" onClick={toggleSidebar} title="Open menu">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12"></line>

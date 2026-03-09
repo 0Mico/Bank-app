@@ -3,7 +3,6 @@ import { useAuth } from '../AuthContext';
 import { transactionApi, accountApi, userApi } from '../api';
 import type { Transaction, User, Account } from '../types';
 
-const CATEGORIES = ['', 'SALARY', 'TRANSFER', 'PAYMENT', 'DEPOSIT', 'FOOD', 'TRANSPORT', 'ENTERTAINMENT', 'UTILITIES', 'HEALTHCARE', 'SHOPPING', 'OTHER'];
 const TYPES = ['', 'CREDIT', 'DEBIT'];
 
 interface CounterpartyInfo {
@@ -92,10 +91,20 @@ const TransactionModal: React.FC<{ transaction: Transaction; onClose: () => void
 const Transactions: React.FC<{ hideHeader?: boolean; accountId?: number }> = ({ hideHeader, accountId }) => {
     const { user } = useAuth();
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [categories, setCategories] = useState<string[]>([]);
     const [userIbans, setUserIbans] = useState<Set<string>>(new Set());
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState({ category: '', type: '', from: '', to: '' });
     const [selected, setSelected] = useState<Transaction | null>(null);
+
+    const loadCategories = async () => {
+        try {
+            const res = await transactionApi.categories();
+            setCategories(res.data);
+        } catch (error) {
+            console.error('Failed to load categories', error);
+        }
+    };
 
     const load = async () => {
         if (!user) return;
@@ -119,7 +128,10 @@ const Transactions: React.FC<{ hideHeader?: boolean; accountId?: number }> = ({ 
         }
     };
 
-    useEffect(() => { load(); }, [user, accountId]);
+    useEffect(() => { 
+        load();
+        loadCategories();
+    }, [user, accountId]);
 
     const handleFilter = (e: React.FormEvent) => {
         e.preventDefault();
@@ -141,7 +153,7 @@ const Transactions: React.FC<{ hideHeader?: boolean; accountId?: number }> = ({ 
                         <label>Category</label>
                         <select value={filters.category} onChange={e => setFilters({ ...filters, category: e.target.value })}>
                             <option value="">All Categories</option>
-                            {CATEGORIES.filter(Boolean).map(c => <option key={c} value={c}>{c}</option>)}
+                            {categories.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
                     </div>
                     <div className="form-group">

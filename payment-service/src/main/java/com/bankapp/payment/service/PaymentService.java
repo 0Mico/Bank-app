@@ -1,7 +1,8 @@
 package com.bankapp.payment.service;
 
 import com.bankapp.common.dto.AccountDTO;
-import com.bankapp.common.dto.PaymentDTO;
+import com.bankapp.common.dto.PaymentRequest;
+import com.bankapp.common.dto.PaymentResponse;
 import com.bankapp.common.dto.TransactionDTO;
 import com.bankapp.common.enums.PaymentStatus;
 import com.bankapp.common.enums.TransactionCategory;
@@ -36,31 +37,33 @@ public class PaymentService {
     }
 
     @Transactional
-    public PaymentDTO processPayment(PaymentDTO dto) {
-        if (dto.getAmount() == null || dto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BadRequestException("Payment amount must be positive");
-        }
-        if (dto.getToIban() == null || dto.getToIban().isBlank()) {
-            throw new BadRequestException("Recipient IBAN is required");
-        }
-
-        AccountDTO fromAccount = accountServiceClient.getAccountById(dto.getFromAccountId());   
-        AccountDTO toAccount = accountServiceClient.getAccountByIban(dto.getToIban());
+    public PaymentResponse processPayment(PaymentRequest request) {
+        AccountDTO fromAccount = accountServiceClient.getAccountById(request.getFromAccountId());   
+        AccountDTO toAccount = accountServiceClient.getAccountByIban(request.getToIban());
 
         if (fromAccount.getId().equals(toAccount.getId())) {
             throw new BadRequestException("Cannot send payment to yourself");
         }
-        if (fromAccount.getBalance().compareTo(dto.getAmount()) < 0) {
+        if (fromAccount.getBalance().compareTo(request.getAmount()) < 0) {
             throw new InsufficientFundsException("Insufficient balance. Available: " + fromAccount.getBalance());
         }
 
-        debitSender(fromAccount.getId(), dto.getAmount());
-        creditReceiver(toAccount.getId(), dto.getAmount());
+        debitSender(fromAccount.getId(), request.getAmount());
+        try {
+            creditReceiver(toAccount.getId(), request.getAmount());
+        } catch (Exception e) {
+            try {
+                creditReceiver(fromAccount.getId(), request.getAmount()); // Reverse debit
+            } catch (Exception compensatiException) {
+                throw new RuntimeException("Payment went wrong. Failed debit compensation for account " + fromAccount.getId());
+            }
+            throw new BadRequestException("Payment went wrong. Failed credit for account " + toAccount.getId());
+        }
 
-        String userDesc = dto.getDescription();
+        String userDesc = request.getDescription();
         boolean hasDesc = userDesc != null && !userDesc.trim().isEmpty();
 
-        Payment payment = createPayment(fromAccount, toAccount, dto, hasDesc);
+        Payment payment = createPayment(fromAccount, toAccount, request, hasDesc);
 
         // Record transactions via transaction-service
         String refId = UUID.randomUUID().toString();
@@ -70,7 +73,7 @@ public class PaymentService {
             debitTxn.setAccountId(fromAccount.getId());
             debitTxn.setType(TransactionType.DEBIT);
             debitTxn.setCategory(payment.getCategory());
-            debitTxn.setAmount(dto.getAmount());
+            debitTxn.setAmount(request.getAmount());
             debitTxn.setDescription(hasDesc ? userDesc : "Payment to " + toAccount.getIban());
             debitTxn.setReferenceId(refId);
             debitTxn.setCounterpartyIban(toAccount.getIban());
@@ -81,7 +84,7 @@ public class PaymentService {
             creditTxn.setAccountId(toAccount.getId());
             creditTxn.setType(TransactionType.CREDIT);
             creditTxn.setCategory(payment.getCategory());
-            creditTxn.setAmount(dto.getAmount());
+            creditTxn.setAmount(request.getAmount());
             creditTxn.setDescription(hasDesc ? userDesc : "Payment from " + fromAccount.getIban());
             creditTxn.setReferenceId(refId);
             creditTxn.setCounterpartyIban(fromAccount.getIban());
@@ -93,7 +96,7 @@ public class PaymentService {
         return toDTO(payment, fromAccount, toAccount);
     }
 
-    public PaymentDTO getPaymentById(Long id) {
+    public PaymentResponse getPaymentById(Long id) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment", id));
         AccountDTO from = accountServiceClient.getAccountById(payment.getFromAccountId());
@@ -101,7 +104,7 @@ public class PaymentService {
         return toDTO(payment, from, to);
     }
 
-    public List<PaymentDTO> getPaymentsByUserId(Long userId) {
+    public List<PaymentResponse> getPaymentsByUserId(Long userId) {
         List<Long> accountIds = accountServiceClient.getAccountsByUserId(userId).stream()
                 .map(AccountDTO::getId).toList();
         if (accountIds.isEmpty()) {
@@ -120,8 +123,8 @@ public class PaymentService {
         return accountServiceClient.getAccountsByUserId(userId);
     }
 
-    private PaymentDTO toDTO(Payment payment, AccountDTO from, AccountDTO to) {
-        PaymentDTO dto = new PaymentDTO();
+    private PaymentResponse toDTO(Payment payment, AccountDTO from, AccountDTO to) {
+        PaymentResponse dto = new PaymentResponse();
         dto.setId(payment.getId());
         dto.setFromAccountId(payment.getFromAccountId());
         dto.setToAccountId(payment.getToAccountId());
@@ -144,13 +147,13 @@ public class PaymentService {
          accountServiceClient.updateBalanceInternal(toAccountId, amount);
     }
 
-    private Payment createPayment(AccountDTO fromAccount, AccountDTO toAccount, PaymentDTO dto, boolean hasDesc) {
+    private Payment createPayment(AccountDTO fromAccount, AccountDTO toAccount, PaymentRequest request, boolean hasDesc) {
         Payment payment = new Payment();
         payment.setFromAccountId(fromAccount.getId());
         payment.setToAccountId(toAccount.getId());
-        payment.setAmount(dto.getAmount());
-        payment.setDescription(hasDesc ? dto.getDescription() : "Payment to " + fromAccount.getIban());
-        payment.setCategory(dto.getCategory() != null ? dto.getCategory() : TransactionCategory.TRANSFER);
+        payment.setAmount(request.getAmount());
+        payment.setDescription(hasDesc ? request.getDescription() : "Payment to " + fromAccount.getIban());
+        payment.setCategory(request.getCategory() != null ? request.getCategory() : TransactionCategory.TRANSFER);
         payment.setStatus(PaymentStatus.COMPLETED);
         payment = paymentRepository.save(payment);
         return payment;

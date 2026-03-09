@@ -2,6 +2,9 @@ package com.bankapp.common.dto;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FavoriteOperationDTO {
     private Long id;
     private Long accountId;
@@ -24,6 +27,7 @@ public class FavoriteOperationDTO {
         this.category = category;
         this.description = description;
     }
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getAccountId() { return accountId; }

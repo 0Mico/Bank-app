@@ -1,7 +1,11 @@
 package com.bankapp.payment.controller;
 
-import com.bankapp.common.dto.PaymentDTO;
+import com.bankapp.common.dto.PaymentResponse;
+import com.bankapp.common.dto.PaymentRequest;
 import com.bankapp.payment.service.PaymentService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,21 +22,21 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<PaymentDTO> processPayment(@RequestBody PaymentDTO dto) {
-        PaymentDTO payment = paymentService.processPayment(dto);
+    public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest request) {
+        PaymentResponse payment = paymentService.processPayment(request);
         return ResponseEntity.ok(payment);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PaymentDTO> getPayment(@PathVariable Long id) {
-        PaymentDTO payment = paymentService.getPaymentById(id);
+    public ResponseEntity<PaymentResponse> getPayment(@PathVariable Long id) {
+        PaymentResponse payment = paymentService.getPaymentById(id);
         return ResponseEntity.ok(payment);
     }
 
     @GetMapping
-    public ResponseEntity<List<PaymentDTO>> getPayments(@RequestParam(required = false) Long userId) {
+    public ResponseEntity<List<PaymentResponse>> getPayments(@RequestParam(required = false) Long userId) {
         if (userId != null) {
-            List<PaymentDTO> payments = paymentService.getPaymentsByUserId(userId);
+            List<PaymentResponse> payments = paymentService.getPaymentsByUserId(userId);
             return ResponseEntity.ok(payments);
         }
         return ResponseEntity.ok(List.of());
