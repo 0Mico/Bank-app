@@ -6,7 +6,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Payments from './pages/Payments';
 import Profile from './pages/Profile';
-import Cards from './pages/Cards';
+import Accounts from './pages/Accounts';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -35,7 +35,7 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const navItems = [
         { path: '/dashboard', label: 'Dashboard', icon: '📊' },
         { path: '/payments', label: 'Payments', icon: '💳' },
-        { path: '/cards', label: 'Cards', icon: '🏧' },
+        { path: '/accounts', label: 'Accounts', icon: '🏧' },
         { path: '/profile', label: 'Profile', icon: '👤' },
     ];
 
@@ -110,7 +110,7 @@ const App: React.FC = () => {
             <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />} />
             <Route path="/dashboard" element={<ProtectedRoute><AppLayout><Dashboard /></AppLayout></ProtectedRoute>} />
             <Route path="/payments" element={<ProtectedRoute><AppLayout><Payments /></AppLayout></ProtectedRoute>} />
-            <Route path="/cards" element={<ProtectedRoute><AppLayout><Cards /></AppLayout></ProtectedRoute>} />
+            <Route path="/accounts" element={<ProtectedRoute><AppLayout><Accounts /></AppLayout></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><AppLayout><Profile /></AppLayout></ProtectedRoute>} />
             <Route path="*" element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} />} />
         </Routes>

@@ -3,7 +3,7 @@ import { useAuth } from '../AuthContext';
 import { accountApi, cardApi } from '../api';
 import type { Account, Card } from '../types';
 
-const Cards: React.FC = () => {
+const Accounts: React.FC = () => {
     const { user } = useAuth();
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [selectedAccountId, setSelectedAccountId] = useState<number | ''>('');
@@ -165,8 +165,8 @@ const Cards: React.FC = () => {
         <div className="cards-page">
             <header className="page-header">
                 <div className="header-content">
-                    <h2>Cards Management</h2>
-                    <p>View and add cards to your accounts</p>
+                    <h2>Accounts Management</h2>
+                    <p>View and manage your accounts and associated cards</p>
                 </div>
             </header>
 
@@ -327,4 +327,4 @@ const Cards: React.FC = () => {
     );
 };
 
-export default Cards;
+export default Accounts;
