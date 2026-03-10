@@ -5,30 +5,29 @@ import type { Transaction, User, Account } from '../types';
 
 const TYPES = ['', 'CREDIT', 'DEBIT'];
 
-interface CounterpartyInfo {
-    name: string;
-    iban: string;
-}
+// no longer needed — IBAN is read directly from the transaction
 
 const TransactionModal: React.FC<{ transaction: Transaction; onClose: () => void; isInternal: boolean }> = ({ transaction: t, onClose, isInternal }) => {
-    const [counterparty, setCounterparty] = useState<CounterpartyInfo | null>(null);
-    const [loadingCp, setLoadingCp] = useState(true);
+    const [counterpartyName, setCounterpartyName] = useState<string | null>(null);
+    const [loadingCp, setLoadingCp] = useState(false);
 
     useEffect(() => {
-        const fetchCounterparty = async () => {
-            if (!t.counterpartyIban) { setLoadingCp(false); return; }
+        if (!t.counterpartyIban || isInternal) return;
+        setLoadingCp(true);
+        setCounterpartyName(null);
+        const fetchName = async () => {
             try {
-                const userRes = await userApi.getByIban(t.counterpartyIban);
+                const userRes = await userApi.getByIban(t.counterpartyIban!);
                 const u: User = userRes.data;
-                setCounterparty({ name: `${u.firstName} ${u.lastName}`, iban: t.counterpartyIban });
+                setCounterpartyName(`${u.firstName} ${u.lastName}`);
             } catch {
-                setCounterparty({ name: 'Unknown', iban: t.counterpartyIban });
+                setCounterpartyName(null);
             } finally {
                 setLoadingCp(false);
             }
         };
-        fetchCounterparty();
-    }, [t]);
+        fetchName();
+    }, [t, isInternal]);
 
     const isDebit = t.type === 'DEBIT';
     const counterpartyLabel = isDebit ? 'Recipient' : 'Sender';
@@ -58,16 +57,18 @@ const TransactionModal: React.FC<{ transaction: Transaction; onClose: () => void
                     <div className="detail-section">
                         <div className="detail-label">{counterpartyLabel}</div>
                         <div className="detail-value">
-                            {loadingCp ? (
+                            {isInternal ? (
+                                <strong>Your Account</strong>
+                            ) : loadingCp ? (
                                 <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Loading…</span>
                             ) : (
-                                <strong>{isInternal ? 'Your Account' : (counterparty?.name ?? '—')}</strong>
+                                <strong>{counterpartyName ?? (t.counterpartyIban ? 'External Account' : '—')}</strong>
                             )}
                         </div>
-                        {counterparty?.iban && (
+                        {t.counterpartyIban && (
                             <>
                                 <div className="detail-label" style={{ marginTop: 8 }}>{counterpartyLabel} IBAN</div>
-                                <div className="detail-value" style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>{counterparty.iban}</div>
+                                <div className="detail-value" style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>{t.counterpartyIban}</div>
                             </>
                         )}
                     </div>

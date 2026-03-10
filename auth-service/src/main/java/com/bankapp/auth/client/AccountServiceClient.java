@@ -39,7 +39,7 @@ public class AccountServiceClient {
     public AccountDTO getAccountByIban(String iban) {
         try {
             return restClient.get()
-                    .uri(accountServiceUrl + "/api/accounts/" + iban)
+                    .uri(accountServiceUrl + "/api/accounts/iban?iban=" + iban)
                     .retrieve()
                     .body(AccountDTO.class);
         } catch (Exception e) {

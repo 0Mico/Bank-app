@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Positive;
 
 public class PaymentRequest {
 
-    @NotBlank
+    @NotNull
     private Long fromAccountId;
 
     @NotBlank(message = "Recipient iban is required")
