@@ -1,0 +1,39 @@
+package com.bankapp.auth.controller;
+
+import com.bankapp.auth.dtos.AuthResponse;
+import com.bankapp.auth.dtos.LoginRequest;
+import com.bankapp.auth.dtos.RegisterRequest;
+import com.bankapp.auth.service.AuthService;
+import com.bankapp.common.dto.*;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
+        AuthResponse response = authService.register(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+        AuthResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<TokenValidationResponse> validateToken(@RequestBody TokenValidationRequest request) {
+        TokenValidationResponse response = authService.validateToken(request);
+        return ResponseEntity.ok(response);
+    }
+}

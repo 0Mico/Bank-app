@@ -1,0 +1,43 @@
+package com.bankapp.account.entity;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "cards")
+@Getter @Setter @NoArgsConstructor
+public class Card {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "account_id", nullable = false)
+    private Long accountId;
+
+    @Column(nullable = false, unique = true)
+    private String cardNumber;
+
+    @NotNull
+    private LocalDate expiration;
+
+    @Column(nullable = false)
+    private boolean isBlocked = false;
+
+    public Card(Long id, String cardNumber, LocalDate expiration, boolean isBlocked) {
+        this.id = id;
+        this.cardNumber = cardNumber;
+        this.expiration = expiration;
+        this.isBlocked = isBlocked;
+    }
+}
