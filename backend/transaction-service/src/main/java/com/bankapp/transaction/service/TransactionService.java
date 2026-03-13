@@ -9,8 +9,8 @@ import com.bankapp.transaction.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -43,10 +43,16 @@ public class TransactionService {
 
     public List<TransactionDTO> getTransactions(Long userId, Long accountId, TransactionCategory category,
             TransactionType type, LocalDateTime from, LocalDateTime to) {
-        return transactionRepository.findWithFilters(userId, accountId, category, type, from, to)
+        return transactionRepository.findWithFilters(
+            userId,
+            accountId,
+            category != null ? category.name() : null,
+            type != null ? type.name() : null,
+            from != null ? from.atOffset(ZoneOffset.UTC).toString() : null,
+            to != null ? to.atOffset(ZoneOffset.UTC).toString() : null)
                 .stream()
                 .map(this::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public TransactionDTO updateTransaction(Long id, TransactionDTO dto) {

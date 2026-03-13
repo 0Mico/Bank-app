@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter @Setter
@@ -26,5 +26,5 @@ public class TransactionDTO {
     private String description;
     private String referenceId;
     private String counterpartyIban;
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 }
