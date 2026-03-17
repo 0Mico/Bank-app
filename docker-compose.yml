@@ -1,0 +1,122 @@
+services:
+  # DB
+  postgres:
+    image: postgres:16
+    environment: 
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    networks:
+      - backend-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend
+  api-gateway:
+    build:
+      context: ./backend
+      dockerfile: api-gateway/Dockerfile
+    environment:
+      AUTH_SERVICE_HOST: auth-service
+      ACCOUNT_SERVICE_HOST: account-service
+      PAYMENT_SERVICE_HOST: payment-service
+      TRANSACTION_SERVICE_HOST: transaction-service
+      FRONTEND_SERVICE_HOST: frontend
+    networks:
+      - backend-net
+      - frontend-net
+
+  auth-service:
+    build:
+      context: ./backend
+      dockerfile: auth-service/Dockerfile
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      ACCOUNT_SERVICE_HOST: account-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend-net
+
+  account-service:
+    build:
+      context: ./backend
+      dockerfile: account-service/Dockerfile
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TRANSACTION_SERVICE_HOST: transaction-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend-net
+
+  payment-service:
+    build:
+      context: ./backend
+      dockerfile: payment-service/Dockerfile
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      AUTH_SERVICE_HOST: auth-service
+      TRANSACTION_SERVICE_HOST: transaction-service
+      ACCOUNT_SERVICE_HOST: account-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend-net
+
+  transaction-service:
+    build:
+      context: ./backend
+      dockerfile: transaction-service/Dockerfile
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      AUTH_SERVICE_HOST: auth-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend-net
+
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - frontend-net
+    
+
+networks:
+  backend-net:
+  frontend-net:
+
+volumes:
+  postgres_data:

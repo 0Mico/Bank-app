@@ -7,13 +7,13 @@ spring:
 
 services:
   auth:
-    url: http://localhost:8081
+    url: http://${AUTH_SERVICE_HOST:localhost}:8081
   transaction:
-    url: http://localhost:8082
+    url: http://${TRANSACTION_SERVICE_HOST:localhost}:8082
   payment:
-    url: http://localhost:8083
+    url: http://${PAYMENT_SERVICE_HOST:localhost}:8083
   account:
-    url: http://localhost:8084
+    url: http://${ACCOUNT_SERVICE_HOST:localhost}:8084
 
 cors:
-  allowed-origin: http://localhost:3000
+  allowed-origin: http://${FRONTEND_SERVICE_HOST:localhost}:3000

@@ -5,9 +5,9 @@ spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/${DB_NAME}?currentSchema=banking_auth&stringtype=unspecified
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB}?currentSchema=banking_auth&stringtype=unspecified
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -24,4 +24,4 @@ jwt:
 
 services:
   account:
-    url: http://localhost:8084
+    url: http://${ACCOUNT_SERVICE_HOST:localhost}:8084
