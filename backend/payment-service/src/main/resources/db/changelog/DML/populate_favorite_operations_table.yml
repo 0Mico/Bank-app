@@ -1,0 +1,139 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 005-populate-favorite-operations
+      author: payment-service
+      context: dev, local
+      comment: "Seed initial data for the favorite_operations table"
+      changes:
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 2 }
+              - column: { name: amount,           valueNumeric: 52222.00 }
+              - column: { name: category,         value: "TRANSFER" }
+              - column: { name: description,      value: "Test internal fav opertion" }
+              - column: { name: name,             value: "TEST" }
+              - column: { name: recipient_iban,   value: "IT73NEXS892582929170888462" }
+              - column: { name: account_id,       valueNumeric: 0 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 3 }
+              - column: { name: amount,           valueNumeric: 52222.00 }
+              - column: { name: category,         value: "TRANSFER" }
+              - column: { name: description,      value: "Test internal fav opertion" }
+              - column: { name: name,             value: "TEST" }
+              - column: { name: recipient_iban,   value: "IT11NEXS632111781360241549" }
+              - column: { name: account_id,       valueNumeric: 0 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 4 }
+              - column: { name: amount,           valueNumeric: 28.00 }
+              - column: { name: category,         value: "TRANSFER" }
+              - column: { name: description,      value: "Test internal fav opertion" }
+              - column: { name: name,             value: "TEST" }
+              - column: { name: recipient_iban,   value: "IT79NEXS695999735361278337" }
+              - column: { name: account_id,       valueNumeric: 0 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 5 }
+              - column: { name: amount,           valueNumeric: 7.00 }
+              - column: { name: category,         value: "TRANSPORT" }
+              - column: { name: description,      value: "Train ticket" }
+              - column: { name: name,             value: "Train ticket" }
+              - column: { name: recipient_iban,   value: "IT78NEXS709563321058228999" }
+              - column: { name: account_id,       valueNumeric: 0 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 6 }
+              - column: { name: amount,           valueNumeric: 815.00 }
+              - column: { name: category,         value: "TRANSFER" }
+              - column: { name: description,      value: "New favOps list layout" }
+              - column: { name: name,             value: "Test" }
+              - column: { name: recipient_iban,   value: "IT84NEXS020386725308339380" }
+              - column: { name: account_id,       valueNumeric: 0 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 10 }
+              - column: { name: amount,           valueNumeric: 10000.00 }
+              - column: { name: category,         value: "UTILITIES" }
+              - column: { name: description,      value: "Internal Transfer to MicAccount 2" }
+              - column: { name: name,             value: "Gift" }
+              - column: { name: recipient_iban,   value: "IT79NEXS695999735361278337" }
+              - column: { name: account_id,       valueNumeric: 15 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 11 }
+              - column: { name: amount,           valueNumeric: 10000.00 }
+              - column: { name: category,         value: "UTILITIES" }
+              - column: { name: description,      value: "Gift" }
+              - column: { name: name,             value: "GIFT" }
+              - column: { name: recipient_iban,   value: "IT79NEXS695999735361278337" }
+              - column: { name: account_id,       valueNumeric: 15 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 12 }
+              - column: { name: amount,           valueNumeric: 5000.00 }
+              - column: { name: category,         value: "TRANSFER" }
+              - column: { name: description,      value: "" }
+              - column: { name: name,             value: "RENT" }
+              - column: { name: recipient_iban,   value: "IT35NEXS568133426071117329" }
+              - column: { name: account_id,       valueNumeric: 15 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 13 }
+              - column: { name: amount,           valueNumeric: 23.00 }
+              - column: { name: category,         value: "UTILITIES" }
+              - column: { name: description,      value: "" }
+              - column: { name: name,             value: "RANDOM" }
+              - column: { name: recipient_iban,   value: "IT55NEXS756603083054917901" }
+              - column: { name: account_id,       valueNumeric: 19 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 15 }
+              - column: { name: amount,           valueNumeric: 77.00 }
+              - column: { name: category,         value: "TRANSFER" }
+              - column: { name: description,      value: "February rent" }
+              - column: { name: name,             value: "RENT" }
+              - column: { name: recipient_iban,   value: "IT79NEXS695999735361278337" }
+              - column: { name: account_id,       valueNumeric: 19 }
+
+        - insert:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column: { name: id,              valueNumeric: 17 }
+              - column: { name: amount,           valueNumeric: 998.00 }
+              - column: { name: category,         value: "UTILITIES" }
+              - column: { name: description,      value: "RENT" }
+              - column: { name: name,             value: "RENT" }
+              - column: { name: recipient_iban,   value: "IT87NEXS749563253715271001" }
+              - column: { name: account_id,       valueNumeric: 6 }

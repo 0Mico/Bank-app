@@ -5,19 +5,31 @@ spring:
   application:
     name: account-service
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB}?currentSchema=banking_accounts&stringtype=unspecified
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB}?currentSchema=${ACCOUNT_SERVICE_SCHEMA}&stringtype=unspecified
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: banking_accounts
         format_sql: true
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yml
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB}
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    default-schema: ${ACCOUNT_SERVICE_SCHEMA}  
+
+logging:
+  level:
+    liquibase: DEBUG
+
+# debug: true
 
 services:
   transaction:

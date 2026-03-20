@@ -1,0 +1,15 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 010-populate-cards
+      author: account-service
+      changes:
+        - insert:
+            schemaName: banking_accounts
+            tableName: cards
+            columns:
+              - column: { name: id,           value: 35 }
+              - column: { name: account_id,   valueNumeric: 5 }
+              - column: { name: card_number,  value: "0339-9367-2984-9352" }
+              - column: { name: expiration,   value: "2031-03-19" }
+              - column: { name: is_blocked,   valueBoolean: false }

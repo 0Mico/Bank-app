@@ -9,12 +9,12 @@ COPY payment-service/pom.xml    ./payment-service/
 COPY account-service/pom.xml    ./account-service/
 COPY transaction-service/pom.xml ./transaction-service/
 
-RUN mvn dependency:go-offline -pl account-service -am -q
+RUN mvn dependency:go-offline -pl account-service -am
 
 COPY common/src             ./common/src
 COPY account-service/src    ./account-service/src
 
-RUN mvn clean package -pl account-service -am -DskipTests -q
+RUN mvn clean package -pl account-service -am -DskipTests
 
 
 FROM eclipse-temurin:21-jre-alpine

@@ -1,0 +1,102 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 003-create-payments-table
+      author: payment-service
+      comment: "Create the payments table in the banking_payments schema"
+      changes:
+        - createTable:
+            schemaName: banking_payments
+            tableName: payments
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: payments_pkey
+                    nullable: false
+              - column:
+                  name: amount
+                  type: NUMERIC(19, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: from_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: banking_payments.payment_status
+                  constraints:
+                    nullable: false
+              - column:
+                  name: to_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category
+                  type: banking_payments.payment_category
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 004-create-favorite-operations-table
+      author: payment-service
+      comment: "Create the favorite_operations table in the banking_payments schema"
+      changes:
+        - createTable:
+            schemaName: banking_payments
+            tableName: favorite_operations
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: favorite_operations_pkey
+                    nullable: false
+              - column:
+                  name: amount
+                  type: NUMERIC(38, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: description
+                  type: VARCHAR(1000)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: recipient_iban
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false

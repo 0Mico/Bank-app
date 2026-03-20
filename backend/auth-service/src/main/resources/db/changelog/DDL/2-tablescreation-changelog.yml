@@ -1,0 +1,98 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 002-create-users-table
+      author: auth-service
+      comment: "Create the users table in the banking_auth schema"
+      changes:
+        - createTable:
+            schemaName: banking_auth
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: users_pkey
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password_hash
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: role
+                  type: banking_auth.user_role
+                  constraints:
+                    nullable: false
+ 
+  - changeSet:
+      id: 003-add-users-email-unique-constraint
+      author: auth-service
+      comment: "Add unique constraint on users.email"
+      changes:
+        - addUniqueConstraint:
+            schemaName: banking_auth
+            tableName: users
+            columnNames: email
+            constraintName: users_email_key
+
+  - changeSet:
+      id: 004-create-role_permissions-table
+      author: auth-service
+      comment: "Create the role_permissions table in the bankin_auth schema"
+      changes:
+        - createTable:
+            schemaName: banking_auth
+            tableName: role_permissions
+            column:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: role_permissions_pkey
+                    nullable: false
+              - column:
+                  name: allowed_actions
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: resource_pattern
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

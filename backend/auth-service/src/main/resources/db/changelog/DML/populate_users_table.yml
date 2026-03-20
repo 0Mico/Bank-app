@@ -1,0 +1,46 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 005-populate-users
+      author: auth-service
+      context: dev, local
+      comment: "Seed initial data for the users table"
+      changes:
+        - insert:
+            schemaName: banking_auth
+            tableName: users
+            columns:
+              - column: { name: id,            valueNumeric: 5 }
+              - column: { name: created_at,     value: "2026-03-03 10:10:40.82725+01" }
+              - column: { name: email,          value: "mico@mico.it" }
+              - column: { name: first_name,     value: "Mico" }
+              - column: { name: last_name,      value: "Mico" }
+              - column: { name: password_hash,  value: "$2a$10$4kh7q9uxIeY0wWRwI2TWKeo.Ok6kAMXq8FNte5izugbI./Z0Jcf2C" }
+              - column: { name: phone,          value: "" }
+              - column: { name: role,           value: "USER" }
+
+        - insert:
+            schemaName: banking_auth
+            tableName: users
+            columns:
+              - column: { name: id,            valueNumeric: 6 }
+              - column: { name: created_at,     value: "2026-03-03 10:11:16.192797+01" }
+              - column: { name: email,          value: "user@user.it" }
+              - column: { name: first_name,     value: "User" }
+              - column: { name: last_name,      value: "User" }
+              - column: { name: password_hash,  value: "$2a$10$HgUHeUHml38UKhjlfLiDEeGEIsiStSSGyZryNDzhUttrMSPEAk7NS" }
+              - column: { name: phone,          value: "" }
+              - column: { name: role,           value: "USER" }
+
+        - insert:
+            schemaName: banking_auth
+            tableName: users
+            columns:
+              - column: { name: id,            valueNumeric: 11 }
+              - column: { name: created_at,     value: "2026-03-03 13:45:02.536323+01" }
+              - column: { name: email,          value: "marco@marco.it" }
+              - column: { name: first_name,     value: "Marco" }
+              - column: { name: last_name,      value: "Marco" }
+              - column: { name: password_hash,  value: "$2a$10$NcUX1oilfZcauUmgPnp1Ieofx3P.NQT5vdQNPloqL8cu6OXODhHQC" }
+              - column: { name: phone,          value: "" }
+              - column: { name: role,           value: "USER" }

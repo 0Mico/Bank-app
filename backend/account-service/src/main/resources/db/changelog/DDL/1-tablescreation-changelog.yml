@@ -1,0 +1,123 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 001-create-accounts-table
+      author: account-service
+      comment: "Create the accounts table in the banking_accounts schema"
+      changes:
+        - createTable:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: accounts_pkey
+                    nullable: false
+              - column:
+                  name: balance
+                  type: NUMERIC(19, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: iban
+                  type: VARCHAR(34)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 002-add-accounts-iban-unique-constraint
+      author: account-service
+      comment: "Add unique constraint on accounts.iban"
+      changes:
+        - addUniqueConstraint:
+            schemaName: banking_accounts
+            tableName: accounts
+            columnNames: iban
+            constraintName: accounts_iban_key
+
+  - changeSet:
+      id: 003-create-cards-table
+      author: account-service
+      comment: "Create the cards table in the banking_accounts schema"
+      changes:
+        - createTable:
+            schemaName: banking_accounts
+            tableName: cards
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: cards_pkey
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: card_number
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiration
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_blocked
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 004-add-cards-card-number-unique-constraint
+      author: account-service
+      comment: "Add unique constraint on cards.card_number"
+      changes:
+        - addUniqueConstraint:
+            schemaName: banking_accounts
+            tableName: cards
+            columnNames: card_number
+            constraintName: cards_card_number_key
+
+  - changeSet:
+      id: 005-add-cards-account-id-fk
+      author: account-service
+      comment: "Add foreign key from cards.account_id to accounts.id"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableSchemaName: banking_accounts
+            baseTableName: cards
+            baseColumnNames: account_id
+            referencedTableSchemaName: banking_accounts
+            referencedTableName: accounts
+            referencedColumnNames: id
+            constraintName: cards_account_id_fkey

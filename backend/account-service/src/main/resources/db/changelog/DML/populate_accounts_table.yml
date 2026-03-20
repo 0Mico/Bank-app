@@ -1,0 +1,182 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 006-populate-accounts
+      author: account-service
+      comment: "Seed initial data for the accounts table"
+      changes:
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,          value: 5 }
+              - column: { name: balance,     valueNumeric: 83000.00 }
+              - column: { name: created_at,  value: "2026-03-03 10:10:41.038755+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT73NEXS892582929170888462" }
+              - column: { name: name,        value: "MicAccount 1" }
+              - column: { name: user_id,     valueNumeric: 5 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 6 }
+              - column: { name: balance,     valueNumeric: 2000.00 }
+              - column: { name: created_at,  value: "2026-03-03 10:11:16.221213+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT57NEXS704043974399150956" }
+              - column: { name: name,        value: "UserAccount 1" }
+              - column: { name: user_id,     valueNumeric: 6 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 7 }
+              - column: { name: balance,     valueNumeric: 0.00 }
+              - column: { name: created_at,  value: "2026-03-03 13:24:30.631979+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT40NEXS256310696081520218" }
+              - column: { name: name,        value: null }
+              - column: { name: user_id,     valueNumeric: 7 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 8 }
+              - column: { name: balance,     valueNumeric: 0.00 }
+              - column: { name: created_at,  value: "2026-03-03 13:29:11.968161+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT99NEXS171237594386031663" }
+              - column: { name: name,        value: null }
+              - column: { name: user_id,     valueNumeric: 8 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 9 }
+              - column: { name: balance,     valueNumeric: 0.00 }
+              - column: { name: created_at,  value: "2026-03-03 13:33:56.798461+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT96NEXS215833562550132564" }
+              - column: { name: name,        value: null }
+              - column: { name: user_id,     valueNumeric: 9 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 10 }
+              - column: { name: balance,     valueNumeric: 0.00 }
+              - column: { name: created_at,  value: "2026-03-03 13:38:35.275616+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT20NEXS891033064419172138" }
+              - column: { name: name,        value: null }
+              - column: { name: user_id,     valueNumeric: 10 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 11 }
+              - column: { name: balance,     valueNumeric: 100000507.00 }
+              - column: { name: created_at,  value: "2026-03-03 13:45:02.566007+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT78NEXS709563321058228999" }
+              - column: { name: name,        value: "MarcAccount 1" }
+              - column: { name: user_id,     valueNumeric: 11 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 16 }
+              - column: { name: balance,     valueNumeric: 1820.00 }
+              - column: { name: created_at,  value: "2026-03-04 13:23:14.567044+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT84NEXS020386725308339380" }
+              - column: { name: name,        value: "UserAccount 2" }
+              - column: { name: user_id,     valueNumeric: 6 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 18 }
+              - column: { name: balance,     valueNumeric: 5033.00 }
+              - column: { name: created_at,  value: "2026-03-07 12:34:18.740708+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT35NEXS568133426071117329" }
+              - column: { name: name,        value: "MarcAccount 2" }
+              - column: { name: user_id,     valueNumeric: 11 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 19 }
+              - column: { name: balance,     valueNumeric: 500.00 }
+              - column: { name: created_at,  value: "2026-03-09 10:05:28.491273+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT65NEXS934350224722890982" }
+              - column: { name: name,        value: "MicAccount 3" }
+              - column: { name: user_id,     valueNumeric: 5 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 20 }
+              - column: { name: balance,     valueNumeric: 1445.00 }
+              - column: { name: created_at,  value: "2026-03-09 14:49:01.229947+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT87NEXS749563253715271001" }
+              - column: { name: name,        value: "MicAccount4" }
+              - column: { name: user_id,     valueNumeric: 5 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 21 }
+              - column: { name: balance,     valueNumeric: 266.01 }
+              - column: { name: created_at,  value: "2026-03-09 15:42:32.615223+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT68NEXS365639249649076887" }
+              - column: { name: name,        value: "MicAccount5" }
+              - column: { name: user_id,     valueNumeric: 5 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 22 }
+              - column: { name: balance,     valueNumeric: 200.00 }
+              - column: { name: created_at,  value: "2026-03-11 13:29:45.140097+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT50NEXS419210706416462172" }
+              - column: { name: name,        value: "MicAccount6" }
+              - column: { name: user_id,     valueNumeric: 5 }
+
+        - insert:
+            schemaName: banking_accounts
+            tableName: accounts
+            columns:
+              - column: { name: id,         value: 23 }
+              - column: { name: balance,     valueNumeric: 0.00 }
+              - column: { name: created_at,  value: "2026-03-13 11:47:01.06524+01" }
+              - column: { name: currency,    value: "EUR" }
+              - column: { name: iban,        value: "IT06NEXS331193816428414828" }
+              - column: { name: name,        value: "UserAccount 3" }
+              - column: { name: user_id,     valueNumeric: 6 }
+
+  - changeSet:
+      id: 007-set-accounts-sequence-value
+      author: account-service
+      comment: "Advance accounts_id_seq past the last inserted id (23) to avoid PK conflicts on new inserts"
+      changes:
+        - sql:
+            sql: "SELECT setval('banking_accounts.accounts_id_seq', 23, true);"

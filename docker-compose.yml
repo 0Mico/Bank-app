@@ -7,8 +7,10 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5430:5432"
     networks:
       - backend-net
     healthcheck:
@@ -41,6 +43,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      AUTH_SERVICE_SCHEMA: ${AUTH_SERVICE_SCHEMA}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
       ACCOUNT_SERVICE_HOST: account-service
@@ -59,6 +62,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      ACCOUNT_SERVICE_SCHEMA: ${ACCOUNT_SERVICE_SCHEMA}
       TRANSACTION_SERVICE_HOST: transaction-service
     depends_on:
       postgres:
@@ -75,6 +79,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PAYMENT_SERVICE_SCHEMA: ${PAYMENT_SERVICE_SCHEMA}
       AUTH_SERVICE_HOST: auth-service
       TRANSACTION_SERVICE_HOST: transaction-service
       ACCOUNT_SERVICE_HOST: account-service
@@ -93,6 +98,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TRANSACTION_SERVICE_SCHEMA: ${TRANSACTION_SERVICE_SCHEMA}
       AUTH_SERVICE_HOST: auth-service
     depends_on:
       postgres:

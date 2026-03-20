@@ -76,6 +76,11 @@
                 <artifactId>dotenv-java</artifactId>
                 <version>3.0.2</version>
             </dependency>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>4.26.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -87,8 +92,17 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
                         <compilerArgs>
-                            <arg>-parameters</arg> <!-- To handle allow controllers to handle @pathvariable-->
+                            <arg>-parameters</arg> <!-- To allow controllers to handle @pathvariable-->
                         </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-maven-plugin</artifactId>
+                    <version>4.31.1</version>
+                    <configuration>
+                        <propertyFileWillOverride>true</propertyFileWillOverride>
+                        <propertyFile>target/classes/liquibase.properties</propertyFile>
                     </configuration>
                 </plugin>
             </plugins>

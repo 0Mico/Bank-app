@@ -1,0 +1,1507 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 004-populate-transactions
+      author: transaction-service
+      context: dev, local
+      comment: "Seed initial data for the transactions table"
+      changes:
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 5 }
+              - column: { name: amount,             valueNumeric: 100.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-03 10:11:54.802632+01" }
+              - column: { name: description,        value: "Payment to account #5" }
+              - column: { name: reference_id,       value: "43fb9ede-0671-4e29-af15-8af7efd9c19a" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 6 }
+              - column: { name: amount,             valueNumeric: 100.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-03 10:11:54.830755+01" }
+              - column: { name: description,        value: "Payment from account #6" }
+              - column: { name: reference_id,       value: "43fb9ede-0671-4e29-af15-8af7efd9c19a" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 7 }
+              - column: { name: amount,             valueNumeric: 500.00 }
+              - column: { name: category,           value: "SALARY" }
+              - column: { name: created_at,         value: "2026-03-03 10:16:33.011212+01" }
+              - column: { name: description,        value: "Payment to account #6" }
+              - column: { name: reference_id,       value: "26e19440-2f76-4b54-97fb-6cc3ab0f41af" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 8 }
+              - column: { name: amount,             valueNumeric: 500.00 }
+              - column: { name: category,           value: "SALARY" }
+              - column: { name: created_at,         value: "2026-03-03 10:16:33.033607+01" }
+              - column: { name: description,        value: "Payment from account #5" }
+              - column: { name: reference_id,       value: "26e19440-2f76-4b54-97fb-6cc3ab0f41af" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 9 }
+              - column: { name: amount,             valueNumeric: 50.00 }
+              - column: { name: category,           value: "FOOD" }
+              - column: { name: created_at,         value: "2026-03-03 10:26:32.965599+01" }
+              - column: { name: description,        value: "Payment to account #6" }
+              - column: { name: reference_id,       value: "215b21cb-c26d-4d05-b04d-a81a2de6d51f" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 10 }
+              - column: { name: amount,             valueNumeric: 50.00 }
+              - column: { name: category,           value: "FOOD" }
+              - column: { name: created_at,         value: "2026-03-03 10:26:32.97935+01" }
+              - column: { name: description,        value: "Payment from account #5" }
+              - column: { name: reference_id,       value: "215b21cb-c26d-4d05-b04d-a81a2de6d51f" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 11 }
+              - column: { name: amount,             valueNumeric: 10.00 }
+              - column: { name: category,           value: "TRANSPORT" }
+              - column: { name: created_at,         value: "2026-03-03 10:27:38.183905+01" }
+              - column: { name: description,        value: "Bus ticket" }
+              - column: { name: reference_id,       value: "637d4475-6582-4ae3-98f2-c0a8593ace98" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 12 }
+              - column: { name: amount,             valueNumeric: 10.00 }
+              - column: { name: category,           value: "TRANSPORT" }
+              - column: { name: created_at,         value: "2026-03-03 10:27:38.202726+01" }
+              - column: { name: description,        value: "Bus ticket" }
+              - column: { name: reference_id,       value: "637d4475-6582-4ae3-98f2-c0a8593ace98" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 13 }
+              - column: { name: amount,             valueNumeric: 60.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-03 13:19:19.283917+01" }
+              - column: { name: description,        value: "Test Transfer" }
+              - column: { name: reference_id,       value: "688e6ab8-c030-414d-ba77-d7fc8c1e4137" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 14 }
+              - column: { name: amount,             valueNumeric: 60.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-03 13:19:19.341468+01" }
+              - column: { name: description,        value: "Test Transfer" }
+              - column: { name: reference_id,       value: "688e6ab8-c030-414d-ba77-d7fc8c1e4137" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 15 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "ENTERTAINMENT" }
+              - column: { name: created_at,         value: "2026-03-03 14:31:11.662027+01" }
+              - column: { name: description,        value: "test account 2" }
+              - column: { name: reference_id,       value: "8fbca049-0342-497d-ad01-65efa6a68f7e" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT78NEXS709563321058228999" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 16 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "ENTERTAINMENT" }
+              - column: { name: created_at,         value: "2026-03-03 14:31:11.683201+01" }
+              - column: { name: description,        value: "test account 2" }
+              - column: { name: reference_id,       value: "8fbca049-0342-497d-ad01-65efa6a68f7e" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 11 }
+              - column: { name: account_id,         valueNumeric: 11 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 17 }
+              - column: { name: amount,             valueNumeric: 100.00 }
+              - column: { name: category,           value: "DEPOSIT" }
+              - column: { name: created_at,         value: "2026-03-03 15:00:44.454209+01" }
+              - column: { name: description,        value: "Deposit to account" }
+              - column: { name: reference_id,       value: "53d04f5c-bdbe-402f-9722-994918be09db" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 18 }
+              - column: { name: amount,             valueNumeric: 10000000000000000.00 }
+              - column: { name: category,           value: "DEPOSIT" }
+              - column: { name: created_at,         value: "2026-03-03 15:04:02.053086+01" }
+              - column: { name: description,        value: "Deposit to account" }
+              - column: { name: reference_id,       value: "f90f1ce6-8415-44c0-9896-1d106ba7279b" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 15 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 19 }
+              - column: { name: amount,             valueNumeric: 60.00 }
+              - column: { name: category,           value: "PAYMENT" }
+              - column: { name: created_at,         value: "2026-03-04 13:22:02.501178+01" }
+              - column: { name: description,        value: "Test Transfer" }
+              - column: { name: reference_id,       value: "f247246d-525f-4e7b-9399-29e2de2e8339" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 20 }
+              - column: { name: amount,             valueNumeric: 60.00 }
+              - column: { name: category,           value: "PAYMENT" }
+              - column: { name: created_at,         value: "2026-03-04 13:22:02.536111+01" }
+              - column: { name: description,        value: "Test Transfer" }
+              - column: { name: reference_id,       value: "f247246d-525f-4e7b-9399-29e2de2e8339" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 21 }
+              - column: { name: amount,             valueNumeric: 15.00 }
+              - column: { name: category,           value: "PAYMENT" }
+              - column: { name: created_at,         value: "2026-03-04 14:09:07.532275+01" }
+              - column: { name: description,        value: "Iban-to-Iban test" }
+              - column: { name: reference_id,       value: "191ebc6e-ce50-452a-8fec-10cd20137bc9" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 22 }
+              - column: { name: amount,             valueNumeric: 15.00 }
+              - column: { name: category,           value: "PAYMENT" }
+              - column: { name: created_at,         value: "2026-03-04 14:09:07.555681+01" }
+              - column: { name: description,        value: "Iban-to-Iban test" }
+              - column: { name: reference_id,       value: "191ebc6e-ce50-452a-8fec-10cd20137bc9" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 23 }
+              - column: { name: amount,             valueNumeric: 75.00 }
+              - column: { name: category,           value: "SHOPPING" }
+              - column: { name: created_at,         value: "2026-03-04 14:16:31.916519+01" }
+              - column: { name: description,        value: "Clickable transaction" }
+              - column: { name: reference_id,       value: "fdc560df-be21-4d1d-b788-85a2d9d9f5f6" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT55NEXS756603083054917901" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 24 }
+              - column: { name: amount,             valueNumeric: 75.00 }
+              - column: { name: category,           value: "SHOPPING" }
+              - column: { name: created_at,         value: "2026-03-04 14:16:31.935154+01" }
+              - column: { name: description,        value: "Clickable transaction" }
+              - column: { name: reference_id,       value: "fdc560df-be21-4d1d-b788-85a2d9d9f5f6" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 17 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 25 }
+              - column: { name: amount,             valueNumeric: 100000000.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-04 15:43:48.035417+01" }
+              - column: { name: description,        value: "First bank transfer" }
+              - column: { name: reference_id,       value: "4f1a149f-2a81-460b-926c-d8b29f3637c1" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 15 }
+              - column: { name: counterparty_iban,  value: "IT78NEXS709563321058228999" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 26 }
+              - column: { name: amount,             valueNumeric: 100000000.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-04 15:43:48.075953+01" }
+              - column: { name: description,        value: "First bank transfer" }
+              - column: { name: reference_id,       value: "4f1a149f-2a81-460b-926c-d8b29f3637c1" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 11 }
+              - column: { name: account_id,         valueNumeric: 11 }
+              - column: { name: counterparty_iban,  value: "IT11NEXS632111781360241549" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 27 }
+              - column: { name: amount,             valueNumeric: 777.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-04 16:19:37.619314+01" }
+              - column: { name: description,        value: "Move money" }
+              - column: { name: reference_id,       value: "dbb476b6-d784-4d45-be51-43d6b38c7aea" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT11NEXS632111781360241549" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 28 }
+              - column: { name: amount,             valueNumeric: 777.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-04 16:19:37.637038+01" }
+              - column: { name: description,        value: "Move money" }
+              - column: { name: reference_id,       value: "dbb476b6-d784-4d45-be51-43d6b38c7aea" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 15 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 29 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:27:36.924366+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "a94cab3b-9a22-4c6a-bd2e-b5d064277c31" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 30 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:27:36.993322+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "a94cab3b-9a22-4c6a-bd2e-b5d064277c31" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 31 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:27:54.110962+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "b66186d3-6c54-49bf-bad9-af53777644e3" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 32 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:27:54.139505+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "b66186d3-6c54-49bf-bad9-af53777644e3" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 33 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:28:07.250931+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "63606572-1d80-4674-9036-681d8416bb5c" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 34 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:28:07.274918+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "63606572-1d80-4674-9036-681d8416bb5c" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 35 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:30:56.755468+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "367f7108-31f3-42e5-8a7f-80a3a7d75397" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 36 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:30:56.781272+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "367f7108-31f3-42e5-8a7f-80a3a7d75397" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 37 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:33:32.663229+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "103767c3-6dc6-44e6-97e6-b58ea4f99129" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 38 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:33:32.693675+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "103767c3-6dc6-44e6-97e6-b58ea4f99129" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 39 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:51:53.120403+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "f108f196-92a4-4a40-81ea-5a7ea78f9713" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 40 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:51:53.142987+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "f108f196-92a4-4a40-81ea-5a7ea78f9713" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 41 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:55:55.245417+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "a19cd122-f34e-41c3-b302-ade6f97c18a2" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 42 }
+              - column: { name: amount,             valueNumeric: 200.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 09:55:55.287492+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "a19cd122-f34e-41c3-b302-ade6f97c18a2" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 43 }
+              - column: { name: amount,             valueNumeric: 52222.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 10:02:12.535597+01" }
+              - column: { name: description,        value: "Test internal fav opertion" }
+              - column: { name: reference_id,       value: "d2a26e94-100b-4c4e-805c-0e02df2eca77" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 15 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 44 }
+              - column: { name: amount,             valueNumeric: 52222.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 10:02:12.557769+01" }
+              - column: { name: description,        value: "Test internal fav opertion" }
+              - column: { name: reference_id,       value: "d2a26e94-100b-4c4e-805c-0e02df2eca77" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT11NEXS632111781360241549" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 45 }
+              - column: { name: amount,             valueNumeric: 52222.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 14:43:41.2062+01" }
+              - column: { name: description,        value: "Test internal fav opertion" }
+              - column: { name: reference_id,       value: "24799142-9b6a-403a-be3f-dcefd910d7c3" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT11NEXS632111781360241549" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 46 }
+              - column: { name: amount,             valueNumeric: 52222.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 14:43:41.317522+01" }
+              - column: { name: description,        value: "Test internal fav opertion" }
+              - column: { name: reference_id,       value: "24799142-9b6a-403a-be3f-dcefd910d7c3" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 15 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 47 }
+              - column: { name: amount,             valueNumeric: 28.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 14:44:06.555663+01" }
+              - column: { name: description,        value: "Test internal fav opertion" }
+              - column: { name: reference_id,       value: "69041688-f221-4c2f-b220-b4224120de41" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 48 }
+              - column: { name: amount,             valueNumeric: 28.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 14:44:06.57211+01" }
+              - column: { name: description,        value: "Test internal fav opertion" }
+              - column: { name: reference_id,       value: "69041688-f221-4c2f-b220-b4224120de41" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 49 }
+              - column: { name: amount,             valueNumeric: 10.00 }
+              - column: { name: category,           value: "SALARY" }
+              - column: { name: created_at,         value: "2026-03-05 16:07:40.698088+01" }
+              - column: { name: description,        value: "Internal Transfer to UserAccount 2" }
+              - column: { name: reference_id,       value: "b6229044-9720-4848-b6f3-01b83cd47bf1" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT84NEXS020386725308339380" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 50 }
+              - column: { name: amount,             valueNumeric: 10.00 }
+              - column: { name: category,           value: "SALARY" }
+              - column: { name: created_at,         value: "2026-03-05 16:07:40.733093+01" }
+              - column: { name: description,        value: "Internal Transfer to UserAccount 2" }
+              - column: { name: reference_id,       value: "b6229044-9720-4848-b6f3-01b83cd47bf1" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 16 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 51 }
+              - column: { name: amount,             valueNumeric: 7.00 }
+              - column: { name: category,           value: "TRANSPORT" }
+              - column: { name: created_at,         value: "2026-03-05 16:09:14.249012+01" }
+              - column: { name: description,        value: "Train ticket" }
+              - column: { name: reference_id,       value: "5683cf86-4607-4da6-95ec-b3d44bbf93dd" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 16 }
+              - column: { name: counterparty_iban,  value: "IT78NEXS709563321058228999" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 52 }
+              - column: { name: amount,             valueNumeric: 7.00 }
+              - column: { name: category,           value: "TRANSPORT" }
+              - column: { name: created_at,         value: "2026-03-05 16:09:14.269032+01" }
+              - column: { name: description,        value: "Train ticket" }
+              - column: { name: reference_id,       value: "5683cf86-4607-4da6-95ec-b3d44bbf93dd" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 11 }
+              - column: { name: account_id,         valueNumeric: 11 }
+              - column: { name: counterparty_iban,  value: "IT84NEXS020386725308339380" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 53 }
+              - column: { name: amount,             valueNumeric: 815.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 16:23:49.334454+01" }
+              - column: { name: description,        value: "New favOps list layout" }
+              - column: { name: reference_id,       value: "51fde97e-237f-4b59-b2eb-ec100028dc7b" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT84NEXS020386725308339380" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 54 }
+              - column: { name: amount,             valueNumeric: 815.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 16:23:49.357855+01" }
+              - column: { name: description,        value: "New favOps list layout" }
+              - column: { name: reference_id,       value: "51fde97e-237f-4b59-b2eb-ec100028dc7b" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 16 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 55 }
+              - column: { name: amount,             valueNumeric: 2.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 16:24:10.673163+01" }
+              - column: { name: description,        value: "Internal Transfer to UserAccount 2" }
+              - column: { name: reference_id,       value: "3e5cdcfd-2425-4f8b-ac98-0a48d3e3c5e7" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT84NEXS020386725308339380" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 56 }
+              - column: { name: amount,             valueNumeric: 2.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 16:24:10.69252+01" }
+              - column: { name: description,        value: "Internal Transfer to UserAccount 2" }
+              - column: { name: reference_id,       value: "3e5cdcfd-2425-4f8b-ac98-0a48d3e3c5e7" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 16 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 57 }
+              - column: { name: amount,             valueNumeric: 95.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 21:09:57.513682+01" }
+              - column: { name: description,        value: "Test payment" }
+              - column: { name: reference_id,       value: "b2c9deb3-aba6-40d1-bb93-a73f94d50fbf" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 58 }
+              - column: { name: amount,             valueNumeric: 95.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 21:09:57.608723+01" }
+              - column: { name: description,        value: "Test payment" }
+              - column: { name: reference_id,       value: "b2c9deb3-aba6-40d1-bb93-a73f94d50fbf" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 59 }
+              - column: { name: amount,             valueNumeric: 95.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 21:10:12.651185+01" }
+              - column: { name: description,        value: "Test payment" }
+              - column: { name: reference_id,       value: "7e19eb75-a9f2-4cdf-8c4f-403a09e5faae" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 60 }
+              - column: { name: amount,             valueNumeric: 95.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 21:10:12.675873+01" }
+              - column: { name: description,        value: "Test payment" }
+              - column: { name: reference_id,       value: "7e19eb75-a9f2-4cdf-8c4f-403a09e5faae" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 61 }
+              - column: { name: amount,             valueNumeric: 95.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 21:12:33.922577+01" }
+              - column: { name: description,        value: "Test payment" }
+              - column: { name: reference_id,       value: "2adadd76-e8ce-48fe-aae0-4d2b0ba1543c" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 62 }
+              - column: { name: amount,             valueNumeric: 95.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 21:12:33.954974+01" }
+              - column: { name: description,        value: "Test payment" }
+              - column: { name: reference_id,       value: "2adadd76-e8ce-48fe-aae0-4d2b0ba1543c" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 63 }
+              - column: { name: amount,             valueNumeric: 10.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 21:18:01.657599+01" }
+              - column: { name: description,        value: "Test payment" }
+              - column: { name: reference_id,       value: "a96cdbf7-9ab6-4bf7-ac09-2a7a851f0134" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 64 }
+              - column: { name: amount,             valueNumeric: 10.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-05 21:18:01.679548+01" }
+              - column: { name: description,        value: "Test payment" }
+              - column: { name: reference_id,       value: "a96cdbf7-9ab6-4bf7-ac09-2a7a851f0134" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 65 }
+              - column: { name: amount,             valueNumeric: 500.00 }
+              - column: { name: category,           value: "HEALTHCARE" }
+              - column: { name: created_at,         value: "2026-03-05 21:18:51.758729+01" }
+              - column: { name: description,        value: "Doctor" }
+              - column: { name: reference_id,       value: "40ed569e-e854-4648-b5b6-997d952078e6" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT84NEXS020386725308339380" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 66 }
+              - column: { name: amount,             valueNumeric: 500.00 }
+              - column: { name: category,           value: "HEALTHCARE" }
+              - column: { name: created_at,         value: "2026-03-05 21:18:51.782068+01" }
+              - column: { name: description,        value: "Doctor" }
+              - column: { name: reference_id,       value: "40ed569e-e854-4648-b5b6-997d952078e6" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 16 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 67 }
+              - column: { name: amount,             valueNumeric: 100.00 }
+              - column: { name: category,           value: "DEPOSIT" }
+              - column: { name: created_at,         value: "2026-03-06 22:39:15.418123+01" }
+              - column: { name: description,        value: "Deposit to account" }
+              - column: { name: reference_id,       value: "af75af25-e80a-48ae-9dd2-3cc33f7a6260" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 1 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 68 }
+              - column: { name: amount,             valueNumeric: 10000.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-07 12:31:31.101967+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 2" }
+              - column: { name: reference_id,       value: "31a28de4-9b0a-47d2-a04e-3141c89559e9" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 15 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 69 }
+              - column: { name: amount,             valueNumeric: 10000.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-07 12:31:31.15354+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 2" }
+              - column: { name: reference_id,       value: "31a28de4-9b0a-47d2-a04e-3141c89559e9" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT11NEXS632111781360241549" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 70 }
+              - column: { name: amount,             valueNumeric: 10000.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-07 12:32:21.687843+01" }
+              - column: { name: description,        value: "Gift" }
+              - column: { name: reference_id,       value: "d0b5494f-3a8b-492a-abf7-015b3f44a895" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 15 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 71 }
+              - column: { name: amount,             valueNumeric: 10000.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-07 12:32:21.70057+01" }
+              - column: { name: description,        value: "Gift" }
+              - column: { name: reference_id,       value: "d0b5494f-3a8b-492a-abf7-015b3f44a895" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT11NEXS632111781360241549" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 72 }
+              - column: { name: amount,             valueNumeric: 5000.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-07 12:34:56.30135+01" }
+              - column: { name: description,        value: "Payment to IT35NEXS568133426071117329" }
+              - column: { name: reference_id,       value: "765ed1e4-2341-4469-aba6-a8ea6438c024" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 15 }
+              - column: { name: counterparty_iban,  value: "IT35NEXS568133426071117329" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 73 }
+              - column: { name: amount,             valueNumeric: 5000.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-07 12:34:56.312638+01" }
+              - column: { name: description,        value: "Payment from IT11NEXS632111781360241549" }
+              - column: { name: reference_id,       value: "765ed1e4-2341-4469-aba6-a8ea6438c024" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 11 }
+              - column: { name: account_id,         valueNumeric: 18 }
+              - column: { name: counterparty_iban,  value: "IT11NEXS632111781360241549" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 74 }
+              - column: { name: amount,             valueNumeric: 623.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-09 13:58:01.424402+01" }
+              - column: { name: description,        value: "First payment" }
+              - column: { name: reference_id,       value: "795dbbb2-7dac-485e-881a-c343ee88b261" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT65NEXS934350224722890982" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 75 }
+              - column: { name: amount,             valueNumeric: 623.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-09 13:58:01.457452+01" }
+              - column: { name: description,        value: "First payment" }
+              - column: { name: reference_id,       value: "795dbbb2-7dac-485e-881a-c343ee88b261" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 19 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 76 }
+              - column: { name: amount,             valueNumeric: 23.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-09 13:58:58.963621+01" }
+              - column: { name: description,        value: "Payment to IT55NEXS756603083054917901" }
+              - column: { name: reference_id,       value: "996e6113-f768-45ed-9a0e-e9ab56c8178c" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 19 }
+              - column: { name: counterparty_iban,  value: "IT55NEXS756603083054917901" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 77 }
+              - column: { name: amount,             valueNumeric: 23.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-09 13:58:58.973666+01" }
+              - column: { name: description,        value: "Payment from IT65NEXS934350224722890982" }
+              - column: { name: reference_id,       value: "996e6113-f768-45ed-9a0e-e9ab56c8178c" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 17 }
+              - column: { name: counterparty_iban,  value: "IT65NEXS934350224722890982" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 78 }
+              - column: { name: amount,             valueNumeric: 23.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-09 13:59:19.985625+01" }
+              - column: { name: description,        value: "Payment to IT55NEXS756603083054917901" }
+              - column: { name: reference_id,       value: "eecc2aa5-cf20-4be0-94ce-c276cfe95965" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 19 }
+              - column: { name: counterparty_iban,  value: "IT55NEXS756603083054917901" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 79 }
+              - column: { name: amount,             valueNumeric: 23.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-09 13:59:19.999924+01" }
+              - column: { name: description,        value: "Payment from IT65NEXS934350224722890982" }
+              - column: { name: reference_id,       value: "eecc2aa5-cf20-4be0-94ce-c276cfe95965" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 17 }
+              - column: { name: counterparty_iban,  value: "IT65NEXS934350224722890982" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 80 }
+              - column: { name: amount,             valueNumeric: 77.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-09 14:05:40.374853+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "cc51ff67-807c-47c1-bac5-a738fdeb3479" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 19 }
+              - column: { name: counterparty_iban,  value: "IT79NEXS695999735361278337" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 81 }
+              - column: { name: amount,             valueNumeric: 77.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-09 14:05:40.385024+01" }
+              - column: { name: description,        value: "February rent" }
+              - column: { name: reference_id,       value: "cc51ff67-807c-47c1-bac5-a738fdeb3479" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 14 }
+              - column: { name: counterparty_iban,  value: "IT65NEXS934350224722890982" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 82 }
+              - column: { name: amount,             valueNumeric: 100.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-10 16:10:17.414395+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 3" }
+              - column: { name: reference_id,       value: "85826f25-6a72-4b3a-8713-d1543e5b67fb" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT65NEXS934350224722890982" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 83 }
+              - column: { name: amount,             valueNumeric: 100.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-10 16:10:17.48015+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 3" }
+              - column: { name: reference_id,       value: "85826f25-6a72-4b3a-8713-d1543e5b67fb" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 19 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 84 }
+              - column: { name: amount,             valueNumeric: 998.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-10 16:11:53.106945+01" }
+              - column: { name: description,        value: "RENT" }
+              - column: { name: reference_id,       value: "c32b3634-8149-4625-8fe1-553801184100" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT87NEXS749563253715271001" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 85 }
+              - column: { name: amount,             valueNumeric: 998.00 }
+              - column: { name: category,           value: "UTILITIES" }
+              - column: { name: created_at,         value: "2026-03-10 16:11:53.126433+01" }
+              - column: { name: description,        value: "RENT" }
+              - column: { name: reference_id,       value: "c32b3634-8149-4625-8fe1-553801184100" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 20 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 86 }
+              - column: { name: amount,             valueNumeric: 98.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-10 16:17:00.154947+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount5" }
+              - column: { name: reference_id,       value: "0fc44139-37d0-4098-8877-7f2697ac1d95" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 20 }
+              - column: { name: counterparty_iban,  value: "IT68NEXS365639249649076887" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 87 }
+              - column: { name: amount,             valueNumeric: 98.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-10 16:17:00.175273+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount5" }
+              - column: { name: reference_id,       value: "0fc44139-37d0-4098-8877-7f2697ac1d95" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 21 }
+              - column: { name: counterparty_iban,  value: "IT87NEXS749563253715271001" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 88 }
+              - column: { name: amount,             valueNumeric: 81650.00 }
+              - column: { name: category,           value: "DEPOSIT" }
+              - column: { name: created_at,         value: "2026-03-10 17:14:17.375935+01" }
+              - column: { name: description,        value: "Deposit to account" }
+              - column: { name: reference_id,       value: "377a9482-a191-4d8d-9bc6-37107df38691" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 89 }
+              - column: { name: amount,             valueNumeric: 50.00 }
+              - column: { name: category,           value: "DEPOSIT" }
+              - column: { name: created_at,         value: "2026-03-11 13:37:08.958098+01" }
+              - column: { name: description,        value: "Deposit to account" }
+              - column: { name: reference_id,       value: "17cbe234-e4c4-4a30-859b-ba086a76f073" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 90 }
+              - column: { name: amount,             valueNumeric: 100.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-11 13:37:14.854244+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 3" }
+              - column: { name: reference_id,       value: "8c5a39bb-e47c-4d17-9585-65164814df36" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT65NEXS934350224722890982" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 91 }
+              - column: { name: amount,             valueNumeric: 100.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-11 13:37:14.868634+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 3" }
+              - column: { name: reference_id,       value: "8c5a39bb-e47c-4d17-9585-65164814df36" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 19 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 92 }
+              - column: { name: amount,             valueNumeric: 500.00 }
+              - column: { name: category,           value: "HEALTHCARE" }
+              - column: { name: created_at,         value: "2026-03-11 13:37:30.691307+01" }
+              - column: { name: description,        value: "Doctor" }
+              - column: { name: reference_id,       value: "e7fc1da7-5c32-4c46-ae9d-be8de1e74b4c" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT84NEXS020386725308339380" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 93 }
+              - column: { name: amount,             valueNumeric: 500.00 }
+              - column: { name: category,           value: "HEALTHCARE" }
+              - column: { name: created_at,         value: "2026-03-11 13:37:30.70317+01" }
+              - column: { name: description,        value: "Doctor" }
+              - column: { name: reference_id,       value: "e7fc1da7-5c32-4c46-ae9d-be8de1e74b4c" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 16 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 94 }
+              - column: { name: amount,             valueNumeric: 855.00 }
+              - column: { name: category,           value: "DEPOSIT" }
+              - column: { name: created_at,         value: "2026-03-11 14:06:07.345079+01" }
+              - column: { name: description,        value: "Deposit to account" }
+              - column: { name: reference_id,       value: "f4eae0ba-a3a6-4211-bc06-e43cfe13e2be" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: null }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 95 }
+              - column: { name: amount,             valueNumeric: 522.00 }
+              - column: { name: category,           value: "ENTERTAINMENT" }
+              - column: { name: created_at,         value: "2026-03-11 14:07:24.881007+01" }
+              - column: { name: description,        value: "Payment to IT57NEXS704043974399150956" }
+              - column: { name: reference_id,       value: "e55008f0-df2d-4cc8-a65c-787671099a81" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT57NEXS704043974399150956" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 96 }
+              - column: { name: amount,             valueNumeric: 522.00 }
+              - column: { name: category,           value: "ENTERTAINMENT" }
+              - column: { name: created_at,         value: "2026-03-11 14:07:24.895724+01" }
+              - column: { name: description,        value: "Payment from IT73NEXS892582929170888462" }
+              - column: { name: reference_id,       value: "e55008f0-df2d-4cc8-a65c-787671099a81" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 6 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 97 }
+              - column: { name: amount,             valueNumeric: 33.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-11 14:55:51.74234+01" }
+              - column: { name: description,        value: "Payment to IT35NEXS568133426071117329" }
+              - column: { name: reference_id,       value: "1bd97c57-e6a8-4f4d-b6ad-825d50150eae" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT35NEXS568133426071117329" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 98 }
+              - column: { name: amount,             valueNumeric: 33.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-11 14:55:51.77562+01" }
+              - column: { name: description,        value: "Payment from IT73NEXS892582929170888462" }
+              - column: { name: reference_id,       value: "1bd97c57-e6a8-4f4d-b6ad-825d50150eae" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 11 }
+              - column: { name: account_id,         valueNumeric: 18 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 99 }
+              - column: { name: amount,             valueNumeric: 300.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-11 15:27:50.12259+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 3" }
+              - column: { name: reference_id,       value: "6abf9de3-be70-4dd3-8a8d-baed4b7d53b1" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT65NEXS934350224722890982" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 100 }
+              - column: { name: amount,             valueNumeric: 300.00 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-11 15:27:50.155693+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 3" }
+              - column: { name: reference_id,       value: "6abf9de3-be70-4dd3-8a8d-baed4b7d53b1" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 19 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 101 }
+              - column: { name: amount,             valueNumeric: 16.99 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-13 11:45:46.392224+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 1" }
+              - column: { name: reference_id,       value: "dcf12a4a-634d-473a-bb18-4b97c1da718c" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 22 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 102 }
+              - column: { name: amount,             valueNumeric: 16.99 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-13 11:45:46.423618+01" }
+              - column: { name: description,        value: "Internal Transfer to MicAccount 1" }
+              - column: { name: reference_id,       value: "dcf12a4a-634d-473a-bb18-4b97c1da718c" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT50NEXS419210706416462172" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 103 }
+              - column: { name: amount,             valueNumeric: 16.99 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-13 11:46:37.546593+01" }
+              - column: { name: description,        value: "Test new db" }
+              - column: { name: reference_id,       value: "cd7426c2-66e0-4666-a9a3-8b19a56c535b" }
+              - column: { name: type,               value: "DEBIT" }
+              - column: { name: user_id,            valueNumeric: 5 }
+              - column: { name: account_id,         valueNumeric: 5 }
+              - column: { name: counterparty_iban,  value: "IT55NEXS756603083054917901" }
+
+        - insert:
+            schemaName: banking_transactions
+            tableName: transactions
+            columns:
+              - column: { name: id,                valueNumeric: 104 }
+              - column: { name: amount,             valueNumeric: 16.99 }
+              - column: { name: category,           value: "TRANSFER" }
+              - column: { name: created_at,         value: "2026-03-13 11:46:37.553202+01" }
+              - column: { name: description,        value: "Test new db" }
+              - column: { name: reference_id,       value: "cd7426c2-66e0-4666-a9a3-8b19a56c535b" }
+              - column: { name: type,               value: "CREDIT" }
+              - column: { name: user_id,            valueNumeric: 6 }
+              - column: { name: account_id,         valueNumeric: 17 }
+              - column: { name: counterparty_iban,  value: "IT73NEXS892582929170888462" }

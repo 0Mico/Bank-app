@@ -1,0 +1,21 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 001-create-transaction-type-enum
+      author: transaction-service
+      comment: "Create the transaction_type enum type in the banking_transactions schema"
+      changes:
+        - sql:
+            sql: "CREATE TYPE banking_transactions.transaction_type AS ENUM ('CREDIT', 'DEBIT');"
+
+  - changeSet:
+      id: 002-create-transaction-category-enum
+      author: transaction-service
+      comment: "Create the transaction_category enum type in the banking_transactions schema"
+      changes:
+        - sql:
+            sql: >
+              CREATE TYPE banking_transactions.transaction_category AS ENUM (
+                'DEPOSIT', 'ENTERTAINMENT', 'FOOD', 'HEALTHCARE', 'OTHER',
+                'PAYMENT', 'SALARY', 'SHOPPING', 'TRANSFER', 'TRANSPORT', 'UTILITIES'
+              );

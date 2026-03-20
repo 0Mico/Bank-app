@@ -1,0 +1,9 @@
+databaseChangeLog:
+  
+    - changeSet:
+        id: 001-create-user-role-enum
+        author: auth-service
+        comment: "Create the user_role enum type in the banking_auth schema"
+        changes:
+          - sql:
+              sql: "CREATE TYPE banking_auth.user_role AS ENUM ('ADMIN', 'USER');"

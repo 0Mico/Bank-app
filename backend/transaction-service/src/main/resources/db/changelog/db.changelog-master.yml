@@ -1,0 +1,7 @@
+databaseChangeLog:
+    - include:
+        file: db/changelog/DDL/1-enumcreation-changelog.yml
+    - include:
+        file: db/changelog/DDL/2-tablecreation-changelog.yml
+    - include:
+        file: db/changelog/DML/populate_transactions_table.yml

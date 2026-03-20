@@ -1,0 +1,52 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 006-populate-role-permissions
+      author: auth-service
+      context: dev, local
+      comment: "Seed initial data for the role_permissions table"
+      changes:
+        - insert:
+            schemaName: banking_auth
+            tableName: role_permissions
+            columns:
+              - column: { name: id,               valueNumeric: 1 }
+              - column: { name: allowed_actions,   value: "GET,POST,PUT,DELETE" }
+              - column: { name: resource_pattern,  value: "/api/auth/users/**" }
+              - column: { name: role,              value: "USER" }
+
+        - insert:
+            schemaName: banking_auth
+            tableName: role_permissions
+            columns:
+              - column: { name: id,               valueNumeric: 2 }
+              - column: { name: allowed_actions,   value: "GET,POST,PUT,DELETE" }
+              - column: { name: resource_pattern,  value: "/api/transactions/**" }
+              - column: { name: role,              value: "USER" }
+
+        - insert:
+            schemaName: banking_auth
+            tableName: role_permissions
+            columns:
+              - column: { name: id,               valueNumeric: 3 }
+              - column: { name: allowed_actions,   value: "GET,POST,PUT,PATCH,DELETE" }
+              - column: { name: resource_pattern,  value: "/api/payments/**" }
+              - column: { name: role,              value: "USER" }
+
+        - insert:
+            schemaName: banking_auth
+            tableName: role_permissions
+            columns:
+              - column: { name: id,               valueNumeric: 4 }
+              - column: { name: allowed_actions,   value: "GET,POST,PUT,PATCH,DELETE" }
+              - column: { name: resource_pattern,  value: "/api/accounts/**" }
+              - column: { name: role,              value: "USER" }
+
+        - insert:
+            schemaName: banking_auth
+            tableName: role_permissions
+            columns:
+              - column: { name: id,               valueNumeric: 5 }
+              - column: { name: allowed_actions,   value: "GET,POST,PUT,PATCH,DELETE" }
+              - column: { name: resource_pattern,  value: "/api/**" }
+              - column: { name: role,              value: "ADMIN" }

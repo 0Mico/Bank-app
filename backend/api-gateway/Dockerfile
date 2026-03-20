@@ -1,7 +1,6 @@
 FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Parent pom
 COPY pom.xml .
 
 # All module poms (needed for dependency resolution)

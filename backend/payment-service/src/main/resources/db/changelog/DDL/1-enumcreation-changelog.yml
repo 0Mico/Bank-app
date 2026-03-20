@@ -1,0 +1,21 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 001-create-payment-status-enum
+      author: payment-service
+      comment: "Create the payment_status enum type in the banking_payments schema"
+      changes:
+        - sql:
+            sql: "CREATE TYPE banking_payments.payment_status AS ENUM ('CANCELLED', 'COMPLETED', 'FAILED', 'PENDING');"
+
+  - changeSet:
+      id: 002-create-payment-category-enum
+      author: payment-service
+      comment: "Create the payment_category enum type in the banking_payments schema"
+      changes:
+        - sql:
+            sql: >
+              CREATE TYPE banking_payments.payment_category AS ENUM (
+                'DEPOSIT', 'ENTERTAINMENT', 'FOOD', 'HEALTHCARE', 'OTHER',
+                'PAYMENT', 'SALARY', 'SHOPPING', 'TRANSFER', 'TRANSPORT', 'UTILITIES'
+              );

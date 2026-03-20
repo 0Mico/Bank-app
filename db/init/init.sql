@@ -1,0 +1,4 @@
+CREATE SCHEMA IF NOT EXISTS banking_accounts;
+CREATE SCHEMA IF NOT EXISTS banking_auth;
+CREATE SCHEMA IF NOT EXISTS banking_payments;
+CREATE SCHEMA IF NOT EXISTS banking_transactions;
