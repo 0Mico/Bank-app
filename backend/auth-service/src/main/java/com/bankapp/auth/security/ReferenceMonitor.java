@@ -17,6 +17,8 @@ import java.util.List;
 @Component
 public class ReferenceMonitor {
 
+    private final static String ALL_ACTIONS = "GET,POST,PUT,PATCH,DELETE";
+
     private final RolePermissionRepository permissionRepository;
 
     public ReferenceMonitor(RolePermissionRepository permissionRepository) {
@@ -26,13 +28,13 @@ public class ReferenceMonitor {
     @PostConstruct
     public void initDefaultPermissions() {
         // USER role permissions
-        upsertPermission("USER", "/api/auth/users/**", "GET,POST,PUT,DELETE");
-        upsertPermission("USER", "/api/transactions/**", "GET,POST,PUT,DELETE");
-        upsertPermission("USER", "/api/payments/**", "GET,POST,PUT,PATCH,DELETE");
-        upsertPermission("USER", "/api/accounts/**", "GET,POST,PUT,PATCH,DELETE");
+        upsertPermission("USER", "/api/auth/users/**", ALL_ACTIONS);
+        upsertPermission("USER", "/api/transactions/**", ALL_ACTIONS);
+        upsertPermission("USER", "/api/payments/**", ALL_ACTIONS);
+        upsertPermission("USER", "/api/accounts/**", ALL_ACTIONS);
 
         // ADMIN role permissions (full access)
-        upsertPermission("ADMIN", "/api/**", "GET,POST,PUT,PATCH,DELETE");
+        upsertPermission("ADMIN", "/api/**", ALL_ACTIONS);
     }
 
     /**

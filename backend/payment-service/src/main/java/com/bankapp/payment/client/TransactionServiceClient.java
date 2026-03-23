@@ -13,8 +13,10 @@ public class TransactionServiceClient implements TransactionServiceApi {
 
     private final RestClient restClient;
     private final String transactionServiceUrl;
+    private final String transactionEndpoint = "/api/transactions/";
 
-    public TransactionServiceClient(@Value("${services.transaction.url}") String transactionServiceUrl, RestClient restClient) {
+    public TransactionServiceClient(@Value("${services.transaction.url}") String transactionServiceUrl, 
+                                    RestClient restClient) {
         this.restClient = restClient;
         this.transactionServiceUrl = transactionServiceUrl;
     }
@@ -23,7 +25,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public TransactionDTO createTransaction(TransactionDTO transaction) {
         try {
             return restClient.post()
-                .uri(transactionServiceUrl + "/api/transactions")
+                .uri(transactionServiceUrl + transactionEndpoint)
                 .body(transaction)
                 .retrieve()
                 .body(TransactionDTO.class);
@@ -36,7 +38,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public TransactionDTO getTransactionById(Long transactionId) {
         try {
             return restClient.get()
-                .uri(transactionServiceUrl + "/api/transactions/" + transactionId)
+                .uri(transactionServiceUrl +  + transactionId)
                 .retrieve()
                 .body(TransactionDTO.class);
         } catch (Exception e) {
@@ -48,7 +50,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public TransactionDTO updateTransaction(Long id, TransactionDTO transaction) {
         try {
             return restClient.put()
-                .uri(transactionServiceUrl + "/api/transactions/" + id)
+                .uri(transactionServiceUrl + transactionEndpoint + id)
                 .body(transaction)
                 .retrieve()
                 .body(TransactionDTO.class);
@@ -61,7 +63,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public void deleteTransaction(Long id) {
         try {
             restClient.delete()
-                .uri(transactionServiceUrl + "/api/transactions/" + id)
+                .uri(transactionServiceUrl + transactionEndpoint + id)
                 .retrieve()
                 .toBodilessEntity();
         } catch (Exception e) {

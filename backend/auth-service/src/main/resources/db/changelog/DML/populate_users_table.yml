@@ -15,7 +15,7 @@ databaseChangeLog:
               - column: { name: email,          value: "mico@mico.it" }
               - column: { name: first_name,     value: "Mico" }
               - column: { name: last_name,      value: "Mico" }
-              - column: { name: password_hash,  value: "$2a$10$4kh7q9uxIeY0wWRwI2TWKeo.Ok6kAMXq8FNte5izugbI./Z0Jcf2C" }
+              - column: { name: password_hash,  value: "$2a$10$redactedsaltXXXXXXXXXXredactedhashXXXXXXXXXXXXXXXXXXXX" }
               - column: { name: phone,          value: "" }
               - column: { name: role,           value: "USER" }
 
@@ -28,7 +28,7 @@ databaseChangeLog:
               - column: { name: email,          value: "user@user.it" }
               - column: { name: first_name,     value: "User" }
               - column: { name: last_name,      value: "User" }
-              - column: { name: password_hash,  value: "$2a$10$HgUHeUHml38UKhjlfLiDEeGEIsiStSSGyZryNDzhUttrMSPEAk7NS" }
+              - column: { name: password_hash,  value: "$2a$10$redactedsaltXXXXXXXXXXredactedhashXXXXXXXXXXXXXXXXXXXX" }
               - column: { name: phone,          value: "" }
               - column: { name: role,           value: "USER" }
 
@@ -41,6 +41,6 @@ databaseChangeLog:
               - column: { name: email,          value: "marco@marco.it" }
               - column: { name: first_name,     value: "Marco" }
               - column: { name: last_name,      value: "Marco" }
-              - column: { name: password_hash,  value: "$2a$10$NcUX1oilfZcauUmgPnp1Ieofx3P.NQT5vdQNPloqL8cu6OXODhHQC" }
+              - column: { name: password_hash,  value: "$2a$10$redactedsaltXXXXXXXXXXredactedhashXXXXXXXXXXXXXXXXXXXX" }
               - column: { name: phone,          value: "" }
               - column: { name: role,           value: "USER" }
