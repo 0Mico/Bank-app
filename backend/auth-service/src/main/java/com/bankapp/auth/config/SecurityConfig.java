@@ -14,13 +14,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+        try {
+            http.csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()  // Gateway handles JWT; this service trusts internal calls
             );
-        return http.build();
+            return http.build();
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to build securityFilterChain ", e);
+        }
     }
 
     @Bean

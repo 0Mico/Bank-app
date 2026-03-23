@@ -15,8 +15,12 @@ import io.jsonwebtoken.JwtException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.logging.Logger;
+
 @Service
 public class AuthService {
+
+    private final Logger logger = Logger.getLogger(AuthService.class.getName());
 
     private final UserRepository userRepository;
     private final TokenService tokenService;
@@ -50,7 +54,7 @@ public class AuthService {
         try {
             accountServiceClient.createAccount(user.getId());
         } catch (Exception e) {
-            System.err.println("Warning: Could not create account for new user " + user.getId() + " - " + e.getMessage());
+            logger.info("Warning: Could not create account for new user " + user.getId() + " - " + e.getMessage());
         }
 
         String token = tokenService.generateToken(user.getId(), user.getEmail(), user.getRole());

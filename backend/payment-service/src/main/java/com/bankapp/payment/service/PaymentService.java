@@ -7,6 +7,7 @@ import com.bankapp.common.enums.TransactionCategory;
 import com.bankapp.common.enums.TransactionType;
 import com.bankapp.common.exception.BadRequestException;
 import com.bankapp.common.exception.InsufficientFundsException;
+import com.bankapp.common.exception.PaymentCompensationException;
 import com.bankapp.common.exception.ResourceNotFoundException;
 import com.bankapp.common.interfaces.AccountServiceApi;
 import com.bankapp.common.interfaces.TransactionServiceApi;
@@ -19,11 +20,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.logging.Logger;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class PaymentService {
+
+    private final Logger logger = Logger.getLogger(PaymentService.class.getName());
 
     private final PaymentRepository paymentRepository;
     private final AccountServiceApi accountServiceClient;
@@ -55,7 +59,7 @@ public class PaymentService {
             try {
                 creditReceiver(fromAccount.getId(), request.getAmount()); // Reverse debit
             } catch (Exception compensatiException) {
-                throw new RuntimeException("Payment went wrong. Failed debit compensation for account " + fromAccount.getId());
+                throw new PaymentCompensationException("Payment went wrong. Failed debit compensation for account " + fromAccount.getId());
             }
             throw new BadRequestException("Payment went wrong. Failed credit for account " + toAccount.getId());
         }
@@ -91,7 +95,7 @@ public class PaymentService {
             transactionClient.createTransaction(creditTxn);
         } catch (Exception e) {
             // Log error but don't fail the payment — transactions are supplementary
-            System.err.println("Warning: Failed to record transaction: " + e.getMessage());
+            logger.info("Warning: Failed to record transaction: " + e.getMessage());
         }
         return toDTO(payment, fromAccount, toAccount);
     }
