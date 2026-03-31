@@ -1,7 +1,7 @@
 package com.bankapp.transaction.entity;
 
-import com.bankapp.common.enums.TransactionCategory;
-import com.bankapp.common.enums.TransactionType;
+import com.common.enums.TransactionCategory;
+import com.common.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,7 +47,7 @@ public class Transaction {
     @Column(name = "reference_id")
     private String referenceId;
 
-    @Column(name = "counterparty_iban")
+    @Column(name = "counterparty_iban", length = 34)
     private String counterpartyIban;
 
     @Column(name = "created_at", nullable = false, updatable = false)

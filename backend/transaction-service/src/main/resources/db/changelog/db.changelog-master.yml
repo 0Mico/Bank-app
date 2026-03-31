@@ -5,3 +5,7 @@ databaseChangeLog:
         file: db/changelog/DDL/2-tablecreation-changelog.yml
     - include:
         file: db/changelog/DML/populate_transactions_table.yml
+    - include:
+        file: db/changelog/DDL/3-sync-sequences.yml
+    - include:
+        file: db/changelog/DDL/4-update-counterparty-iban-length.yml

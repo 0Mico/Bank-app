@@ -1,7 +1,7 @@
 package com.bankapp.payment.entity;
 
-import com.bankapp.common.enums.PaymentStatus;
-import com.bankapp.common.enums.TransactionCategory;
+import com.common.enums.PaymentStatus;
+import com.common.enums.TransactionCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

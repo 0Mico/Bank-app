@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import com.bankapp.common.dto.TransactionDTO;
-import com.bankapp.common.exception.ServiceUnavailableException;
-import com.bankapp.common.interfaces.TransactionServiceApi;
+import com.common.dto.TransactionDTO;
+import com.common.exception.ClientErrorMapper;
+import com.common.interfaces.TransactionServiceApi;
 
 @Component
 public class TransactionServiceClient implements TransactionServiceApi {
 
     private final RestClient restClient;
     private final String transactionServiceUrl;
-    private final String transactionEndpoint = "/api/transactions/";
+    private final String transactionEndpoint = "/api/transactions";
 
     public TransactionServiceClient(@Value("${services.transaction.url}") String transactionServiceUrl, 
                                     RestClient restClient) {
@@ -30,7 +30,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
                 .retrieve()
                 .body(TransactionDTO.class);
         } catch (Exception e) {
-            throw new ServiceUnavailableException("transaction-service", e);
+            throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
 
@@ -38,11 +38,11 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public TransactionDTO getTransactionById(Long transactionId) {
         try {
             return restClient.get()
-                .uri(transactionServiceUrl +  + transactionId)
+                .uri(transactionServiceUrl + transactionEndpoint + "/" + transactionId)
                 .retrieve()
                 .body(TransactionDTO.class);
         } catch (Exception e) {
-            throw new ServiceUnavailableException("transaction-service", e);
+            throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
 
@@ -50,12 +50,12 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public TransactionDTO updateTransaction(Long id, TransactionDTO transaction) {
         try {
             return restClient.put()
-                .uri(transactionServiceUrl + transactionEndpoint + id)
+                .uri(transactionServiceUrl + transactionEndpoint + "/" + id)
                 .body(transaction)
                 .retrieve()
                 .body(TransactionDTO.class);
         } catch (Exception e) {
-            throw new ServiceUnavailableException("transaction-service", e);        
+            throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
 
@@ -63,11 +63,11 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public void deleteTransaction(Long id) {
         try {
             restClient.delete()
-                .uri(transactionServiceUrl + transactionEndpoint + id)
+                .uri(transactionServiceUrl + transactionEndpoint + "/" + id)
                 .retrieve()
                 .toBodilessEntity();
         } catch (Exception e) {
-            throw new ServiceUnavailableException("transaction-service", e);        
+            throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
 }

@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-sync-transaction-sequences
+      author: transaction-service
+      comment: "Advance transactions sequence past the last inserted id to avoid PK conflicts"
+      changes:
+        - sql:
+            sql: "SELECT setval('banking_transactions.transactions_id_seq', (SELECT MAX(id) FROM banking_transactions.transactions));"

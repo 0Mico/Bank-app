@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-update-counterparty-iban-length
+      author: transaction-service
+      comment: "Update counterparty_iban length to 34"
+      changes:
+        - modifyDataType:
+            schemaName: banking_transactions
+            tableName: transactions
+            columnName: counterparty_iban
+            newDataType: VARCHAR(34)

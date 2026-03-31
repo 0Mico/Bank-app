@@ -4,6 +4,7 @@ databaseChangeLog:
       id: 005-populate-users
       author: auth-service
       context: dev, local
+      validCheckSum: ANY # Because the password_hash values was modified after the first run of this changelog
       comment: "Seed initial data for the users table"
       changes:
         - insert:

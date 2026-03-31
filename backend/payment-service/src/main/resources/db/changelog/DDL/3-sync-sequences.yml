@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-sync-payment-sequences
+      author: payment-service
+      comment: "Advance sequences past the last inserted ids to avoid PK conflicts"
+      changes:
+        - sql:
+            sql: "SELECT setval('banking_payments.payments_id_seq', (SELECT MAX(id) FROM banking_payments.payments));"
+        - sql:
+            sql: "SELECT setval('banking_payments.favorite_operations_id_seq', (SELECT MAX(id) FROM banking_payments.favorite_operations));"

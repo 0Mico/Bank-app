@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.bankapp.common.dto.AccountDTO;
-import com.bankapp.common.exception.ResourceNotFoundException;
-import com.bankapp.common.interfaces.AccountServiceApi;
+import com.common.dto.AccountDTO;
+import com.common.exception.ResourceNotFoundException;
+import com.common.interfaces.AccountServiceApi;
 import com.bankapp.payment.dtos.FavoriteOperationDTO;
 import com.bankapp.payment.entity.FavoriteOperation;
 import com.bankapp.payment.repository.FavoriteOperationRepository;

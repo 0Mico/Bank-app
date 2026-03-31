@@ -1,11 +1,11 @@
 package com.bankapp.account.service;
 
-import com.bankapp.common.dto.AccountDTO;
-import com.bankapp.common.dto.TransactionDTO;
-import com.bankapp.common.enums.TransactionCategory;
-import com.bankapp.common.enums.TransactionType;
-import com.bankapp.common.exception.BadRequestException;
-import com.bankapp.common.exception.ResourceNotFoundException;
+import com.common.dto.AccountDTO;
+import com.common.dto.TransactionDTO;
+import com.common.enums.TransactionCategory;
+import com.common.enums.TransactionType;
+import com.common.exception.BadRequestException;
+import com.common.exception.ResourceNotFoundException;
 import com.bankapp.account.client.TransactionServiceClient;
 import com.bankapp.account.entity.Account;
 import com.bankapp.account.repository.AccountRepository;

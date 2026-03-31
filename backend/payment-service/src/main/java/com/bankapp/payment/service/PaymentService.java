@@ -1,16 +1,16 @@
 package com.bankapp.payment.service;
 
-import com.bankapp.common.dto.AccountDTO;
-import com.bankapp.common.dto.TransactionDTO;
-import com.bankapp.common.enums.PaymentStatus;
-import com.bankapp.common.enums.TransactionCategory;
-import com.bankapp.common.enums.TransactionType;
-import com.bankapp.common.exception.BadRequestException;
-import com.bankapp.common.exception.InsufficientFundsException;
-import com.bankapp.common.exception.PaymentCompensationException;
-import com.bankapp.common.exception.ResourceNotFoundException;
-import com.bankapp.common.interfaces.AccountServiceApi;
-import com.bankapp.common.interfaces.TransactionServiceApi;
+import com.common.dto.AccountDTO;
+import com.common.dto.TransactionDTO;
+import com.common.enums.PaymentStatus;
+import com.common.enums.TransactionCategory;
+import com.common.enums.TransactionType;
+import com.common.exception.BadRequestException;
+import com.common.exception.InsufficientFundsException;
+import com.common.exception.PaymentCompensationException;
+import com.common.exception.ResourceNotFoundException;
+import com.common.interfaces.AccountServiceApi;
+import com.common.interfaces.TransactionServiceApi;
 import com.bankapp.payment.dtos.PaymentRequest;
 import com.bankapp.payment.dtos.PaymentResponse;
 import com.bankapp.payment.entity.Payment;
