@@ -1,10 +1,10 @@
 package com.bankapp.account.exception;
 
-import com.bankapp.common.exception.BadRequestException;
-import com.bankapp.common.exception.ErrorResponse;
-import com.bankapp.common.exception.ResourceNotFoundException;
-import com.bankapp.common.exception.ServiceUnavailableException;
-import com.bankapp.common.exception.UnauthorizedException;
+import com.common.exception.BadRequestException;
+import com.common.exception.ErrorResponse;
+import com.common.exception.ResourceNotFoundException;
+import com.common.exception.ServiceUnavailableException;
+import com.common.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

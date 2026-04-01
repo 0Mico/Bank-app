@@ -38,7 +38,6 @@ export const userApi = {
     deleteProfile: (id: number) => api.delete(`/auth/users/${id}`),
     getByEmail: (email: string) => api.get<User>(`/auth/users/email?email=${encodeURIComponent(email)}`),
     getByIban: (iban: string) => api.get<User>(`/auth/users/iban?iban=${encodeURIComponent(iban)}`),
-    getByAccountId: (accountId: number) => api.get<User>(`/auth/users/account?accountId=${accountId}`),
     changePassword: (id: number, data: { currentPassword: string; newPassword: string }) => api.post(`/auth/users/${id}/password`, data),
 };
 

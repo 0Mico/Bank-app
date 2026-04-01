@@ -1,7 +1,7 @@
 package com.bankapp.account.client;
 
-import com.bankapp.common.dto.TransactionDTO;
-import com.bankapp.common.exception.ServiceUnavailableException;
+import com.common.dto.TransactionDTO;
+import com.common.exception.ClientErrorMapper;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -29,7 +29,7 @@ public class TransactionServiceClient {
                         .retrieve()
                         .body(TransactionDTO.class);
         } catch (Exception e) {
-            throw new ServiceUnavailableException("transaction-service", e);
+            throw ClientErrorMapper.handleException("transaction-service", e);
         }
     }
 }

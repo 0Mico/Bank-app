@@ -1,8 +1,8 @@
 package com.bankapp.transaction.controller;
 
-import com.bankapp.common.dto.TransactionDTO;
-import com.bankapp.common.enums.TransactionCategory;
-import com.bankapp.common.enums.TransactionType;
+import com.common.dto.TransactionDTO;
+import com.common.enums.TransactionCategory;
+import com.common.enums.TransactionType;
 import com.bankapp.transaction.service.TransactionService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

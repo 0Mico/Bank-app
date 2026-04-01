@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-sync-auth-sequences
+      author: auth-service
+      comment: "Advance auth sequences past the last inserted ids to avoid PK conflicts"
+      changes:
+        - sql:
+            sql: "SELECT setval('banking_auth.users_id_seq', (SELECT MAX(id) FROM banking_auth.users));"
+        - sql:
+            sql: "SELECT setval('banking_auth.role_permissions_id_seq', (SELECT MAX(id) FROM banking_auth.role_permissions));"

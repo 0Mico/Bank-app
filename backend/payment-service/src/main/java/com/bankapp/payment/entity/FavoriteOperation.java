@@ -30,7 +30,7 @@ public class FavoriteOperation {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 34)
     private String recipientIban;
 
     @Column(nullable = false)

@@ -10,5 +10,5 @@ import com.bankapp.account.entity.Card;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
-    Optional<List<Card>> findAllByAccountId(Long accountId);
+    Optional<List<Card>> findAllByAccount_Id(Long accountId);
 }

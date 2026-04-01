@@ -1,7 +1,7 @@
 package com.bankapp.gateway.filter;
 
-import com.bankapp.common.dto.TokenValidationRequest;
-import com.bankapp.common.dto.TokenValidationResponse;
+import com.common.dto.TokenValidationDTO;
+import com.common.model.TokenValidationModel;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,13 +56,13 @@ public class AuthFilter extends OncePerRequestFilter {
 
         // Send token to auth service for validation
         try {
-            TokenValidationRequest validationRequest = new TokenValidationRequest(token, path, httpMethod);
+            TokenValidationDTO validationRequest = new TokenValidationDTO(token, path, httpMethod);
 
-            TokenValidationResponse validation = authClient.post()
+            TokenValidationModel validation = authClient.post()
                     .uri("/api/auth/validate")
                     .body(validationRequest)
                     .retrieve()
-                    .body(TokenValidationResponse.class);
+                    .body(TokenValidationModel.class);
 
             if (validation != null && validation.isValid()) {
                 request.setAttribute("X-User-Id", String.valueOf(validation.getUserId()));

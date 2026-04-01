@@ -1,8 +1,9 @@
 package com.bankapp.payment.client;
 
-import com.bankapp.common.dto.AccountDTO;
-import com.bankapp.common.exception.ServiceUnavailableException;
-import com.bankapp.common.interfaces.AccountServiceApi;
+import com.common.dto.AccountDTO;
+import com.common.exception.ClientErrorMapper;
+import com.common.interfaces.AccountServiceApi;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -30,7 +31,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .body(AccountDTO.class);
         } catch (Exception e) {
-            throw new ServiceUnavailableException("account-service", e);
+            throw ClientErrorMapper.handleException("account-service", e);
         }
     }
 
@@ -42,7 +43,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .body(AccountDTO.class);
         } catch (Exception e) {
-            throw new ServiceUnavailableException("account-service", e);
+            throw ClientErrorMapper.handleException("account-service", e);
         }
     }
 
@@ -54,7 +55,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<AccountDTO>>() {});
         } catch (Exception e) {
-            throw new ServiceUnavailableException("account-service", e);
+            throw ClientErrorMapper.handleException("account-service", e);
         }
     }
 
@@ -66,7 +67,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .toBodilessEntity();
         } catch (Exception e) {
-            throw new ServiceUnavailableException("account-service", e);
+            throw ClientErrorMapper.handleException("account-service", e);
         }
     }
 }

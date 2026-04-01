@@ -1,6 +1,8 @@
 package com.bankapp.transaction.exception;
 
-import com.bankapp.common.exception.*;
+import com.common.exception.ErrorResponse;
+import com.common.exception.ResourceNotFoundException;
+import com.common.exception.ServiceUnavailableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

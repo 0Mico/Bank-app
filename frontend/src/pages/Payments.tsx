@@ -348,7 +348,7 @@ const Payments: React.FC = () => {
                                         ) : (
                                             <>
                                                 <label htmlFor="toIban">Recipient IBAN</label>
-                                                <input id="toIban" type="text" placeholder="e.g. IT60NEXS0123456789012345678" value={form.toIban} onChange={e => setForm({ ...form, toIban: e.target.value })} required />
+                                                <input id="toIban" type="text" placeholder="e.g. IT60NEXS0123456789012345678" value={form.toIban} onChange={e => setForm({ ...form, toIban: e.target.value })} maxLength={34} required />
                                             </>
                                         )}
                                     </div>

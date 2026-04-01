@@ -7,3 +7,7 @@ databaseChangeLog:
         file: db/changelog/DML/populate_favorite_operations_table.yml
     - include:
         file: db/changelog/DML/populate_payments_table.yml
+    - include:
+        file: db/changelog/DDL/3-sync-sequences.yml
+    - include:
+        file: db/changelog/DDL/4-update-favorite-iban-length.yml

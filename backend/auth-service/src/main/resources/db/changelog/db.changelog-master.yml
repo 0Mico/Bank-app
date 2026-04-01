@@ -7,3 +7,5 @@ databaseChangeLog:
         file: db/changelog/DML/populate_users_table.yml
     - include:
         file: db/changelog/DML/populate_role_permissions_table.yml
+    - include:
+        file: db/changelog/DDL/3-sync-sequences.yml

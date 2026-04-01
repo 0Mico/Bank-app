@@ -6,8 +6,8 @@ import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
-import com.bankapp.common.exception.ResourceNotFoundException;
-import com.bankapp.common.exception.UnauthorizedException;
+import com.common.exception.ResourceNotFoundException;
+import com.common.exception.UnauthorizedException;
 import com.bankapp.account.entity.Card;
 import com.bankapp.account.dtos.CardDTO;
 import com.bankapp.account.entity.Account;
@@ -41,7 +41,7 @@ public class CardService {
 
     private Card createNewCard(Account account) {
         Card card = new Card();
-        card.setAccountId(account.getId());
+        card.setAccount(account);
         card.setCardNumber(generateCardNumber());
         
         card.setExpiration(LocalDate.now().plusYears(5));
@@ -49,7 +49,7 @@ public class CardService {
     }
 
     public List<CardDTO> getCardsByAccountId(Long accountId) {
-        List<Card> cards = cardRepo.findAllByAccountId(accountId)
+        List<Card> cards = cardRepo.findAllByAccount_Id(accountId)
             .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
         return cards.stream().map(this::mapToDTO).toList();
     }
@@ -65,7 +65,7 @@ public class CardService {
 
     public CardDTO toggleBlockState(Long accountId, Long cardId) {
         Card card = cardRepo.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card", cardId));
-        if(!card.getAccountId().equals(accountId)){
+        if(!card.getAccount().getId().equals(accountId)){
             throw new UnauthorizedException("Card does not belong to this account");
         }
         card.setBlocked(!card.isBlocked());
@@ -75,13 +75,13 @@ public class CardService {
 
     public void deleteCard(Long accountId, Long cardId) {
         Card card = cardRepo.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card", cardId));
-        if(!card.getAccountId().equals(accountId)){
+        if(!card.getAccount().getId().equals(accountId)){
             throw new UnauthorizedException("Card does not belong to this account");
         }
         cardRepo.delete(card);
     }
 
     private CardDTO mapToDTO(Card card) {
-        return new CardDTO(card.getId(), card.getAccountId(), card.getCardNumber(), card.getExpiration(), card.isBlocked());
+        return new CardDTO(card.getId(), card.getAccount().getId(), card.getCardNumber(), card.getExpiration(), card.isBlocked());
     }
 }

@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-add-cascade-delete-to-cards
+      author: account-service
+      comment: "Drop existing cards FK and recreate with ON DELETE CASCADE"
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableSchemaName: banking_accounts
+            baseTableName: cards
+            constraintName: cards_account_id_fkey
+        - addForeignKeyConstraint:
+            baseTableSchemaName: banking_accounts
+            baseTableName: cards
+            baseColumnNames: account_id
+            referencedTableSchemaName: banking_accounts
+            referencedTableName: accounts
+            referencedColumnNames: id
+            constraintName: cards_account_id_fkey
+            onDelete: CASCADE

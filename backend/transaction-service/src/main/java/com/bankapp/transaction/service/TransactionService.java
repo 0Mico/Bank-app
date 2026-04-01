@@ -1,9 +1,9 @@
 package com.bankapp.transaction.service;
 
-import com.bankapp.common.dto.TransactionDTO;
-import com.bankapp.common.enums.TransactionCategory;
-import com.bankapp.common.enums.TransactionType;
-import com.bankapp.common.exception.ResourceNotFoundException;
+import com.common.dto.TransactionDTO;
+import com.common.enums.TransactionCategory;
+import com.common.enums.TransactionType;
+import com.common.exception.ResourceNotFoundException;
 import com.bankapp.transaction.entity.Transaction;
 import com.bankapp.transaction.repository.TransactionRepository;
 import org.springframework.stereotype.Service;

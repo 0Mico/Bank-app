@@ -1,7 +1,7 @@
 package com.bankapp.payment.dtos;
 
-import com.bankapp.common.enums.PaymentStatus;
-import com.bankapp.common.enums.TransactionCategory;
+import com.common.enums.PaymentStatus;
+import com.common.enums.TransactionCategory;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;

@@ -1,9 +1,11 @@
+
 package com.bankapp.account.controller;
 
-import com.bankapp.common.dto.AccountDTO;
 import com.bankapp.account.dtos.DepositDTO;
 import com.bankapp.account.entity.Account;
 import com.bankapp.account.service.AccountService;
+import com.common.dto.AccountDTO;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
