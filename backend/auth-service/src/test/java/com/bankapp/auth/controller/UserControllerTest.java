@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -41,7 +42,8 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockitoBean
     private UserService userService;
@@ -62,11 +64,11 @@ public class UserControllerTest {
 
 
     @Nested
-    @DisplayName("GET /api/auth/users/{id}")
+    @DisplayName("GET/{id}: tests")
     class GetUserByIdTest {
 
         @Test
-        @DisplayName("200 OK — existing user id returns UserDTO")
+        @DisplayName("200 OK — existing user id returns UserModel")
         void shouldReturnUserById() throws Exception {
             when(userService.getUserById(1L)).thenReturn(testUser);
 
@@ -103,7 +105,7 @@ public class UserControllerTest {
     }
 
     @Nested
-    @DisplayName("GET /api/auth/users/email")
+    @DisplayName("GET/email: tests")
     class GetUserByEmailTest {
 
         @Test
@@ -143,7 +145,7 @@ public class UserControllerTest {
     }
 
     @Nested
-    @DisplayName("GET /api/auth/users/iban")
+    @DisplayName("GET/iban: tests")
     class GetUserByIbanTest {
 
         @Test
@@ -181,12 +183,9 @@ public class UserControllerTest {
         }
     }
 
-    // ===========================================================================
-    // PUT /api/auth/users/{id}
-    // ===========================================================================
 
     @Nested
-    @DisplayName("PUT /api/auth/users/{id}")
+    @DisplayName("PUT/{id}: tests")
     class UpdateUserTest {
 
         private UserModel updatePayload;
@@ -251,12 +250,9 @@ public class UserControllerTest {
         }
     }
 
-    // ===========================================================================
-    // DELETE /api/auth/users/{id}
-    // ===========================================================================
 
     @Nested
-    @DisplayName("DELETE /api/auth/users/{id}")
+    @DisplayName("DELETE/{id}: tests")
     class DeleteUserTest {
 
         @Test
@@ -290,12 +286,9 @@ public class UserControllerTest {
         }
     }
 
-    // ===========================================================================
-    // POST /api/auth/users/{id}/password
-    // ===========================================================================
 
     @Nested
-    @DisplayName("POST /api/auth/users/{id}/password")
+    @DisplayName("POST/password: tests")
     class ChangePasswordTest {
 
         private ChangePasswordDto validRequest;

@@ -35,6 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/iban")
+    // Used to show the name of the external account when clicking on a transaction
     public ResponseEntity<UserModel> getUserByIban(@RequestParam String iban) {
         User user = userService.getUserByIban(iban);
         return ResponseEntity.ok(userModelAssembler.toModel(user));

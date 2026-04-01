@@ -29,6 +29,7 @@ class AccountServiceClientTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    
     private MockRestServiceServer mockServer; // To simulate a server that receives requests made by the AccountServiceClient
 
     private AccountServiceClient accountServiceClient;

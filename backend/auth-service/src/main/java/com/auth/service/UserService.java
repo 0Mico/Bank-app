@@ -19,27 +19,33 @@ public class UserService {
     private final AccountServiceClient accountServiceClient;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                       AccountServiceClient accountServiceClient) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AccountServiceClient accountServiceClient) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.accountServiceClient = accountServiceClient;
+    }
+
+    public boolean checkIfUserExists(Long userId) {
+        return userRepository.existsById(userId);
     }
 
     public User getUserById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("User ID cannot be null");
         }
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", id));
+        return userRepository.findById(id).isPresent() ?
+                    userRepository.findById(id).get() : null;
     }
 
     public User getUserByEmail(String email) {
         if (email == null) {
             throw new IllegalArgumentException("Email cannot be null");
         }
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+        return userRepository.findByEmail(email).isPresent() ?
+                userRepository.findByEmail(email).get() : null;
     }
 
+    // Used to show the name of the external account when clicking on a transaction
     public User getUserByIban(String iban) {
         if (iban == null || iban.length() > 34) {
             throw new IllegalArgumentException("IBAN cannot be null");

@@ -37,6 +37,10 @@ public class AccountServiceClient {
         }
     }
 
+    /**
+     * Used to show the name of the external account when clicking on a transaction
+     * This call retrieve the account associated with the given iban
+     */
     public AccountDTO getAccountByIban(String iban) {
         try {
             return restClient.get()

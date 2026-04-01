@@ -15,8 +15,8 @@ public class UserModelAssembler {
         this.userMapper = userMapper;
     }
 
-    public UserModel toModel(User view) {
-        return userMapper.toModel(view);
+    public UserModel toModel(User user) {
+        return userMapper.toModel(user);
     }
     
 }

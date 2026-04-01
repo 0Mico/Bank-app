@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 
 import com.auth.service.AuthService;
 import com.auth.service.TokenService;
+import com.auth.factory.UserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -51,6 +52,7 @@ public class AuthServiceTest {
     @Mock private AccountServiceClient accountServiceClient;
     @Mock private PasswordEncoder encoder;
     @Mock private ReferenceMonitor referenceMonitor;
+    @Mock private UserFactory userFactory;
 
     @InjectMocks
     private AuthService authService;
@@ -96,7 +98,7 @@ public class AuthServiceTest {
         @DisplayName("should register a new user correctly")
         void shouldRegisterANewUserCorrectly() {
             when(userRepo.existsByEmail(request.getEmail())).thenReturn(false);
-            when(encoder.encode(request.getPassword())).thenReturn("hashedPassword");
+            when(userFactory.create(request)).thenReturn(testUser);
             when(userRepo.save(any(User.class))).thenReturn(testUser);
             when(tokenService.generateToken(testUser.getId(), request.getEmail(), testUser.getRole())).thenReturn(mockToken);
 
@@ -106,6 +108,7 @@ public class AuthServiceTest {
             assertEquals(testUser.getEmail(), response.getUser().getEmail());
 
             verify(userRepo, times(1)).existsByEmail(request.getEmail());
+            verify(userFactory, times(1)).create(request);
             verify(userRepo, times(1)).save(any(User.class));
             verify(accountServiceClient, times(1)).createAccount(testUser.getId());
             verify(tokenService, times(1)).generateToken(testUser.getId(), request.getEmail(), testUser.getRole());

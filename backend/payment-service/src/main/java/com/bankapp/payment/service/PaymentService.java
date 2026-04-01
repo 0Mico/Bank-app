@@ -1,5 +1,6 @@
 package com.bankapp.payment.service;
 
+import com.bankapp.payment.client.TransactionServiceClient;
 import com.common.dto.AccountDTO;
 import com.common.dto.TransactionDTO;
 import com.common.enums.PaymentStatus;
@@ -34,7 +35,7 @@ public class PaymentService {
     private final TransactionServiceApi transactionClient;
 
     public PaymentService(PaymentRepository paymentRepository, AccountServiceApi accountServiceClient,
-            TransactionServiceApi transactionClient) {
+            TransactionServiceClient transactionClient) {
         this.paymentRepository = paymentRepository;
         this.accountServiceClient = accountServiceClient;
         this.transactionClient = transactionClient;

@@ -4,8 +4,9 @@ import com.auth.client.AccountServiceClient;
 import com.auth.dto.LoginDto;
 import com.auth.dto.RegisterDto;
 import com.auth.entity.User;
+import com.auth.factory.ConcreteUserFactory;
+import com.auth.factory.UserFactory;
 import com.auth.model.AuthView;
-import com.auth.repository.UserRepository;
 import com.auth.security.ReferenceMonitor;
 import com.common.dto.TokenValidationDTO;
 import com.common.enums.UserRole;
@@ -24,39 +25,33 @@ public class AuthService {
 
     private final Logger logger = Logger.getLogger(AuthService.class.getName());
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final TokenService tokenService;
     private final AccountServiceClient accountServiceClient;
     private final PasswordEncoder passwordEncoder;
     private final ReferenceMonitor referenceMonitor;
+    private final UserFactory userFactory;
 
-    public AuthService(UserRepository userRepository, TokenService tokenService,
-            PasswordEncoder passwordEncoder, ReferenceMonitor referenceMonitor,
-            AccountServiceClient accountServiceClient) {
-        this.userRepository = userRepository;
+    public AuthService(UserService userService, TokenService tokenService,
+                       PasswordEncoder passwordEncoder, ReferenceMonitor referenceMonitor,
+                       AccountServiceClient accountServiceClient, ConcreteUserFactory userFactory) {
+        this.userService = userService;
         this.tokenService = tokenService;
         this.passwordEncoder = passwordEncoder;
         this.referenceMonitor = referenceMonitor;
         this.accountServiceClient = accountServiceClient;
+        this.userFactory = userFactory;
     }
 
     public AuthView register(RegisterDto request) {
         if (request == null) {
             throw new IllegalArgumentException("Registration request cannot be null");
         }
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userService.getUserByEmail(request.getEmail()) != null) {
             throw new BadRequestException("Email already registered: " + request.getEmail());
         }
-        //factory
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setPhone(request.getPhone());
-        user.setRole(UserRole.USER);
-        user = userRepository.save(user);
 
+        User user = userFactory.create(request);
         try {
             accountServiceClient.createAccount(user.getId());
         } catch (Exception e) {
@@ -73,8 +68,7 @@ public class AuthService {
         if (request == null) {
             throw new IllegalArgumentException("Login request cannot be null");
         }
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UnauthorizedException("No user found with this email"));
+        User user = userService.getUserByEmail(request.getEmail());
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
             throw new UnauthorizedException("Wrong password");
         }
@@ -102,7 +96,7 @@ public class AuthService {
             String email = tokenService.getEmailFromClaims(token);
             UserRole role = tokenService.getRoleFromClaims(token);
 
-            if (!userRepository.existsById(userId)) {
+            if (!userService.checkIfUserExists(userId)) {
                 throw new UnauthorizedException("User no longer exists");
             }
 

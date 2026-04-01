@@ -245,7 +245,7 @@ public class AuthControllerTest {
 
 
     @Nested
-    @DisplayName("POST: /login tests")
+    @DisplayName("POST/login: tests")
     class LoginTest {
         
         private LoginDto validRequest;
@@ -396,7 +396,7 @@ public class AuthControllerTest {
 
 
     @Nested
-    @DisplayName("POST: /validate tests")
+    @DisplayName("POST/validate: tests")
     class TokenValidationTest {
 
         private TokenValidationDTO validRequest;
