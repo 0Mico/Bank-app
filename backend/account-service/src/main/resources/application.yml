@@ -18,7 +18,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
   liquibase:
-    enabled: true
+    enabled: ${LIQUIBASE_ENABLED:true}
     change-log: classpath:db/changelog/db.changelog-master.yml
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB}
     user: ${POSTGRES_USER}
@@ -28,8 +28,6 @@ spring:
 logging:
   level:
     liquibase: DEBUG
-
-# debug: true
 
 services:
   transaction:
