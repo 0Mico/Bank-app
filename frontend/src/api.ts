@@ -33,7 +33,6 @@ export const authApi = {
 
 // Users
 export const userApi = {
-    getProfile: (id: number) => api.get<User>(`/auth/users/${id}`),
     updateProfile: (id: number, data: Partial<User>) => api.put<User>(`/auth/users/${id}`, data),
     deleteProfile: (id: number) => api.delete(`/auth/users/${id}`),
     getByEmail: (email: string) => api.get<User>(`/auth/users/email?email=${encodeURIComponent(email)}`),

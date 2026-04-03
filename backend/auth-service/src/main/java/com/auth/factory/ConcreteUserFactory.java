@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
  * Default implementation of UserFactory.
  * Maps RegisterDto into a User entity.
  */
+
 @Component
 public class ConcreteUserFactory implements UserFactory {
 

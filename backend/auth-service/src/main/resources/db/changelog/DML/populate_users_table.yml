@@ -4,7 +4,6 @@ databaseChangeLog:
       id: 005-populate-users
       author: auth-service
       context: dev, local
-      validCheckSum: ANY # Because the password_hash values was modified after the first run of this changelog
       comment: "Seed initial data for the users table"
       changes:
         - insert:
@@ -16,7 +15,7 @@ databaseChangeLog:
               - column: { name: email,          value: "mico@mico.it" }
               - column: { name: first_name,     value: "Mico" }
               - column: { name: last_name,      value: "Mico" }
-              - column: { name: password_hash,  value: "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58846O0u7Z6C" }
+              - column: { name: password_hash,  value: "$2a$10$BlN.C0z1ZR5pI6ZDC8MQMeSw2kxn5NqiY4TBI8Ttk65y35wSD2yJy" }
               - column: { name: phone,          value: "" }
               - column: { name: role,           value: "USER" }
 
@@ -29,7 +28,7 @@ databaseChangeLog:
               - column: { name: email,          value: "user@user.it" }
               - column: { name: first_name,     value: "User" }
               - column: { name: last_name,      value: "User" }
-              - column: { name: password_hash,  value: "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58846O0u7Z6C" }
+              - column: { name: password_hash,  value: "$2a$10$Jwo3eExz0OhR.uh0YjOoe.t7y0dmTPCDxOpMZrDIGUgfq16OoX4Ze" }
               - column: { name: phone,          value: "" }
               - column: { name: role,           value: "USER" }
 
@@ -42,6 +41,6 @@ databaseChangeLog:
               - column: { name: email,          value: "marco@marco.it" }
               - column: { name: first_name,     value: "Marco" }
               - column: { name: last_name,      value: "Marco" }
-              - column: { name: password_hash,  value: "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6L6s58846O0u7Z6C" }
+              - column: { name: password_hash,  value: "$2a$10$hYIXFntnZfMInd5ViWVsReY6CcV4PfzJC6ALV8jrRD8qGeFq1T9RO" }
               - column: { name: phone,          value: "" }
               - column: { name: role,           value: "USER" }

@@ -39,7 +39,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status
-                  type: banking_payments.payment_status
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
@@ -49,7 +49,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: category
-                  type: banking_payments.payment_category
+                  type: VARCHAR(255)
                   constraints:
                     nullable: true
 

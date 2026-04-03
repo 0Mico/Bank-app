@@ -49,7 +49,7 @@ databaseChangeLog:
                     nullable: true
               - column:
                   name: role
-                  type: banking_auth.user_role
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
  
