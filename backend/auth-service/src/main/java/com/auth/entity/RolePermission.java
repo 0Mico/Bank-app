@@ -7,7 +7,9 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "role_permissions")
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class RolePermission {
 
     @Id

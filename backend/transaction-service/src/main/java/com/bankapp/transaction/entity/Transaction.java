@@ -10,9 +10,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
-
 @Entity
 @Table(name = "transactions")
 @Getter @Setter 
@@ -30,12 +27,10 @@ public class Transaction {
     private Long accountId;
 
     @Enumerated(EnumType.STRING)
-    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(nullable = false)
     private TransactionType type;
 
     @Enumerated(EnumType.STRING)
-    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(nullable = false)
     private TransactionCategory category;
 

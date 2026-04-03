@@ -52,6 +52,8 @@ public class AuthService {
         }
 
         User user = userFactory.create(request);
+        userService.save(user);
+        
         try {
             accountServiceClient.createAccount(user.getId());
         } catch (Exception e) {

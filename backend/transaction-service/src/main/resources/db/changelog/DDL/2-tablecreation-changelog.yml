@@ -24,7 +24,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: category
-                  type: banking_transactions.transaction_category
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
@@ -44,7 +44,7 @@ databaseChangeLog:
                     nullable: true
               - column:
                   name: type
-                  type: banking_transactions.transaction_type
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:

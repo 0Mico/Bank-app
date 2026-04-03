@@ -16,8 +16,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
         @Query(value = "SELECT * FROM transactions WHERE " +
             "(:userId IS NULL OR user_id = :userId) AND " +
             "(:accountId IS NULL OR account_id = :accountId) AND " +
-            "(:category IS NULL OR category = CAST(:category AS transaction_category)) AND " +
-            "(:type IS NULL OR type = CAST(:type AS transaction_type)) AND " +
+            "(:category IS NULL OR category = :category) AND " +
+            "(:type IS NULL OR type = :type) AND " +
             "(:from IS NULL OR created_at >= CAST(:from AS timestamptz)) AND " +
             "(:to IS NULL OR created_at <= CAST(:to AS timestamptz)) " +
             "ORDER BY created_at DESC",

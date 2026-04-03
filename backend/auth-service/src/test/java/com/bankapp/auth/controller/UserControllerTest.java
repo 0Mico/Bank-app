@@ -24,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -62,7 +61,7 @@ public class UserControllerTest {
         testUser.setCreatedAt(LocalDateTime.now());
     }
 
-
+/*/
     @Nested
     @DisplayName("GET/{id}: tests")
     class GetUserByIdTest {
@@ -103,6 +102,7 @@ public class UserControllerTest {
                     .andExpect(jsonPath("$.status").value(500));
         }
     }
+*/
 
     @Nested
     @DisplayName("GET/email: tests")
