@@ -1,4 +1,4 @@
-package com.bankapp.payment.service;
+package com.payment.service;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import com.common.dto.AccountDTO;
 import com.common.exception.ResourceNotFoundException;
 import com.common.interfaces.AccountServiceApi;
-import com.bankapp.payment.dtos.FavoriteOperationDTO;
-import com.bankapp.payment.entity.FavoriteOperation;
-import com.bankapp.payment.repository.FavoriteOperationRepository;
+import com.payment.dtos.FavoriteOperationDTO;
+import com.payment.entity.FavoriteOperation;
+import com.payment.repository.FavoriteOperationRepository;
 
 @Service
 public class FavoriteOperationService {

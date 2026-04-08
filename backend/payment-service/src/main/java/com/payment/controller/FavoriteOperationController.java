@@ -1,7 +1,7 @@
-package com.bankapp.payment.controller;
+package com.payment.controller;
 
-import com.bankapp.payment.dtos.FavoriteOperationDTO;
-import com.bankapp.payment.service.FavoriteOperationService;
+import com.payment.dtos.FavoriteOperationDTO;
+import com.payment.service.FavoriteOperationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

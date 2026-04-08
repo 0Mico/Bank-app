@@ -1,4 +1,4 @@
-package com.bankapp.payment.dtos;
+package com.payment.dtos;
 
 import com.common.enums.PaymentStatus;
 import com.common.enums.TransactionCategory;

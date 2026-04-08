@@ -1,4 +1,4 @@
-package com.bankapp.payment.entity;
+package com.payment.entity;
 
 import com.common.enums.PaymentStatus;
 import com.common.enums.TransactionCategory;

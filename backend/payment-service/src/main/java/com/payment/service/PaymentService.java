@@ -1,6 +1,6 @@
-package com.bankapp.payment.service;
+package com.payment.service;
 
-import com.bankapp.payment.client.TransactionServiceClient;
+import com.payment.client.TransactionServiceClient;
 import com.common.dto.AccountDTO;
 import com.common.model.TransactionModel;
 import com.common.enums.PaymentStatus;
@@ -12,10 +12,10 @@ import com.common.exception.PaymentCompensationException;
 import com.common.exception.ResourceNotFoundException;
 import com.common.interfaces.AccountServiceApi;
 import com.common.interfaces.TransactionServiceApi;
-import com.bankapp.payment.dtos.PaymentRequest;
-import com.bankapp.payment.dtos.PaymentResponse;
-import com.bankapp.payment.entity.Payment;
-import com.bankapp.payment.repository.PaymentRepository;
+import com.payment.dtos.PaymentRequest;
+import com.payment.dtos.PaymentResponse;
+import com.payment.entity.Payment;
+import com.payment.repository.PaymentRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

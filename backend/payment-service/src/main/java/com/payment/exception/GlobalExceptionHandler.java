@@ -1,4 +1,4 @@
-package com.bankapp.payment.exception;
+package com.payment.exception;
 
 import com.common.exception.*;
 import org.springframework.http.HttpStatus;

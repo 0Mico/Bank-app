@@ -1,4 +1,4 @@
-package com.bankapp.payment;
+package com.payment;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;

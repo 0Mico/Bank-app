@@ -1,8 +1,8 @@
-package com.bankapp.payment.controller;
+package com.payment.controller;
 
-import com.bankapp.payment.dtos.PaymentRequest;
-import com.bankapp.payment.dtos.PaymentResponse;
-import com.bankapp.payment.service.PaymentService;
+import com.payment.dtos.PaymentRequest;
+import com.payment.dtos.PaymentResponse;
+import com.payment.service.PaymentService;
 
 import jakarta.validation.Valid;
 

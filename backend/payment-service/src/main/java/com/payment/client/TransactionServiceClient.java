@@ -1,4 +1,4 @@
-package com.bankapp.payment.client;
+package com.payment.client;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

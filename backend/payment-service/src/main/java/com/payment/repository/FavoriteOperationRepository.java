@@ -1,4 +1,4 @@
-package com.bankapp.payment.repository;
+package com.payment.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.bankapp.payment.entity.FavoriteOperation;
+import com.payment.entity.FavoriteOperation;
 
 @Repository
 public interface FavoriteOperationRepository extends JpaRepository<FavoriteOperation, Long> {

@@ -1,4 +1,4 @@
-package com.bankapp.payment.entity;
+package com.payment.entity;
 
 import java.math.BigDecimal;
 

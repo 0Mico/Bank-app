@@ -1,4 +1,4 @@
-package com.bankapp.payment.dtos;
+package com.payment.dtos;
 
 import java.math.BigDecimal;
 

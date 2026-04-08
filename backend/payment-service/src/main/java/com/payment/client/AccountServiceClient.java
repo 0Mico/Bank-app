@@ -1,4 +1,4 @@
-package com.bankapp.payment.client;
+package com.payment.client;
 
 import com.common.dto.AccountDTO;
 import com.common.exception.ClientErrorMapper;
