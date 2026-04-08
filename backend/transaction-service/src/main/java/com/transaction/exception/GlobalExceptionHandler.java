@@ -1,4 +1,4 @@
-package com.bankapp.transaction.exception;
+package com.transaction.exception;
 
 import com.common.exception.ErrorResponse;
 import com.common.exception.ResourceNotFoundException;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import com.common.dto.TransactionDTO;
+import com.common.model.TransactionModel;
 import com.common.exception.ClientErrorMapper;
 import com.common.interfaces.TransactionServiceApi;
 
@@ -22,38 +22,38 @@ public class TransactionServiceClient implements TransactionServiceApi {
     }
 
     @Override
-    public TransactionDTO createTransaction(TransactionDTO transaction) {
+    public TransactionModel createTransaction(TransactionModel transaction) {
         try {
             return restClient.post()
                 .uri(transactionServiceUrl + transactionEndpoint)
                 .body(transaction)
                 .retrieve()
-                .body(TransactionDTO.class);
+                .body(TransactionModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
 
     @Override
-    public TransactionDTO getTransactionById(Long transactionId) {
+    public TransactionModel getTransactionById(Long transactionId) {
         try {
             return restClient.get()
                 .uri(transactionServiceUrl + transactionEndpoint + "/" + transactionId)
                 .retrieve()
-                .body(TransactionDTO.class);
+                .body(TransactionModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
 
     @Override
-    public TransactionDTO updateTransaction(Long id, TransactionDTO transaction) {
+    public TransactionModel updateTransaction(Long id, TransactionModel transaction) {
         try {
             return restClient.put()
                 .uri(transactionServiceUrl + transactionEndpoint + "/" + id)
                 .body(transaction)
                 .retrieve()
-                .body(TransactionDTO.class);
+                .body(TransactionModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("transaction-service", e);        
         }

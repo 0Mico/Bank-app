@@ -2,7 +2,7 @@ package com.bankapp.payment.service;
 
 import com.bankapp.payment.client.TransactionServiceClient;
 import com.common.dto.AccountDTO;
-import com.common.dto.TransactionDTO;
+import com.common.model.TransactionModel;
 import com.common.enums.PaymentStatus;
 import com.common.enums.TransactionCategory;
 import com.common.enums.TransactionType;
@@ -73,7 +73,7 @@ public class PaymentService {
         // Record transactions via transaction-service
         String refId = UUID.randomUUID().toString();
         try {
-            TransactionDTO debitTxn = new TransactionDTO();
+            TransactionModel debitTxn = new TransactionModel();
             debitTxn.setUserId(fromAccount.getUserId());
             debitTxn.setAccountId(fromAccount.getId());
             debitTxn.setType(TransactionType.DEBIT);
@@ -84,7 +84,7 @@ public class PaymentService {
             debitTxn.setCounterpartyIban(toAccount.getIban());
             transactionClient.createTransaction(debitTxn);
 
-            TransactionDTO creditTxn = new TransactionDTO();
+            TransactionModel creditTxn = new TransactionModel();
             creditTxn.setUserId(toAccount.getUserId());
             creditTxn.setAccountId(toAccount.getId());
             creditTxn.setType(TransactionType.CREDIT);

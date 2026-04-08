@@ -43,10 +43,6 @@ export const userApi = {
 // Transactions
 export const transactionApi = {
     list: (params?: Record<string, string>) => api.get<Transaction[]>('/transactions', { params }),
-    get: (id: number) => api.get<Transaction>(`/transactions/${id}`),
-    create: (data: Partial<Transaction>) => api.post<Transaction>('/transactions', data),
-    update: (id: number, data: Partial<Transaction>) => api.put<Transaction>(`/transactions/${id}`, data),
-    delete: (id: number) => api.delete(`/transactions/${id}`),
     categories: () => api.get<string[]>('/transactions/categories'),
 };
 

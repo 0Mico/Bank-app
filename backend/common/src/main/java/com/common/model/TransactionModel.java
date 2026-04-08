@@ -1,4 +1,4 @@
-package com.common.dto;
+package com.common.model;
 
 import com.common.enums.TransactionCategory;
 import com.common.enums.TransactionType;
@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionDTO {
+public class TransactionModel {
     private Long id;
     private Long userId;
     private Long accountId;
