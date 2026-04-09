@@ -2,6 +2,7 @@ package com.payment.service;
 
 import java.util.List;
 
+import com.payment.factory.FavoriteOperationFactory;
 import org.springframework.stereotype.Service;
 
 import com.common.exception.ResourceNotFoundException;
@@ -13,9 +14,11 @@ import com.payment.repository.FavoriteOperationRepository;
 public class FavoriteOperationService {
 
     private final FavoriteOperationRepository favOpRepo;
+    private final FavoriteOperationFactory favOpFactory;
 
-    public FavoriteOperationService(FavoriteOperationRepository favOpRepo) {
+    public FavoriteOperationService(FavoriteOperationRepository favOpRepo, FavoriteOperationFactory favOpFactory) {
         this.favOpRepo = favOpRepo;
+        this.favOpFactory = favOpFactory;
     }
 
     public List<FavoriteOperation> getFavoriteByAccountId(Long accountId) {
@@ -23,13 +26,7 @@ public class FavoriteOperationService {
     }
 
     public FavoriteOperation createFavorite(FavoriteOperationDTO dto) {
-        FavoriteOperation op = new FavoriteOperation();
-        op.setAccountId(dto.getAccountId());
-        op.setName(dto.getName());
-        op.setRecipientIban(dto.getRecipientIban());
-        op.setAmount(dto.getAmount());
-        op.setCategory(dto.getCategory());
-        op.setDescription(dto.getDescription());
+        FavoriteOperation op = favOpFactory.create(dto);
         return favOpRepo.save(op);
     }
     
