@@ -33,7 +33,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
             throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
-
+/*
     @Override
     public TransactionModel getTransactionById(Long transactionId) {
         try {
@@ -70,4 +70,6 @@ public class TransactionServiceClient implements TransactionServiceApi {
             throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
+
+ */
 }

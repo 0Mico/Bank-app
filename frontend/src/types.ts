@@ -44,6 +44,19 @@ export interface Transaction {
 }
 
 export interface Payment {
+    payment: {
+        id: number;
+        fromAccountId: number;
+        toAccountId: number;
+        amount: number;
+        status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+        category?: string;
+        description?: string;
+        createdAt: string;
+    };
+    fromAccount?: Account;
+    toAccount?: Account;
+    /*
     id: number;
     fromAccountId: number;
     toAccountId: number;
@@ -56,6 +69,7 @@ export interface Payment {
     category?: string;
     description?: string;
     createdAt: string;
+    */
 }
 
 export interface FavoriteOperation {

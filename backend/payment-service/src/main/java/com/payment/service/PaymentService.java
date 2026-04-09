@@ -13,7 +13,6 @@ import com.common.exception.ResourceNotFoundException;
 import com.common.interfaces.AccountServiceApi;
 import com.common.interfaces.TransactionServiceApi;
 import com.payment.dtos.PaymentRequest;
-import com.payment.dtos.PaymentResponse;
 import com.payment.entity.Payment;
 import com.payment.repository.PaymentRepository;
 
@@ -42,7 +41,7 @@ public class PaymentService {
     }
 
     @Transactional
-    public PaymentResponse processPayment(PaymentRequest request) {
+    public Payment processPayment(PaymentRequest request) {
         AccountDTO fromAccount = accountServiceClient.getAccountById(request.getFromAccountId());   
         AccountDTO toAccount = accountServiceClient.getAccountByIban(request.getToIban());
 
@@ -98,51 +97,25 @@ public class PaymentService {
             // Log error but don't fail the payment — transactions are supplementary
             logger.info("Warning: Failed to record transaction: " + e.getMessage());
         }
-        return toDTO(payment, fromAccount, toAccount);
+        return payment;
     }
 
-    public PaymentResponse getPaymentById(Long id) {
-        Payment payment = paymentRepository.findById(id)
+    /*
+    public Payment getPaymentById(Long id) {
+        return paymentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment", id));
-        AccountDTO from = accountServiceClient.getAccountById(payment.getFromAccountId());
-        AccountDTO to = accountServiceClient.getAccountById(payment.getToAccountId());
-        return toDTO(payment, from, to);
     }
 
-    public List<PaymentResponse> getPaymentsByUserId(Long userId) {
+    public List<Payment> getPaymentsByUserId(Long userId) {
         List<Long> accountIds = accountServiceClient.getAccountsByUserId(userId).stream()
                 .map(AccountDTO::getId).toList();
         if (accountIds.isEmpty()) {
             return List.of();
         }
-        return paymentRepository.findByFromAccountIdInOrToAccountIdInOrderByCreatedAtDesc(accountIds, accountIds).stream()
-                .map(p -> {
-                    AccountDTO from = accountServiceClient.getAccountById(p.getFromAccountId());
-                    AccountDTO to = accountServiceClient.getAccountById(p.getToAccountId());
-                    return toDTO(p, from, to);
-                })
-                .toList();
+        return paymentRepository.findByFromAccountIdInOrToAccountIdInOrderByCreatedAtDesc(accountIds, accountIds);
     }
+    */
 
-    public List<AccountDTO> getAccountsByUserId(Long userId) {
-        return accountServiceClient.getAccountsByUserId(userId);
-    }
-
-    private PaymentResponse toDTO(Payment payment, AccountDTO from, AccountDTO to) {
-        PaymentResponse dto = new PaymentResponse();
-        dto.setId(payment.getId());
-        dto.setFromAccountId(payment.getFromAccountId());
-        dto.setToAccountId(payment.getToAccountId());
-        dto.setFromUserId(from.getUserId());
-        dto.setToUserId(to.getUserId());
-        dto.setAmount(payment.getAmount());
-        dto.setCurrency(from.getCurrency());
-        dto.setStatus(payment.getStatus());
-        dto.setCategory(payment.getCategory());
-        dto.setDescription(payment.getDescription());
-        dto.setCreatedAt(payment.getCreatedAt());
-        return dto;
-    }
 
     private void debitSender(Long fromAccountId, BigDecimal amount) {
         accountServiceClient.updateBalanceInternal(fromAccountId, amount.negate());
@@ -160,7 +133,6 @@ public class PaymentService {
         payment.setDescription(hasDesc ? request.getDescription() : "Payment to " + fromAccount.getIban());
         payment.setCategory(request.getCategory() != null ? request.getCategory() : TransactionCategory.TRANSFER);
         payment.setStatus(PaymentStatus.COMPLETED);
-        payment = paymentRepository.save(payment);
-        return payment;
+        return paymentRepository.save(payment);
     }
 }
