@@ -1,4 +1,4 @@
-package com.payment.dtos;
+package com.payment.models;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoriteOperationDTO {
+public class FavoriteOperationModel {
     private Long id;
     private Long accountId;
     private String name;

@@ -1,6 +1,7 @@
 package com.bankapp.account.service;
 
 import com.common.dto.AccountDTO;
+import com.common.dto.RecipientInfoDTO;
 import com.common.model.TransactionModel;
 import com.common.enums.TransactionCategory;
 import com.common.enums.TransactionType;
@@ -113,6 +114,26 @@ public class AccountService {
         account.setName(name);
         account = accountRepository.save(account);
         return toDTO(account);
+    }
+
+    public RecipientInfoDTO determineOwnershipStatus(Long senderAccountId, String recipientIban) {
+        Account senderAccount = getAccountEntityById(senderAccountId);
+        List<Account> userAccounts = accountRepository.findAllByUserId(senderAccount.getUserId())
+            .orElse(List.of());
+
+        Account matchingAccount = userAccounts.stream()
+            .filter(acc -> acc.getIban().equals(recipientIban))
+            .findFirst()
+            .orElse(null);
+
+        if (matchingAccount != null) {
+            String name = (matchingAccount.getName() != null && !matchingAccount.getName().isEmpty()) 
+                ? matchingAccount.getName() 
+                : matchingAccount.getIban();
+            return new RecipientInfoDTO("INTERNAL", name);
+        } else {
+            return new RecipientInfoDTO("EXTERNAL", null);
+        }
     }
 
     public void deleteAccount(Long accountId) {

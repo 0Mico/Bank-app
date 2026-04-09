@@ -1,6 +1,9 @@
 package com.payment.controller;
 
+import com.payment.assembler.FavoriteOperationModelAssembler;
 import com.payment.dtos.FavoriteOperationDTO;
+import com.payment.entity.FavoriteOperation;
+import com.payment.models.FavoriteOperationModel;
 import com.payment.service.FavoriteOperationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +15,23 @@ import java.util.List;
 public class FavoriteOperationController {
 
     private final FavoriteOperationService favoriteOperationService;
+    private final FavoriteOperationModelAssembler favoriteOperationModelAssembler;
 
-    public FavoriteOperationController(FavoriteOperationService favoriteOperationService) {
+    public FavoriteOperationController(FavoriteOperationService favoriteOperationService, FavoriteOperationModelAssembler favoriteOperationModelAssembler) {
         this.favoriteOperationService = favoriteOperationService;
+        this.favoriteOperationModelAssembler = favoriteOperationModelAssembler;
     }
 
     @GetMapping("/account/{accountId}")
-    public ResponseEntity<List<FavoriteOperationDTO>> getFavoritesByAccountId(@PathVariable Long accountId) {
-        List<FavoriteOperationDTO> favorites = favoriteOperationService.getFavoriteByAccountId(accountId);
-        return ResponseEntity.ok(favorites);
+    public ResponseEntity<List<FavoriteOperationModel>> getFavoritesByAccountId(@PathVariable Long accountId) {
+        List<FavoriteOperation> operations = favoriteOperationService.getFavoriteByAccountId(accountId);
+        return ResponseEntity.ok(favoriteOperationModelAssembler.toModels(operations));
     }
 
     @PostMapping
-    public ResponseEntity<FavoriteOperationDTO> createFavorite(@RequestBody FavoriteOperationDTO dto) {
-        FavoriteOperationDTO favorite = favoriteOperationService.createFavorite(dto);
-        return ResponseEntity.ok(favorite);
+    public ResponseEntity<FavoriteOperationModel> createFavorite(@RequestBody FavoriteOperationDTO dto) {
+        FavoriteOperation operation = favoriteOperationService.createFavorite(dto);
+        return ResponseEntity.ok(favoriteOperationModelAssembler.toModel(operation));
     }
 
     @DeleteMapping("/{id}")

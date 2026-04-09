@@ -1,6 +1,7 @@
 package com.payment.client;
 
 import com.common.dto.AccountDTO;
+import com.common.dto.RecipientInfoDTO;
 import com.common.exception.ClientErrorMapper;
 import com.common.interfaces.AccountServiceApi;
 
@@ -66,6 +67,18 @@ public class AccountServiceClient implements AccountServiceApi {
                     .uri(accountServiceUrl + "/api/accounts/internal/" + accountId + "/balance?amount=" + amountToAdd.toString())
                     .retrieve()
                     .toBodilessEntity();
+        } catch (Exception e) {
+            throw ClientErrorMapper.handleException("account-service", e);
+        }
+    }
+
+    @Override
+    public RecipientInfoDTO analyzeRecipient(Long senderAccountId, String recipientIban) {
+        try {
+            return restClient.get()
+                    .uri(accountServiceUrl + "/api/accounts/ownership-status?senderAccountId=" + senderAccountId + "&recipientIban=" + recipientIban)
+                    .retrieve()
+                    .body(RecipientInfoDTO.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("account-service", e);
         }
