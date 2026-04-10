@@ -1,17 +1,15 @@
 package com.transaction.factory;
 
 import com.transaction.entity.Transaction;
-
 import org.springframework.stereotype.Component;
-
+import com.common.dto.TransactionDTO;
 import com.common.enums.TransactionCategory;
-import com.common.model.TransactionModel;
 
 @Component
 public class ConcreteTransactionFactory implements TransactionFactory {
 
     @Override
-    public Transaction create(TransactionModel dto) {
+    public Transaction create(TransactionDTO dto) {
         Transaction txn = new Transaction();
         txn.setUserId(dto.getUserId());
         txn.setAccountId(dto.getAccountId());

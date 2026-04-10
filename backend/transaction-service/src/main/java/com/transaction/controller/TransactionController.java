@@ -1,5 +1,6 @@
 package com.transaction.controller;
 
+import com.common.dto.TransactionDTO;
 import com.common.model.TransactionModel;
 import com.common.enums.TransactionCategory;
 import com.common.enums.TransactionType;
@@ -26,7 +27,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionModel> createTransaction(@RequestBody TransactionModel dto) {
+    public ResponseEntity<TransactionModel> createTransaction(@RequestBody TransactionDTO dto) {
         Transaction transaction = transactionService.createTransaction(dto);
         return ResponseEntity.ok(transactionModelAssembler.toModel(transaction));
     }

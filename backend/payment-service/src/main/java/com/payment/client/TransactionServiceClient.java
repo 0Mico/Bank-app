@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import com.common.dto.TransactionDTO;
 import com.common.model.TransactionModel;
 import com.common.exception.ClientErrorMapper;
 import com.common.interfaces.TransactionServiceApi;
@@ -22,7 +23,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
     }
 
     @Override
-    public TransactionModel createTransaction(TransactionModel transaction) {
+    public TransactionModel createTransaction(TransactionDTO transaction) {
         try {
             return restClient.post()
                 .uri(transactionServiceUrl + transactionEndpoint)
