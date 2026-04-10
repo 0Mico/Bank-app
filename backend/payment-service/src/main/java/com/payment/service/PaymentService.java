@@ -1,6 +1,5 @@
 package com.payment.service;
 
-import com.payment.client.TransactionServiceClient;
 import com.common.dto.AccountDTO;
 import com.common.model.TransactionModel;
 import com.common.enums.TransactionType;
@@ -11,9 +10,11 @@ import com.common.interfaces.AccountServiceApi;
 import com.common.interfaces.TransactionServiceApi;
 import com.payment.dto.PaymentDTO;
 import com.payment.entity.Payment;
-import com.payment.factory.ConcretePaymentFactory;
 import com.payment.factory.PaymentFactory;
 import com.payment.repository.PaymentRepository;
+import com.payment.service.baseService.BasePaymentService;
+
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,8 @@ import java.util.logging.Logger;
 import java.util.UUID;
 
 @Service
-public class PaymentService {
+@RequiredArgsConstructor
+public class PaymentService implements BasePaymentService {
 
     private final Logger logger = Logger.getLogger(PaymentService.class.getName());
 
@@ -32,15 +34,13 @@ public class PaymentService {
     private final TransactionServiceApi transactionClient;
     private final PaymentFactory paymentFactory;
 
-    public PaymentService(PaymentRepository paymentRepository, AccountServiceApi accountServiceClient,
-            TransactionServiceClient transactionClient, ConcretePaymentFactory paymentFactory) {
-        this.paymentRepository = paymentRepository;
-        this.accountServiceClient = accountServiceClient;
-        this.transactionClient = transactionClient;
-        this.paymentFactory = paymentFactory;
+    @Override
+    public PaymentRepository getRepository() {
+        return this.paymentRepository;
     }
 
     @Transactional
+    @Override
     public Payment processPayment(PaymentDTO dto) {
         AccountDTO fromAccount = accountServiceClient.getAccountById(dto.getFromAccountId());   
         AccountDTO toAccount = accountServiceClient.getAccountByIban(dto.getToIban());
