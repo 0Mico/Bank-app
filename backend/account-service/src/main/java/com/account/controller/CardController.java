@@ -1,7 +1,7 @@
-package com.bankapp.account.controller;
+package com.account.controller;
 
-import com.bankapp.account.dtos.CardDTO;
-import com.bankapp.account.service.CardService;
+import com.account.dtos.CardDTO;
+import com.account.service.CardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

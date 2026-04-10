@@ -1,4 +1,4 @@
-package com.bankapp.account.service;
+package com.account.service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.common.exception.ResourceNotFoundException;
 import com.common.exception.UnauthorizedException;
-import com.bankapp.account.entity.Card;
-import com.bankapp.account.dtos.CardDTO;
-import com.bankapp.account.entity.Account;
-import com.bankapp.account.repository.CardRepository;
-import com.bankapp.account.repository.AccountRepository;
+import com.account.entity.Card;
+import com.account.dtos.CardDTO;
+import com.account.entity.Account;
+import com.account.repository.CardRepository;
+import com.account.repository.AccountRepository;
 
 @Service
 public class CardService {

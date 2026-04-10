@@ -1,4 +1,4 @@
-package com.bankapp.account.service;
+package com.account.service;
 
 import com.common.dto.AccountDTO;
 import com.common.dto.RecipientInfoDTO;
@@ -7,9 +7,9 @@ import com.common.enums.TransactionCategory;
 import com.common.enums.TransactionType;
 import com.common.exception.BadRequestException;
 import com.common.exception.ResourceNotFoundException;
-import com.bankapp.account.client.TransactionServiceClient;
-import com.bankapp.account.entity.Account;
-import com.bankapp.account.repository.AccountRepository;
+import com.account.client.TransactionServiceClient;
+import com.account.entity.Account;
+import com.account.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;

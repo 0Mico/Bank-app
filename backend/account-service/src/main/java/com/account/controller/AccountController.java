@@ -1,9 +1,9 @@
 
-package com.bankapp.account.controller;
+package com.account.controller;
 
-import com.bankapp.account.dtos.DepositDTO;
-import com.bankapp.account.entity.Account;
-import com.bankapp.account.service.AccountService;
+import com.account.dtos.DepositDTO;
+import com.account.entity.Account;
+import com.account.service.AccountService;
 import com.common.dto.AccountDTO;
 import com.common.dto.RecipientInfoDTO;
 

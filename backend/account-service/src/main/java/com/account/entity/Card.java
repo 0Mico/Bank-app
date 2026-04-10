@@ -1,4 +1,4 @@
-package com.bankapp.account.entity;
+package com.account.entity;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package com.bankapp.account.client;
+package com.account.client;
 
 import com.common.model.TransactionModel;
 import com.common.exception.ClientErrorMapper;

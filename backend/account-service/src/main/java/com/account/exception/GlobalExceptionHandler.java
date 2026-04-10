@@ -1,4 +1,4 @@
-package com.bankapp.account.exception;
+package com.account.exception;
 
 import com.common.exception.BadRequestException;
 import com.common.exception.ErrorResponse;

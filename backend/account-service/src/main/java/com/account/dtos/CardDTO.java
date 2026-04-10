@@ -1,4 +1,4 @@
-package com.bankapp.account.dtos;
+package com.account.dtos;
 
 import java.time.LocalDate;
 

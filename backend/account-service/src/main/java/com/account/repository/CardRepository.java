@@ -1,4 +1,4 @@
-package com.bankapp.account.repository;
+package com.account.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.bankapp.account.entity.Card;
+import com.account.entity.Card;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
