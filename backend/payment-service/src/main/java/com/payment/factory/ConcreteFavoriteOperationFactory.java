@@ -1,6 +1,6 @@
 package com.payment.factory;
 
-import com.payment.dtos.FavoriteOperationDTO;
+import com.payment.dto.FavoriteOperationDTO;
 import com.payment.entity.FavoriteOperation;
 import org.springframework.stereotype.Component;
 

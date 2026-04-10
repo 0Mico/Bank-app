@@ -1,7 +1,7 @@
 package com.payment.controller;
 
 import com.payment.assembler.FavoriteOperationModelAssembler;
-import com.payment.dtos.FavoriteOperationDTO;
+import com.payment.dto.FavoriteOperationDTO;
 import com.payment.entity.FavoriteOperation;
 import com.payment.models.FavoriteOperationModel;
 import com.payment.service.FavoriteOperationService;

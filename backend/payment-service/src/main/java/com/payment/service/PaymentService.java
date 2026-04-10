@@ -3,17 +3,16 @@ package com.payment.service;
 import com.payment.client.TransactionServiceClient;
 import com.common.dto.AccountDTO;
 import com.common.model.TransactionModel;
-import com.common.enums.PaymentStatus;
-import com.common.enums.TransactionCategory;
 import com.common.enums.TransactionType;
 import com.common.exception.BadRequestException;
 import com.common.exception.InsufficientFundsException;
 import com.common.exception.PaymentCompensationException;
-import com.common.exception.ResourceNotFoundException;
 import com.common.interfaces.AccountServiceApi;
 import com.common.interfaces.TransactionServiceApi;
-import com.payment.dtos.PaymentRequest;
+import com.payment.dto.PaymentDTO;
 import com.payment.entity.Payment;
+import com.payment.factory.ConcretePaymentFactory;
+import com.payment.factory.PaymentFactory;
 import com.payment.repository.PaymentRepository;
 
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.logging.Logger;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,42 +30,48 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final AccountServiceApi accountServiceClient;
     private final TransactionServiceApi transactionClient;
+    private final PaymentFactory paymentFactory;
 
     public PaymentService(PaymentRepository paymentRepository, AccountServiceApi accountServiceClient,
-            TransactionServiceClient transactionClient) {
+            TransactionServiceClient transactionClient, ConcretePaymentFactory paymentFactory) {
         this.paymentRepository = paymentRepository;
         this.accountServiceClient = accountServiceClient;
         this.transactionClient = transactionClient;
+        this.paymentFactory = paymentFactory;
     }
 
     @Transactional
-    public Payment processPayment(PaymentRequest request) {
-        AccountDTO fromAccount = accountServiceClient.getAccountById(request.getFromAccountId());   
-        AccountDTO toAccount = accountServiceClient.getAccountByIban(request.getToIban());
+    public Payment processPayment(PaymentDTO dto) {
+        AccountDTO fromAccount = accountServiceClient.getAccountById(dto.getFromAccountId());   
+        AccountDTO toAccount = accountServiceClient.getAccountByIban(dto.getToIban());
 
         if (fromAccount.getId().equals(toAccount.getId())) {
             throw new BadRequestException("Cannot send payment to yourself");
         }
-        if (fromAccount.getBalance().compareTo(request.getAmount()) < 0) {
+        if (fromAccount.getBalance().compareTo(dto.getAmount()) < 0) {
             throw new InsufficientFundsException("Insufficient balance. Available: " + fromAccount.getBalance());
         }
 
-        debitSender(fromAccount.getId(), request.getAmount());
+        debitSender(fromAccount.getId(), dto.getAmount());
         try {
-            creditReceiver(toAccount.getId(), request.getAmount());
+            creditReceiver(toAccount.getId(), dto.getAmount());
         } catch (Exception e) {
             try {
-                creditReceiver(fromAccount.getId(), request.getAmount()); // Reverse debit
+                creditReceiver(fromAccount.getId(), dto.getAmount()); // Reverse debit
             } catch (Exception compensatiException) {
                 throw new PaymentCompensationException("Payment went wrong. Failed debit compensation for account " + fromAccount.getId());
             }
             throw new BadRequestException("Payment went wrong. Failed credit for account " + toAccount.getId());
         }
 
-        String userDesc = request.getDescription();
-        boolean hasDesc = userDesc != null && !userDesc.trim().isEmpty();
+        dto.setToAccountId(toAccount.getId());
+        dto.setFromAccountIban(fromAccount.getIban());
 
-        Payment payment = createPayment(fromAccount, toAccount, request, hasDesc);
+        Payment payment = paymentFactory.create(dto);
+        payment = paymentRepository.save(payment);
+
+        String userDesc = dto.getDescription();
+        boolean hasDesc = userDesc != null && !userDesc.trim().isEmpty();
 
         // Record transactions via transaction-service
         String refId = UUID.randomUUID().toString();
@@ -77,7 +81,7 @@ public class PaymentService {
             debitTxn.setAccountId(fromAccount.getId());
             debitTxn.setType(TransactionType.DEBIT);
             debitTxn.setCategory(payment.getCategory());
-            debitTxn.setAmount(request.getAmount());
+            debitTxn.setAmount(dto.getAmount());
             debitTxn.setDescription(hasDesc ? userDesc : "Payment to " + toAccount.getIban());
             debitTxn.setReferenceId(refId);
             debitTxn.setCounterpartyIban(toAccount.getIban());
@@ -88,7 +92,7 @@ public class PaymentService {
             creditTxn.setAccountId(toAccount.getId());
             creditTxn.setType(TransactionType.CREDIT);
             creditTxn.setCategory(payment.getCategory());
-            creditTxn.setAmount(request.getAmount());
+            creditTxn.setAmount(dto.getAmount());
             creditTxn.setDescription(hasDesc ? userDesc : "Payment from " + fromAccount.getIban());
             creditTxn.setReferenceId(refId);
             creditTxn.setCounterpartyIban(fromAccount.getIban());
@@ -125,14 +129,4 @@ public class PaymentService {
          accountServiceClient.updateBalanceInternal(toAccountId, amount);
     }
 
-    private Payment createPayment(AccountDTO fromAccount, AccountDTO toAccount, PaymentRequest request, boolean hasDesc) {
-        Payment payment = new Payment();
-        payment.setFromAccountId(fromAccount.getId());
-        payment.setToAccountId(toAccount.getId());
-        payment.setAmount(request.getAmount());
-        payment.setDescription(hasDesc ? request.getDescription() : "Payment to " + fromAccount.getIban());
-        payment.setCategory(request.getCategory() != null ? request.getCategory() : TransactionCategory.TRANSFER);
-        payment.setStatus(PaymentStatus.COMPLETED);
-        return paymentRepository.save(payment);
-    }
 }

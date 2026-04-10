@@ -6,7 +6,7 @@ import com.payment.factory.FavoriteOperationFactory;
 import org.springframework.stereotype.Service;
 
 import com.common.exception.ResourceNotFoundException;
-import com.payment.dtos.FavoriteOperationDTO;
+import com.payment.dto.FavoriteOperationDTO;
 import com.payment.entity.FavoriteOperation;
 import com.payment.repository.FavoriteOperationRepository;
 
