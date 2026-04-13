@@ -1,15 +1,14 @@
 package com.account.service;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 
+import com.account.factory.CardFactory;
+import com.account.factory.ConcreteCardFactory;
 import org.springframework.stereotype.Service;
 
 import com.common.exception.ResourceNotFoundException;
 import com.common.exception.UnauthorizedException;
 import com.account.entity.Card;
-import com.account.entity.Account;
 import com.account.repository.CardRepository;
 import com.account.repository.AccountRepository;
 
@@ -18,51 +17,31 @@ public class CardService {
 
     private final CardRepository cardRepo;
     private final AccountRepository accountRepo;
-    private final Random random = new Random();
+    private final CardFactory cardFactory;
 
-
-    public CardService(CardRepository cardRepo, AccountRepository accountRepo) {
+    public CardService(CardRepository cardRepo, AccountRepository accountRepo, ConcreteCardFactory cardFactory) {
         this.cardRepo = cardRepo;
         this.accountRepo = accountRepo;
-    }
-
-    private String generateCardNumber() {
-        StringBuilder cardNumber = new StringBuilder();
-        for (int i = 0; i < 4; i++) {
-            int block = random.nextInt(10000);
-            cardNumber.append(String.format("%04d", block));
-            if (i < 3) {
-                cardNumber.append("-");
-            }
-        }
-        return cardNumber.toString();
-    }
-
-    private Card createNewCard(Account account) {
-        Card card = new Card();
-        card.setAccount(account);
-        card.setCardNumber(generateCardNumber());
-        
-        card.setExpiration(LocalDate.now().plusYears(5));
-        return card;
+        this.cardFactory = cardFactory;
     }
 
     public List<Card> getCardsByAccountId(Long accountId) {
-        return cardRepo.findAllByAccount_Id(accountId)
+        return cardRepo.findAllByAccountId(accountId)
             .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
     }
 
     public Card associateCard(Long accountId) {
-        Account account = accountRepo.findById(accountId)
-            .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
+        if (!accountRepo.existsById(accountId)) {
+            throw new ResourceNotFoundException("Account", accountId);
+        }
         
-        Card card = createNewCard(account);
+        Card card = cardFactory.create(accountId);
         return cardRepo.save(card);
     }
 
     public Card toggleBlockState(Long accountId, Long cardId) {
         Card card = cardRepo.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card", cardId));
-        if(!card.getAccount().getId().equals(accountId)){
+        if(!card.getAccountId().equals(accountId)){
             throw new UnauthorizedException("Card does not belong to this account");
         }
         card.setBlocked(!card.isBlocked());
@@ -71,7 +50,7 @@ public class CardService {
 
     public void deleteCard(Long accountId, Long cardId) {
         Card card = cardRepo.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card", cardId));
-        if(!card.getAccount().getId().equals(accountId)){
+        if(!card.getAccountId().equals(accountId)){
             throw new UnauthorizedException("Card does not belong to this account");
         }
         cardRepo.delete(card);

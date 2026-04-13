@@ -1,5 +1,7 @@
 package com.account.service;
 
+import com.account.factory.AccountFactory;
+import com.account.factory.ConcreteAccountFactory;
 import com.common.dto.AccountDTO;
 import com.common.dto.TransactionDTO;
 import com.common.dto.RecipientInfoDTO;
@@ -16,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.Random;
 
 @Service
 public class AccountService {
@@ -24,33 +25,18 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final TransactionServiceClient transactionClient;
     private final TransactionMapper transactionMapper;
+    private final AccountFactory accountFactory;
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private final Random random = new Random();
 
-    public AccountService(AccountRepository accountRepository, TransactionServiceClient transactionClient, TransactionMapper transactionMapper) {
+    public AccountService(AccountRepository accountRepository, TransactionServiceClient transactionClient, TransactionMapper transactionMapper, ConcreteAccountFactory accountFactory) {
         this.accountRepository = accountRepository;
         this.transactionClient = transactionClient;
         this.transactionMapper = transactionMapper;
-    }
-
-    private String createMockIban() {
-        String bankCode = "NEXS";
-        String countryCode = "IT";
-        String checkDigits = String.format("%02d", random.nextInt(100));
-        StringBuilder bban = new StringBuilder();
-        for (int i = 0; i < 22; i++) {
-            bban.append(random.nextInt(10));
-        }
-        String iban = (countryCode + checkDigits + bankCode + bban.toString().substring(0, 18)); // Total 27 chars
-        return iban;
+        this.accountFactory = accountFactory;
     }
 
     public Account createAccount(AccountDTO dto) {
-        Account account = new Account();
-        account.setUserId(dto.getUserId());
-        account.setBalance(dto.getBalance() != null ? dto.getBalance() : BigDecimal.ZERO);
-        account.setCurrency(dto.getCurrency() != null ? dto.getCurrency() : "EUR");        
-        account.setIban(createMockIban()); 
+        Account account = accountFactory.create(dto);
         return accountRepository.save(account);
     }
 
@@ -67,10 +53,6 @@ public class AccountService {
     public Account getAccountEntityByIban(String iban) {
         return accountRepository.findByIban(iban)
                 .orElseThrow(() -> new ResourceNotFoundException("Account with IBAN " + iban + " not found"));
-    }
-
-    public void saveAccount(Account account) {
-        accountRepository.save(account);
     }
 
     @Transactional

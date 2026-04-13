@@ -9,5 +9,3 @@ databaseChangeLog:
         file: db/changelog/DML/add-another-card.yml
     - include:
         file: db/changelog/DDL/2-add-cascade-delete-to-cards.yml
-    - include:
-        file: db/changelog/DDL/3-rename-isblocked-column.yml

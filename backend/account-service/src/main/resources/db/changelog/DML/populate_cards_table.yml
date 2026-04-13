@@ -3,11 +3,6 @@ databaseChangeLog:
   - changeSet:
       id: 008-populate-cards
       author: account-service
-      comment: >
-        Seed initial data for the cards table.
-        NOTE: cards with account_id 14, 15, and 17 reference accounts that are not present
-        in the dump (likely deleted during testing). Remove or adjust those rows if the FK
-        constraint is active and those accounts do not exist in your target environment.
       changes:
         - insert:
             schemaName: banking_accounts
@@ -17,7 +12,7 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 5 }
               - column: { name: card_number,  value: "0649-9167-2174-9729" }
               - column: { name: expiration,   value: "2031-03-12" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }
 
         - insert:
             schemaName: banking_accounts
@@ -27,7 +22,7 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 6 }
               - column: { name: card_number,  value: "2795-4811-8590-3288" }
               - column: { name: expiration,   value: "2031-03-04" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }
 
         - insert:
             schemaName: banking_accounts
@@ -37,7 +32,7 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 6 }
               - column: { name: card_number,  value: "0475-5553-8146-2536" }
               - column: { name: expiration,   value: "2031-03-04" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }
 
         - insert:
             schemaName: banking_accounts
@@ -47,7 +42,7 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 6 }
               - column: { name: card_number,  value: "9875-6750-8303-0303" }
               - column: { name: expiration,   value: "2031-03-04" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }
 
         - insert:
             schemaName: banking_accounts
@@ -57,7 +52,7 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 11 }
               - column: { name: card_number,  value: "8866-6593-1173-7992" }
               - column: { name: expiration,   value: "2031-03-04" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }
 
         - insert:
             schemaName: banking_accounts
@@ -67,7 +62,7 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 5 }
               - column: { name: card_number,  value: "5429-6349-8424-3702" }
               - column: { name: expiration,   value: "2031-03-09" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }
 
         - insert:
             schemaName: banking_accounts
@@ -77,7 +72,7 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 5 }
               - column: { name: card_number,  value: "0996-7540-2509-2352" }
               - column: { name: expiration,   value: "2031-03-09" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }
 
         - insert:
             schemaName: banking_accounts
@@ -87,7 +82,7 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 22 }
               - column: { name: card_number,  value: "1656-9311-3989-2564" }
               - column: { name: expiration,   value: "2031-03-11" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }
 
   - changeSet:
       id: 09-set-cards-sequence-value
