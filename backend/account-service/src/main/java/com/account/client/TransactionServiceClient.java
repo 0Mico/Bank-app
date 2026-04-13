@@ -1,5 +1,6 @@
 package com.account.client;
 
+import com.common.dto.TransactionDTO;
 import com.common.model.TransactionModel;
 import com.common.exception.ClientErrorMapper;
 
@@ -20,7 +21,7 @@ public class TransactionServiceClient {
         this.transactionServiceUrl = transactionServiceUrl;
     }
 
-    public TransactionModel createTransaction(TransactionModel dto) {
+    public TransactionModel createTransaction(TransactionDTO dto) {
         try {
             return restClient.post()
                         .uri(transactionServiceUrl + "/api/transactions")

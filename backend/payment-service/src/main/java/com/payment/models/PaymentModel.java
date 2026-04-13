@@ -1,6 +1,6 @@
 package com.payment.models;
 
-import com.common.dto.AccountDTO;
+import com.common.model.AccountModel;
 import com.payment.entity.Payment;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -17,6 +17,6 @@ import lombok.Setter;
 @Builder
 public class PaymentModel {
     private Payment payment;
-    private AccountDTO fromAccount;
-    private AccountDTO toAccount;
+    private AccountModel fromAccount;
+    private AccountModel toAccount;
 }

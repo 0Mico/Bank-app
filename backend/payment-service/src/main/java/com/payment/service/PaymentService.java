@@ -1,6 +1,6 @@
 package com.payment.service;
 
-import com.common.dto.AccountDTO;
+import com.common.model.AccountModel;
 import com.common.dto.TransactionDTO;
 import com.common.exception.BadRequestException;
 import com.common.exception.InsufficientFundsException;
@@ -44,8 +44,8 @@ public class PaymentService implements BasePaymentService {
     @Transactional
     @Override
     public Payment processPayment(PaymentDTO dto) {
-        AccountDTO fromAccount = accountServiceClient.getAccountById(dto.getFromAccountId());   
-        AccountDTO toAccount = accountServiceClient.getAccountByIban(dto.getToIban());
+        AccountModel fromAccount = accountServiceClient.getAccountById(dto.getFromAccountId());   
+        AccountModel toAccount = accountServiceClient.getAccountByIban(dto.getToIban());
 
         if (fromAccount.getId().equals(toAccount.getId())) {
             throw new BadRequestException("Cannot send payment to yourself");

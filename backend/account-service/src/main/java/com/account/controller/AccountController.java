@@ -1,11 +1,13 @@
 
 package com.account.controller;
 
+import com.account.assembler.AccountModelAssembler;
 import com.account.dtos.DepositDTO;
 import com.account.entity.Account;
 import com.account.service.AccountService;
 import com.common.dto.AccountDTO;
 import com.common.dto.RecipientInfoDTO;
+import com.common.model.AccountModel;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,46 +20,48 @@ import java.math.BigDecimal;
 public class AccountController {
 
     private final AccountService accountService;
+    private final AccountModelAssembler accountModelAssembler;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, AccountModelAssembler accountModelAssembler) {
         this.accountService = accountService;
+        this.accountModelAssembler = accountModelAssembler;
     }
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<AccountDTO> getAccountById(@PathVariable Long accountId) {
+    public ResponseEntity<AccountModel> getAccountById(@PathVariable Long accountId) {
         Account account = accountService.getAccountEntityById(accountId);
-        return ResponseEntity.ok(AccountService.toDTO(account));
+        return ResponseEntity.ok(accountModelAssembler.toModel(account));
     }
 
     @GetMapping("/userId")
-    public ResponseEntity<List<AccountDTO>> getAccounts(@RequestParam Long userId) {
-        List<AccountDTO> accounts = accountService.getAccountsByUserId(userId);
-        return ResponseEntity.ok(accounts);
+    public ResponseEntity<List<AccountModel>> getAccounts(@RequestParam Long userId) {
+        List<Account> accounts = accountService.getAccountsByUserId(userId);
+        return ResponseEntity.ok(accountModelAssembler.toModels(accounts));
     }
 
     @GetMapping("/iban")
-    public ResponseEntity<AccountDTO> getByIban(@RequestParam String iban) {
+    public ResponseEntity<AccountModel> getByIban(@RequestParam String iban) {
         Account account = accountService.getAccountEntityByIban(iban);
-        return ResponseEntity.ok(AccountService.toDTO(account));
+        return ResponseEntity.ok(accountModelAssembler.toModel(account));
     }
 
     @PostMapping
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO dto) {
-        AccountDTO account = accountService.createAccount(dto);
-        return ResponseEntity.ok(account);
+    public ResponseEntity<AccountModel> createAccount(@RequestBody AccountDTO dto) {
+        Account account = accountService.createAccount(dto);
+        return ResponseEntity.ok(accountModelAssembler.toModel(account));
     }
 
     @PostMapping("/{accountId}/deposit")
-    public ResponseEntity<AccountDTO> deposit(@PathVariable Long accountId, @RequestBody DepositDTO dto) {
-        AccountDTO account = accountService.deposit(accountId, dto.getAmount());
-        return ResponseEntity.ok(account);
+    public ResponseEntity<AccountModel> deposit(@PathVariable Long accountId, @RequestBody DepositDTO dto) {
+        Account account = accountService.deposit(accountId, dto.getAmount());
+        return ResponseEntity.ok(accountModelAssembler.toModel(account));
     }
 
     @PatchMapping("/{accountId}/name")
-    public ResponseEntity<AccountDTO> updateName(@PathVariable Long accountId, @RequestBody Map<String, String> payload) {
+    public ResponseEntity<AccountModel> updateName(@PathVariable Long accountId, @RequestBody Map<String, String> payload) {
         String name = payload.get("name");
-        AccountDTO account = accountService.updateAccountName(accountId, name);
-        return ResponseEntity.ok(account);
+        Account account = accountService.updateAccountName(accountId, name);
+        return ResponseEntity.ok(accountModelAssembler.toModel(account));
     }
 
     @PutMapping("/internal/{accountId}/balance")

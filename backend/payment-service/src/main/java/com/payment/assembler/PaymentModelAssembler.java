@@ -1,6 +1,6 @@
 package com.payment.assembler;
 
-import com.common.dto.AccountDTO;
+import com.common.model.AccountModel;
 import com.common.interfaces.AccountServiceApi;
 import com.payment.entity.Payment;
 import com.payment.mapper.PaymentModelMapper;
@@ -25,8 +25,8 @@ public class PaymentModelAssembler {
     }
 
     public PaymentModel toModel(Payment payment) {
-        AccountDTO fromAccount = accountServiceClient.getAccountById(payment.getFromAccountId());
-        AccountDTO toAccount = accountServiceClient.getAccountById(payment.getToAccountId());
+        AccountModel fromAccount = accountServiceClient.getAccountById(payment.getFromAccountId());
+        AccountModel toAccount = accountServiceClient.getAccountById(payment.getToAccountId());
         PaymentView view = paymentViewMapper.toView(payment, fromAccount, toAccount);
         return paymentModelMapper.toModel(view);
     }
