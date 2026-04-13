@@ -1,19 +1,21 @@
-package com.account.dtos;
-
-import java.time.LocalDate;
+package com.account.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardDTO {
+@Builder
+public class CardModel {
     private Long id;
     private Long accountId;
     private String cardNumber;

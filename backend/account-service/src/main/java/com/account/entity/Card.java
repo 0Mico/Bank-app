@@ -36,12 +36,12 @@ public class Card {
     private LocalDate expiration;
 
     @Column(nullable = false)
-    private boolean isBlocked = false;
+    private boolean blocked = false;
 
-    public Card(Long id, String cardNumber, LocalDate expiration, boolean isBlocked) {
+    public Card(Long id, String cardNumber, LocalDate expiration, boolean blocked) {
         this.id = id;
         this.cardNumber = cardNumber;
         this.expiration = expiration;
-        this.isBlocked = isBlocked;
+        this.blocked = blocked;
     }
 }
