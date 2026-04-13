@@ -1,9 +1,9 @@
 package com.payment.client;
 
-import com.common.dto.RecipientInfoDTO;
 import com.common.exception.ClientErrorMapper;
 import com.common.interfaces.AccountServiceApi;
 import com.common.model.AccountModel;
+import com.common.model.RecipientInfoModel;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -73,12 +73,12 @@ public class AccountServiceClient implements AccountServiceApi {
     }
 
     @Override
-    public RecipientInfoDTO analyzeRecipient(Long senderAccountId, String recipientIban) {
+    public RecipientInfoModel analyzeRecipient(Long senderAccountId, String recipientIban) {
         try {
             return restClient.get()
                     .uri(accountServiceUrl + "/api/accounts/ownership-status?senderAccountId=" + senderAccountId + "&recipientIban=" + recipientIban)
                     .retrieve()
-                    .body(RecipientInfoDTO.class);
+                    .body(RecipientInfoModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("account-service", e);
         }

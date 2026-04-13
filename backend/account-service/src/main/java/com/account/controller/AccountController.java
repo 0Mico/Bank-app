@@ -6,8 +6,8 @@ import com.account.dtos.DepositDTO;
 import com.account.entity.Account;
 import com.account.service.AccountService;
 import com.common.dto.AccountDTO;
-import com.common.dto.RecipientInfoDTO;
 import com.common.model.AccountModel;
+import com.common.model.RecipientInfoModel;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,8 +71,8 @@ public class AccountController {
     }
 
     @GetMapping("/ownership-status")
-    public ResponseEntity<RecipientInfoDTO> getOwnershipStatus(@RequestParam Long senderAccountId, @RequestParam String recipientIban) {
-        RecipientInfoDTO info = accountService.determineOwnershipStatus(senderAccountId, recipientIban);
+    public ResponseEntity<RecipientInfoModel> getOwnershipStatus(@RequestParam Long senderAccountId, @RequestParam String recipientIban) {
+        RecipientInfoModel info = accountService.determineOwnershipStatus(senderAccountId, recipientIban);
         return ResponseEntity.ok(info);
     }
 
