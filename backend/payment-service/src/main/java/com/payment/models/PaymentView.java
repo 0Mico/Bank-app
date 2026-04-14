@@ -1,6 +1,6 @@
 package com.payment.models;
 
-import com.common.dto.AccountDTO;
+import com.common.model.AccountModel;
 import com.payment.entity.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +15,6 @@ import lombok.Setter;
 @Builder
 public class PaymentView {
     private Payment payment;
-    private AccountDTO fromAccount;
-    private AccountDTO toAccount;
+    private AccountModel fromAccount;
+    private AccountModel toAccount;
 }

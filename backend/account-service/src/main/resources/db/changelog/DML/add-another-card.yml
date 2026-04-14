@@ -12,4 +12,4 @@ databaseChangeLog:
               - column: { name: account_id,   valueNumeric: 5 }
               - column: { name: card_number,  value: "0339-9367-2984-9352" }
               - column: { name: expiration,   value: "2031-03-19" }
-              - column: { name: is_blocked,   valueBoolean: false }
+              - column: { name: blocked,   valueBoolean: false }

@@ -1,9 +1,9 @@
 package com.payment.client;
 
-import com.common.dto.AccountDTO;
-import com.common.dto.RecipientInfoDTO;
 import com.common.exception.ClientErrorMapper;
 import com.common.interfaces.AccountServiceApi;
+import com.common.model.AccountModel;
+import com.common.model.RecipientInfoModel;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,36 +25,36 @@ public class AccountServiceClient implements AccountServiceApi {
     }
 
     @Override
-    public AccountDTO getAccountById(Long accountId) {
+    public AccountModel getAccountById(Long accountId) {
         try {
             return restClient.get()
                     .uri(accountServiceUrl + "/api/accounts/" + accountId)
                     .retrieve()
-                    .body(AccountDTO.class);
+                    .body(AccountModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("account-service", e);
         }
     }
 
     @Override
-    public AccountDTO getAccountByIban(String iban) {
+    public AccountModel getAccountByIban(String iban) {
         try {
             return restClient.get()
                     .uri(accountServiceUrl + "/api/accounts/iban?iban=" + iban)
                     .retrieve()
-                    .body(AccountDTO.class);
+                    .body(AccountModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("account-service", e);
         }
     }
 
     @Override
-    public List<AccountDTO> getAccountsByUserId(Long userId) {
+    public List<AccountModel> getAccountsByUserId(Long userId) {
         try {
             return restClient.get()
                     .uri(accountServiceUrl + "/api/accounts/userId?userId=" + userId)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<AccountDTO>>() {});
+                    .body(new ParameterizedTypeReference<List<AccountModel>>() {});
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("account-service", e);
         }
@@ -73,12 +73,12 @@ public class AccountServiceClient implements AccountServiceApi {
     }
 
     @Override
-    public RecipientInfoDTO analyzeRecipient(Long senderAccountId, String recipientIban) {
+    public RecipientInfoModel analyzeRecipient(Long senderAccountId, String recipientIban) {
         try {
             return restClient.get()
                     .uri(accountServiceUrl + "/api/accounts/ownership-status?senderAccountId=" + senderAccountId + "&recipientIban=" + recipientIban)
                     .retrieve()
-                    .body(RecipientInfoDTO.class);
+                    .body(RecipientInfoModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("account-service", e);
         }

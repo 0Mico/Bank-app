@@ -5,7 +5,7 @@ import com.auth.dto.ChangePasswordDto;
 import com.auth.entity.User;
 import com.auth.repository.UserRepository;
 import com.auth.service.baseService.BaseUserService;
-import com.common.dto.AccountDTO;
+import com.common.model.AccountModel;
 import com.common.exception.BadRequestException;
 import com.common.exception.ResourceNotFoundException;
 import com.auth.model.UserModel;
@@ -56,7 +56,7 @@ public class UserService implements BaseUserService {
         if (iban == null || iban.length() > 34) {
             throw new IllegalArgumentException("IBAN cannot be null");
         }
-        AccountDTO account = accountServiceClient.getAccountByIban(iban);
+        AccountModel account = accountServiceClient.getAccountByIban(iban);
         Long userId = account.getUserId();
         return getUserById(userId);
     }

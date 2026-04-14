@@ -5,6 +5,7 @@ import com.common.dto.AccountDTO;
 import com.common.exception.BadRequestException;
 import com.common.exception.ResourceNotFoundException;
 import com.common.exception.ServiceUnavailableException;
+import com.common.model.AccountModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -66,7 +67,7 @@ class AccountServiceClientTest {
                     .andExpect(jsonPath("$.currency").value("EUR"))
                     .andRespond(withSuccess(objectMapper.writeValueAsString(expectedResponse), MediaType.APPLICATION_JSON));
 
-            AccountDTO result = accountServiceClient.createAccount(userId);
+            AccountModel result = accountServiceClient.createAccount(userId);
 
             assertNotNull(result);
             assertEquals(10L, result.getId());
@@ -131,7 +132,7 @@ class AccountServiceClientTest {
                     .andExpect(method(HttpMethod.GET))
                     .andRespond(withSuccess(objectMapper.writeValueAsString(expectedResponse), MediaType.APPLICATION_JSON));
 
-            AccountDTO result = accountServiceClient.getAccountByIban(iban);
+            AccountModel result = accountServiceClient.getAccountByIban(iban);
 
             assertNotNull(result);
             assertEquals(10L, result.getId());

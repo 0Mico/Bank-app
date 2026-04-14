@@ -1,7 +1,8 @@
 package com.auth.client;
 
-import com.common.dto.AccountDTO;
 import com.common.exception.ClientErrorMapper;
+import com.common.model.AccountModel;
+import com.common.dto.AccountDTO;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class AccountServiceClient {
         this.restClient = restClient;
     }
 
-    public AccountDTO createAccount(Long userId) {
+    public AccountModel createAccount(Long userId) {
         try {
             AccountDTO dto = new AccountDTO();
             dto.setUserId(userId);
@@ -31,7 +32,7 @@ public class AccountServiceClient {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(dto)
                     .retrieve()
-                    .body(AccountDTO.class);
+                    .body(AccountModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("account-service", e);
         }
@@ -41,12 +42,12 @@ public class AccountServiceClient {
      * Used to show the user name associated to the external account when clicking on a transaction
      * This call retrieve the account associated with the given iban
      */
-    public AccountDTO getAccountByIban(String iban) {
+    public AccountModel getAccountByIban(String iban) {
         try {
             return restClient.get()
                     .uri(accountServiceUrl + "/api/accounts/iban?iban=" + iban)
                     .retrieve()
-                    .body(AccountDTO.class);
+                    .body(AccountModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("account-service", e);
         }
