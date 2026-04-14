@@ -1,7 +1,7 @@
 package com.bankapp.account.service;
 
 import com.common.dto.AccountDTO;
-import com.common.dto.TransactionDTO;
+import com.common.model.TransactionModel;
 import com.common.enums.TransactionCategory;
 import com.common.enums.TransactionType;
 import com.common.exception.BadRequestException;
@@ -85,7 +85,7 @@ public class AccountService {
 
         // Record the deposit as a transaction
         try {
-            TransactionDTO depositTxn = new TransactionDTO();
+            TransactionModel depositTxn = new TransactionModel();
             depositTxn.setUserId(account.getUserId());
             depositTxn.setAccountId(account.getId());
             depositTxn.setType(TransactionType.CREDIT);

@@ -1,6 +1,6 @@
 package com.bankapp.account.client;
 
-import com.common.dto.TransactionDTO;
+import com.common.model.TransactionModel;
 import com.common.exception.ClientErrorMapper;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -20,14 +20,14 @@ public class TransactionServiceClient {
         this.transactionServiceUrl = transactionServiceUrl;
     }
 
-    public TransactionDTO createTransaction(TransactionDTO dto) {
+    public TransactionModel createTransaction(TransactionModel dto) {
         try {
             return restClient.post()
                         .uri(transactionServiceUrl + "/api/transactions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(dto)
                         .retrieve()
-                        .body(TransactionDTO.class);
+                        .body(TransactionModel.class);
         } catch (Exception e) {
             throw ClientErrorMapper.handleException("transaction-service", e);
         }

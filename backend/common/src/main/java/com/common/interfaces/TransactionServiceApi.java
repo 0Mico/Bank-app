@@ -1,10 +1,10 @@
 package com.common.interfaces;
 
-import com.common.dto.TransactionDTO;
+import com.common.model.TransactionModel;
 
 public interface TransactionServiceApi {
-    TransactionDTO createTransaction(TransactionDTO transaction);
-    TransactionDTO getTransactionById(Long id);
-    TransactionDTO updateTransaction(Long id, TransactionDTO transaction);
+    TransactionModel createTransaction(TransactionModel transaction);
+    TransactionModel getTransactionById(Long id);
+    TransactionModel updateTransaction(Long id, TransactionModel transaction);
     void deleteTransaction(Long id);
 }
