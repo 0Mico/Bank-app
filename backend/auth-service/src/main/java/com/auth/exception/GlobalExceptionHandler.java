@@ -23,6 +23,8 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = Logger.getLogger(GlobalExceptionHandler.class.getName());
 
+    private final String BAD_REQUEST = "Bad Request";
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
         logger.warning("Resource not found: " + ex.getMessage() + " at " + request.getRequestURI());
@@ -40,14 +42,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex, HttpServletRequest request) {
         logger.warning("Bad request: " + ex.getMessage() + " at " + request.getRequestURI());
-        ErrorResponse error = new ErrorResponse(400, "Bad Request", ex.getMessage(), request.getRequestURI());
+        ErrorResponse error = new ErrorResponse(400, BAD_REQUEST, ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {
         logger.warning("Illegal argument: " + ex.getMessage() + " at " + request.getRequestURI());
-        ErrorResponse error = new ErrorResponse(400, "Bad Request", ex.getMessage(), request.getRequestURI());
+        ErrorResponse error = new ErrorResponse(400, BAD_REQUEST, ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
@@ -67,7 +69,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleUnreadableBody(HttpMessageNotReadableException ex, HttpServletRequest request) {
         logger.warning("Unreadable body at " + request.getRequestURI() + ": " + ex.getMessage());
-        ErrorResponse error = new ErrorResponse(400, "Bad Request", "Request body is missing or malformed", request.getRequestURI());
+        ErrorResponse error = new ErrorResponse(400, BAD_REQUEST, "Request body is missing or malformed", request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
