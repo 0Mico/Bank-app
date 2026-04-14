@@ -11,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Mapper(componentModel = "spring")
 public abstract class AccountMapper {
 
-    @Autowired
     protected AccountUtils accountUtils;
+    
+    @Autowired
+    public void setAccountUtils(AccountUtils accountUtils) {
+        this.accountUtils = accountUtils;
+    }
 
     public abstract AccountModel toModel(Account account);
 

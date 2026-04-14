@@ -28,22 +28,5 @@ public class PaymentController {
         Payment payment = paymentService.processPayment(request);
         return ResponseEntity.ok(paymentModelAssembler.toModel(payment));
     }
-
-    /*
-    @GetMapping("/{id}")
-    public ResponseEntity<PaymentModel> getPayment(@PathVariable Long id) {
-        Payment payment = paymentService.getPaymentById(id);
-        return ResponseEntity.ok(paymentModelAssembler.toModel(payment));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<PaymentModel>> getPayments(@RequestParam(required = false) Long userId) {
-        if (userId != null) {
-            List<Payment> payments = paymentService.getPaymentsByUserId(userId);
-            return ResponseEntity.ok(paymentModelAssembler.toModels(payments));
-        }
-        return ResponseEntity.ok(List.of());
-    }
-    */
 }
 

@@ -89,20 +89,4 @@ public class PaymentService implements BasePaymentService {
         }
         return payment;
     }
-
-    /*
-    public Payment getPaymentById(Long id) {
-        return paymentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment", id));
-    }
-
-    public List<Payment> getPaymentsByUserId(Long userId) {
-        List<Long> accountIds = accountServiceClient.getAccountsByUserId(userId).stream()
-                .map(AccountDTO::getId).toList();
-        if (accountIds.isEmpty()) {
-            return List.of();
-        }
-        return paymentRepository.findByFromAccountIdInOrToAccountIdInOrderByCreatedAtDesc(accountIds, accountIds);
-    }
-    */
 }
