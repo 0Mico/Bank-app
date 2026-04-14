@@ -49,8 +49,8 @@ export const transactionApi = {
 // Payments
 export const paymentApi = {
     process: (data: Partial<Payment>) => api.post<Payment>('/payments', data),
-    list: (userId: number) => api.get<Payment[]>(`/payments?userId=${userId}`),
-    get: (id: number) => api.get<Payment>(`/payments/${id}`),
+    //list: (userId: number) => api.get<Payment[]>(`/payments?userId=${userId}`),
+    //get: (id: number) => api.get<Payment>(`/payments/${id}`),
     favorites: {
         list: (accountId: number) => api.get<FavoriteOperation[]>(`/payments/favorites/account/${accountId}`),
         create: (data: Partial<FavoriteOperation>) => api.post<FavoriteOperation>('/payments/favorites', data),

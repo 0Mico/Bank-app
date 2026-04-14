@@ -5,6 +5,7 @@ import com.bankapp.account.dtos.DepositDTO;
 import com.bankapp.account.entity.Account;
 import com.bankapp.account.service.AccountService;
 import com.common.dto.AccountDTO;
+import com.common.dto.RecipientInfoDTO;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +64,12 @@ public class AccountController {
     public ResponseEntity<Void> updateBalanceInternal(@PathVariable Long accountId, @RequestParam BigDecimal amount) {
         accountService.updateBalanceInternal(accountId, amount);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/ownership-status")
+    public ResponseEntity<RecipientInfoDTO> getOwnershipStatus(@RequestParam Long senderAccountId, @RequestParam String recipientIban) {
+        RecipientInfoDTO info = accountService.determineOwnershipStatus(senderAccountId, recipientIban);
+        return ResponseEntity.ok(info);
     }
 
     @DeleteMapping("/{accountId}")
