@@ -1,8 +1,7 @@
 package com.transaction.service;
 
 import com.common.dto.TransactionDTO;
-import com.common.enums.TransactionCategory;
-import com.common.enums.TransactionType;
+import com.transaction.dto.TransactionFilter;
 import com.transaction.entity.Transaction;
 import com.transaction.factory.TransactionFactory;
 import com.transaction.repository.TransactionRepository;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -35,54 +33,16 @@ public class TransactionService implements BaseTransactionService{
         return txn;
     }
 
-    /*
-    Inutilizzato
-
-    public Transaction getTransactionById(Long id) {
-        return transactionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction", id));
-    }
-    */
-
     @Override
-    public List<Transaction> getTransactions(Long userId, Long accountId, TransactionCategory category,
-                                                  TransactionType type, LocalDateTime from, LocalDateTime to) {
+    public List<Transaction> getTransactions(TransactionFilter filter) {
         return transactionRepository.findWithFilters(
-            userId,
-            accountId,
-            category != null ? category.name() : null,
-            type != null ? type.name() : null,
-            from != null ? from.atOffset(ZoneOffset.UTC).toString() : null,
-            to != null ? to.atOffset(ZoneOffset.UTC).toString() : null)
+            filter.getUserId(),
+            filter.getAccountId(),
+            filter.getCategory() != null ? filter.getCategory().name() : null,
+            filter.getType() != null ? filter.getType().name() : null,
+            filter.getFrom() != null ? filter.getFrom().atOffset(ZoneOffset.UTC).toString() : null,
+            filter.getTo() != null ? filter.getTo().atOffset(ZoneOffset.UTC).toString() : null)
                 .stream()
                 .toList();
     }
-
-    /*
-    Inutilizzato
-
-    public Transaction updateTransaction(Long id, TransactionModel dto) {
-        Transaction txn = transactionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction", id));
-
-        if (dto.getCategory() != null)
-            txn.setCategory(dto.getCategory());
-        if (dto.getDescription() != null)
-            txn.setDescription(dto.getDescription());
-        if (dto.getType() != null)
-            txn.setType(dto.getType());
-
-        txn = transactionRepository.save(txn);
-        return txn;
-    }
-
-    Iutilizzato 
-    
-    public void deleteTransaction(Long id) {
-        if (!transactionRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Transaction", id);
-        }
-        transactionRepository.deleteById(id);
-    }
-    */
 }

@@ -1,24 +1,22 @@
 package com.transaction.factory;
 
 import com.transaction.entity.Transaction;
+import com.transaction.mapper.TransactionModelMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import com.common.dto.TransactionDTO;
-import com.common.enums.TransactionCategory;
 
 @Component
+@RequiredArgsConstructor
 public class ConcreteTransactionFactory implements TransactionFactory {
+
+    private final TransactionModelMapper transactionModelMapper;
 
     @Override
     public Transaction create(TransactionDTO dto) {
-        Transaction txn = new Transaction();
-        txn.setUserId(dto.getUserId());
-        txn.setAccountId(dto.getAccountId());
-        txn.setType(dto.getType());
-        txn.setCategory(dto.getCategory() != null ? dto.getCategory() : TransactionCategory.OTHER);
-        txn.setAmount(dto.getAmount());
-        txn.setDescription(dto.getDescription());
-        txn.setReferenceId(dto.getReferenceId());
-        txn.setCounterpartyIban(dto.getCounterpartyIban());
-        return txn;
+        if (dto == null) {
+            throw new IllegalArgumentException("Transaction data cannot be null");
+        }
+        return transactionModelMapper.dtoToEntity(dto);
     }
 }

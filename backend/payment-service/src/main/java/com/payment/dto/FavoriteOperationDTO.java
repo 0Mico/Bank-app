@@ -15,13 +15,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoriteOperationDTO {
-    //private Long id;
+    
     private Long accountId;
     private String name;
     private String recipientIban;
     private BigDecimal amount;
     private String category;
     private String description;
-    //private String type;
-    //private String recipientAccountName;
 }
