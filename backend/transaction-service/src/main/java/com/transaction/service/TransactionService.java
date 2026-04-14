@@ -1,9 +1,8 @@
 package com.transaction.service;
 
-import com.common.model.TransactionModel;
+import com.common.dto.TransactionDTO;
 import com.common.enums.TransactionCategory;
 import com.common.enums.TransactionType;
-//import com.common.exception.ResourceNotFoundException;
 import com.transaction.entity.Transaction;
 import com.transaction.factory.TransactionFactory;
 import com.transaction.repository.TransactionRepository;
@@ -30,7 +29,7 @@ public class TransactionService implements BaseTransactionService{
     }
 
     @Override
-    public Transaction createTransaction(TransactionModel dto) {
+    public Transaction createTransaction(TransactionDTO dto) {
         Transaction txn = transactionFactory.create(dto);
         txn = transactionRepository.save(txn);
         return txn;
