@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AuthResponse, LoginRequest, RegisterRequest, User, Account, Transaction, Payment, FavoriteOperation, Card } from './types';
+import type { AuthResponse, LoginRequest, RegisterRequest, User, Account, Transaction, Payment, PaymentRequest, FavoriteOperation, Card } from './types';
 
 const api = axios.create({
     baseURL: '/api',
@@ -48,9 +48,7 @@ export const transactionApi = {
 
 // Payments
 export const paymentApi = {
-    process: (data: Partial<Payment>) => api.post<Payment>('/payments', data),
-    //list: (userId: number) => api.get<Payment[]>(`/payments?userId=${userId}`),
-    //get: (id: number) => api.get<Payment>(`/payments/${id}`),
+    process: (data: PaymentRequest) => api.post<Payment>('/payments', data),
     favorites: {
         list: (accountId: number) => api.get<FavoriteOperation[]>(`/payments/favorites/account/${accountId}`),
         create: (data: Partial<FavoriteOperation>) => api.post<FavoriteOperation>('/payments/favorites', data),
