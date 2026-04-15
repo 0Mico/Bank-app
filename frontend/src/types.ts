@@ -56,20 +56,14 @@ export interface Payment {
     };
     fromAccount?: Account;
     toAccount?: Account;
-    /*
-    id: number;
+}
+
+export interface PaymentRequest {
     fromAccountId: number;
-    toAccountId: number;
     toIban: string;
-    fromUserId: number;
-    toUserId: number;
     amount: number;
-    currency: string;
-    status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
     category?: string;
     description?: string;
-    createdAt: string;
-    */
 }
 
 export interface FavoriteOperation {
