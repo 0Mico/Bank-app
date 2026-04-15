@@ -19,7 +19,7 @@ public class AccountServiceClient implements AccountServiceApi {
     private final RestClient restClient;
     private final String accountServiceUrl;
 
-    private final String accountService = "account-service";
+    private static final String accountService = "account-service";
 
     public AccountServiceClient(@Value("${services.account.url}") String accountServiceUrl, RestClient restClient) {
         this.restClient = restClient;
