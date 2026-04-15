@@ -19,10 +19,10 @@ import java.util.List;
 @Component
 public class ReferenceMonitor {
 
-    private final static String ALL_ACTIONS = "GET,POST,PUT,PATCH,DELETE";
-
     private final RolePermissionRepository permissionRepository;
     private final TokenService tokenService;
+
+    private final static String ALL_ACTIONS = "GET,POST,PUT,PATCH,DELETE";
 
     public ReferenceMonitor(RolePermissionRepository permissionRepository, TokenService tokenService) {
         this.permissionRepository = permissionRepository;

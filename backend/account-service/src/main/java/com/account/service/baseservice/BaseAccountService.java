@@ -1,4 +1,4 @@
-package com.account.service.baseService;
+package com.account.service.baseservice;
 
 import com.account.entity.Account;
 import com.account.repository.AccountRepository;

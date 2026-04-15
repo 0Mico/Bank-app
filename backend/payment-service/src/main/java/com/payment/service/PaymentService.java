@@ -12,7 +12,7 @@ import com.payment.entity.Payment;
 import com.payment.factory.PaymentFactory;
 import com.payment.mapper.PaymentToTransactionMapper;
 import com.payment.repository.PaymentRepository;
-import com.payment.service.baseService.BasePaymentService;
+import com.payment.service.baseservice.BasePaymentService;
 import com.payment.utils.MoneyTransferHelper;
 
 import lombok.RequiredArgsConstructor;

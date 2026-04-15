@@ -9,7 +9,7 @@ import com.common.exception.ResourceNotFoundException;
 import com.payment.dto.FavoriteOperationDTO;
 import com.payment.entity.FavoriteOperation;
 import com.payment.repository.FavoriteOperationRepository;
-import com.payment.service.baseService.BaseFavoriteOperationService;
+import com.payment.service.baseservice.BaseFavoriteOperationService;
 
 import lombok.RequiredArgsConstructor;
 

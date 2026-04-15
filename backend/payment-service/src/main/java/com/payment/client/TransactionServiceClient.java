@@ -14,7 +14,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
 
     private final RestClient restClient;
     private final String transactionServiceUrl;
-    private final String transactionEndpoint = "/api/transactions";
+    private final static String TRANSACTION_ENDPOINT = "/api/transactions";
 
     public TransactionServiceClient(@Value("${services.transaction.url}") String transactionServiceUrl, 
                                     RestClient restClient) {
@@ -26,7 +26,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public TransactionModel createTransaction(TransactionDTO transaction) {
         try {
             return restClient.post()
-                .uri(transactionServiceUrl + transactionEndpoint)
+                .uri(transactionServiceUrl + TRANSACTION_ENDPOINT)
                 .body(transaction)
                 .retrieve()
                 .body(TransactionModel.class);

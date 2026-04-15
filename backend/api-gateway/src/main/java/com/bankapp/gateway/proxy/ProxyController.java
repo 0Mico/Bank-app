@@ -75,14 +75,13 @@ public class ProxyController {
         String normalizedPath = URI.create(uri).normalize().getPath();
         URI base = URI.create(baseUrl);
         try {
-            URI finalUri = new URI(
-                base.getScheme(),
-                base.getAuthority(),
-                normalizedPath,
-                query,
-                null
+            return new URI(
+                    base.getScheme(),
+                    base.getAuthority(),
+                    normalizedPath,
+                    query,
+                    null
             );
-            return finalUri;
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Error assembling requests uri: " + e.getMessage(), e);
         }

@@ -4,7 +4,7 @@ import com.auth.client.AccountServiceClient;
 import com.auth.dto.ChangePasswordDto;
 import com.auth.entity.User;
 import com.auth.repository.UserRepository;
-import com.auth.service.baseService.BaseUserService;
+import com.auth.service.baseservice.BaseUserService;
 import com.common.model.AccountModel;
 import com.common.exception.BadRequestException;
 import com.common.exception.ResourceNotFoundException;
