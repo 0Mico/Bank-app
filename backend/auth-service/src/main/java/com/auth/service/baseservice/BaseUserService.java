@@ -1,4 +1,4 @@
-package com.auth.service.baseService;
+package com.auth.service.baseservice;
 
 import com.auth.dto.ChangePasswordDto;
 import com.auth.entity.User;

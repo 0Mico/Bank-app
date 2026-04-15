@@ -5,7 +5,7 @@ import com.transaction.dto.TransactionFilter;
 import com.transaction.entity.Transaction;
 import com.transaction.factory.TransactionFactory;
 import com.transaction.repository.TransactionRepository;
-import com.transaction.service.baseService.BaseTransactionService;
+import com.transaction.service.baseservice.BaseTransactionService;
 
 import lombok.RequiredArgsConstructor;
 

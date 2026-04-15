@@ -1,4 +1,4 @@
-package com.payment.service.baseService;
+package com.payment.service.baseservice;
 
 import com.common.interfaces.BaseService;
 import com.payment.dto.PaymentDTO;

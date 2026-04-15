@@ -1,4 +1,4 @@
-package com.transaction.service.baseService;
+package com.transaction.service.baseservice;
 
 import java.util.List;
 import com.common.dto.TransactionDTO;

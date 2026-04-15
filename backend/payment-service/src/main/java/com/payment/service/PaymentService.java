@@ -12,7 +12,7 @@ import com.payment.entity.Payment;
 import com.payment.factory.PaymentFactory;
 import com.payment.mapper.PaymentToTransactionMapper;
 import com.payment.repository.PaymentRepository;
-import com.payment.service.baseService.BasePaymentService;
+import com.payment.service.baseservice.BasePaymentService;
 import com.payment.utils.MoneyTransferHelper;
 
 import lombok.RequiredArgsConstructor;
@@ -89,20 +89,4 @@ public class PaymentService implements BasePaymentService {
         }
         return payment;
     }
-
-    /*
-    public Payment getPaymentById(Long id) {
-        return paymentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment", id));
-    }
-
-    public List<Payment> getPaymentsByUserId(Long userId) {
-        List<Long> accountIds = accountServiceClient.getAccountsByUserId(userId).stream()
-                .map(AccountDTO::getId).toList();
-        if (accountIds.isEmpty()) {
-            return List.of();
-        }
-        return paymentRepository.findByFromAccountIdInOrToAccountIdInOrderByCreatedAtDesc(accountIds, accountIds);
-    }
-    */
 }

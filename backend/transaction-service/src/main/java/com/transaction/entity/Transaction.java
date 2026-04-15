@@ -12,7 +12,8 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "transactions")
-@Getter @Setter 
+@Getter
+@Setter 
 @NoArgsConstructor
 public class Transaction {
 

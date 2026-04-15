@@ -1,4 +1,4 @@
-package com.payment.service.baseService;
+package com.payment.service.baseservice;
 
 import java.util.List;
 

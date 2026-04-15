@@ -14,7 +14,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
 
     private final RestClient restClient;
     private final String transactionServiceUrl;
-    private final String transactionEndpoint = "/api/transactions";
+    private final static String TRANSACTION_ENDPOINT = "/api/transactions";
 
     public TransactionServiceClient(@Value("${services.transaction.url}") String transactionServiceUrl, 
                                     RestClient restClient) {
@@ -26,7 +26,7 @@ public class TransactionServiceClient implements TransactionServiceApi {
     public TransactionModel createTransaction(TransactionDTO transaction) {
         try {
             return restClient.post()
-                .uri(transactionServiceUrl + transactionEndpoint)
+                .uri(transactionServiceUrl + TRANSACTION_ENDPOINT)
                 .body(transaction)
                 .retrieve()
                 .body(TransactionModel.class);
@@ -34,43 +34,4 @@ public class TransactionServiceClient implements TransactionServiceApi {
             throw ClientErrorMapper.handleException("transaction-service", e);        
         }
     }
-/*
-    @Override
-    public TransactionModel getTransactionById(Long transactionId) {
-        try {
-            return restClient.get()
-                .uri(transactionServiceUrl + transactionEndpoint + "/" + transactionId)
-                .retrieve()
-                .body(TransactionModel.class);
-        } catch (Exception e) {
-            throw ClientErrorMapper.handleException("transaction-service", e);        
-        }
-    }
-
-    @Override
-    public TransactionModel updateTransaction(Long id, TransactionModel transaction) {
-        try {
-            return restClient.put()
-                .uri(transactionServiceUrl + transactionEndpoint + "/" + id)
-                .body(transaction)
-                .retrieve()
-                .body(TransactionModel.class);
-        } catch (Exception e) {
-            throw ClientErrorMapper.handleException("transaction-service", e);        
-        }
-    }
-
-    @Override
-    public void deleteTransaction(Long id) {
-        try {
-            restClient.delete()
-                .uri(transactionServiceUrl + transactionEndpoint + "/" + id)
-                .retrieve()
-                .toBodilessEntity();
-        } catch (Exception e) {
-            throw ClientErrorMapper.handleException("transaction-service", e);        
-        }
-    }
-
- */
 }

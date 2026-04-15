@@ -21,13 +21,7 @@ public class UserController {
         this.userService = userService;
         this.userModelAssembler = userModelAssembler;
     }
-/*
-    @GetMapping("/{id}")
-    public ResponseEntity<UserModel> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(userModelAssembler.toModel(user));
-    }
-*/
+
     @GetMapping("/email")
     public ResponseEntity<UserModel> getUserByEmail(@RequestParam String email) {
         User user = userService.getUserByEmail(email);

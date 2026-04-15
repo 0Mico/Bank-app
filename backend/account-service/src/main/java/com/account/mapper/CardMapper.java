@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Mapper(componentModel = "spring")
 public abstract class CardMapper {
 
-    @Autowired
     protected AccountUtils accountUtils;
+    
+    @Autowired
+    public void setAccountUtils(AccountUtils accountUtils) {
+        this.accountUtils = accountUtils;
+    }
 
     public abstract CardModel toModel(Card card);
 

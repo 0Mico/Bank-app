@@ -1,7 +1,7 @@
 package com.account.service;
 
 import com.account.factory.AccountFactory;
-import com.account.service.baseService.BaseAccountService;
+import com.account.service.baseservice.BaseAccountService;
 import com.common.dto.AccountDTO;
 import com.common.dto.TransactionDTO;
 import com.common.exception.BadRequestException;

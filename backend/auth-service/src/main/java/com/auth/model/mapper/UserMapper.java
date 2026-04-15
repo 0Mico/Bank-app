@@ -11,8 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
 
-    @Autowired
     protected PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public abstract UserModel toModel(User user);
 

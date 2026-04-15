@@ -19,6 +19,8 @@ public class AccountServiceClient implements AccountServiceApi {
     private final RestClient restClient;
     private final String accountServiceUrl;
 
+    private static final String ACCOUNT_SERVICE = "account-service";
+
     public AccountServiceClient(@Value("${services.account.url}") String accountServiceUrl, RestClient restClient) {
         this.restClient = restClient;
         this.accountServiceUrl = accountServiceUrl;
@@ -32,7 +34,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .body(AccountModel.class);
         } catch (Exception e) {
-            throw ClientErrorMapper.handleException("account-service", e);
+            throw ClientErrorMapper.handleException(ACCOUNT_SERVICE, e);
         }
     }
 
@@ -44,7 +46,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .body(AccountModel.class);
         } catch (Exception e) {
-            throw ClientErrorMapper.handleException("account-service", e);
+            throw ClientErrorMapper.handleException(ACCOUNT_SERVICE, e);
         }
     }
 
@@ -56,7 +58,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .body(new ParameterizedTypeReference<List<AccountModel>>() {});
         } catch (Exception e) {
-            throw ClientErrorMapper.handleException("account-service", e);
+            throw ClientErrorMapper.handleException(ACCOUNT_SERVICE, e);
         }
     }
 
@@ -68,7 +70,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .toBodilessEntity();
         } catch (Exception e) {
-            throw ClientErrorMapper.handleException("account-service", e);
+            throw ClientErrorMapper.handleException(ACCOUNT_SERVICE, e);
         }
     }
 
@@ -80,7 +82,7 @@ public class AccountServiceClient implements AccountServiceApi {
                     .retrieve()
                     .body(RecipientInfoModel.class);
         } catch (Exception e) {
-            throw ClientErrorMapper.handleException("account-service", e);
+            throw ClientErrorMapper.handleException(ACCOUNT_SERVICE, e);
         }
     }
 }

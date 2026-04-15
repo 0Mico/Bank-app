@@ -4,7 +4,7 @@ import com.auth.client.AccountServiceClient;
 import com.auth.dto.ChangePasswordDto;
 import com.auth.entity.User;
 import com.auth.repository.UserRepository;
-import com.auth.service.baseService.BaseUserService;
+import com.auth.service.baseservice.BaseUserService;
 import com.common.model.AccountModel;
 import com.common.exception.BadRequestException;
 import com.common.exception.ResourceNotFoundException;
@@ -37,8 +37,7 @@ public class UserService implements BaseUserService {
         if (id == null) {
             throw new IllegalArgumentException("User ID cannot be null");
         }
-        return userRepository.findById(id).isPresent() ?
-                    userRepository.findById(id).get() : null;
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -46,8 +45,7 @@ public class UserService implements BaseUserService {
         if (email == null) {
             throw new IllegalArgumentException("Email cannot be null");
         }
-        return userRepository.findByEmail(email).isPresent() ?
-                userRepository.findByEmail(email).get() : null;
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     // Used to show the name of the external account when clicking on a transaction

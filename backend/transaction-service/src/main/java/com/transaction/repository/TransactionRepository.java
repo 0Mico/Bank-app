@@ -11,8 +11,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-        // List<Transaction> findByUserId(Long userId);
-
         @Query(value = "SELECT * FROM transactions WHERE " +
             "(:userId IS NULL OR user_id = :userId) AND " +
             "(:accountId IS NULL OR account_id = :accountId) AND " +
