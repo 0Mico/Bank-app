@@ -52,7 +52,7 @@ public class UserService implements BaseUserService {
     @Override
     public User getUserByIban(String iban) {
         if (iban == null || iban.length() > 34) {
-            throw new IllegalArgumentException("IBAN cannot be null");
+            throw new IllegalArgumentException("Null or too long iban");
         }
         AccountModel account = accountServiceClient.getAccountByIban(iban);
         Long userId = account.getUserId();

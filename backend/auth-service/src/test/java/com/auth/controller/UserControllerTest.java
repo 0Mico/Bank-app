@@ -1,6 +1,6 @@
 package com.auth.controller;
 
-import com.auth.controller.UserController;
+import com.auth.assembler.UserModelAssembler;
 import com.auth.dto.ChangePasswordDto;
 import com.auth.exception.GlobalExceptionHandler;
 import com.auth.service.UserService;
@@ -47,7 +47,11 @@ public class UserControllerTest {
     @MockitoBean
     private UserService userService;
 
+    @MockitoBean
+    private UserModelAssembler userModelAssembler;
+
     private User testUser;
+    private UserModel testUserModel;
 
     @BeforeEach
     void setup() {
@@ -59,57 +63,25 @@ public class UserControllerTest {
         testUser.setPhone("1234567890");
         testUser.setRole(UserRole.USER);
         testUser.setCreatedAt(LocalDateTime.now());
+        
+        testUserModel = UserModel.builder()
+                .id(testUser.getId())
+                .email(testUser.getEmail())
+                .firstName(testUser.getFirstName())
+                .lastName(testUser.getLastName())
+                .phone(testUser.getPhone())
+                .role(testUser.getRole())
+                .createdAt(testUser.getCreatedAt())
+                .build();
+        when(userModelAssembler.toModel(testUser)).thenReturn(testUserModel);
     }
-
-/*/
-    @Nested
-    @DisplayName("GET/{id}: tests")
-    class GetUserByIdTest {
-
-        @Test
-        @DisplayName("200 OK — existing user id returns UserModel")
-        void shouldReturnUserById() throws Exception {
-            when(userService.getUserById(1L)).thenReturn(testUser);
-
-            mockMvc.perform(get("/api/auth/users/1"))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.id").value(1))
-                    .andExpect(jsonPath("$.email").value("test@test.it"))
-                    .andExpect(jsonPath("$.role").value("USER"));
-        }
-
-        @Test
-        @DisplayName("404 Not Found — non-existent id throws ResourceNotFoundException")
-        void shouldReturn404WhenUserNotFound() throws Exception {
-            when(userService.getUserById(99L))
-                    .thenThrow(new ResourceNotFoundException("User", 99L));
-
-            mockMvc.perform(get("/api/auth/users/99"))
-                    .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("$.status").value(404))
-                    .andExpect(jsonPath("$.error").value("Not Found"))
-                    .andExpect(jsonPath("$.message").value("User not found with id: 99"));
-        }
-
-        @Test
-        @DisplayName("500 Internal Server Error — unexpected RuntimeException from service layer")
-        void shouldReturn500OnUnexpectedException() throws Exception {
-            when(userService.getUserById(anyLong()))
-                    .thenThrow(new RuntimeException("Database error"));
-
-            mockMvc.perform(get("/api/auth/users/1"))
-                    .andExpect(status().isInternalServerError())
-                    .andExpect(jsonPath("$.status").value(500));
-        }
-    }
-*/
 
     @Nested
     @DisplayName("GET/email: tests")
     class GetUserByEmailTest {
 
         @Test
-        @DisplayName("200 OK — existing email returns UserDTO")
+        @DisplayName("200 OK — existing email returns UserModel")
         void shouldReturnUserByEmail() throws Exception {
             when(userService.getUserByEmail("test@test.it")).thenReturn(testUser);
 
@@ -130,6 +102,13 @@ public class UserControllerTest {
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.status").value(404))
                     .andExpect(jsonPath("$.message").value("User not found with email: unknown@test.it"));
+        }
+
+        @Test
+        @DisplayName("400 Bad Request — missing email parameter")
+        void shouldReturn400OnMissingEmailParameter() throws Exception {
+            mockMvc.perform(get("/api/auth/users/email"))
+                    .andExpect(status().isBadRequest());
         }
 
         @Test
@@ -172,6 +151,13 @@ public class UserControllerTest {
         }
 
         @Test
+        @DisplayName("400 Bad Request — missing iban parameter")
+        void shouldReturn400OnMissingIbanParameter() throws Exception {
+            mockMvc.perform(get("/api/auth/users/iban"))
+                    .andExpect(status().isBadRequest());
+        }
+
+        @Test
         @DisplayName("500 Internal Server Error — account-service unavailable")
         void shouldReturn500WhenAccountServiceIsDown() throws Exception {
             when(userService.getUserByIban(any()))
@@ -192,9 +178,10 @@ public class UserControllerTest {
 
         @BeforeEach
         void setUp() {
-            updatePayload = new UserModel();
-            updatePayload.setFirstName("Updated");
-            updatePayload.setLastName("Name");
+            updatePayload = UserModel.builder()
+                .firstName("Updated")
+                .lastName("Name")
+                .build();
         }
 
         @Test
@@ -207,6 +194,15 @@ public class UserControllerTest {
             updated.setLastName("Name");
             updated.setRole(UserRole.USER);
             when(userService.updateUser(eq(1L), any(UserModel.class))).thenReturn(updated);
+
+            UserModel updatedModel = UserModel.builder()
+                .id(1L)
+                .email("test@test.it")
+                .firstName("Updated")
+                .lastName("Name")
+                .role(UserRole.USER)
+                .build();
+            when(userModelAssembler.toModel(updated)).thenReturn(updatedModel);
 
             mockMvc.perform(put("/api/auth/users/1")
                             .contentType(MediaType.APPLICATION_JSON)
