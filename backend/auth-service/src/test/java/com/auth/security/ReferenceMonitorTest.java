@@ -1,4 +1,4 @@
-package com.bankapp.auth.security;
+package com.auth.security;
 
 import com.auth.entity.RolePermission;
 import com.auth.repository.RolePermissionRepository;

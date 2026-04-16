@@ -1,4 +1,4 @@
-package com.bankapp.auth.service;
+package com.auth.service;
 
 import com.auth.service.TokenService;
 import com.common.enums.UserRole;

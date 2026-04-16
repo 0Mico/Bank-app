@@ -1,13 +1,17 @@
-package com.bankapp.auth.controller;
+package com.auth.controller;
 
-import com.auth.controller.AuthController;
+import com.auth.assembler.AuthModelAssembler;
+import com.auth.assembler.TokenValidationModelAssembler;
 import com.auth.dto.LoginDto;
 import com.auth.dto.RegisterDto;
 import com.auth.exception.GlobalExceptionHandler;
 import com.auth.entity.User;
+import com.auth.model.AuthModel;
 import com.auth.model.AuthView;
+import com.auth.model.UserModel;
 import com.auth.service.AuthService;
 import com.common.dto.TokenValidationDTO;
+import com.common.model.TokenValidationModel;
 import com.common.model.TokenValidationView;
 import com.common.enums.UserRole;
 import com.common.exception.BadRequestException;
@@ -46,6 +50,12 @@ public class AuthControllerTest {
     @MockitoBean
     private AuthService authService;
 
+    @MockitoBean
+    private AuthModelAssembler authModelAssembler;
+
+    @MockitoBean
+    private TokenValidationModelAssembler tokenValidationModelAssembler;
+
     private User testUser;
     private AuthView testAuthResponse;
 
@@ -61,6 +71,21 @@ public class AuthControllerTest {
         testUser.setCreatedAt(LocalDateTime.now());
 
         testAuthResponse = AuthView.builder().token("validToken").user(testUser).build();
+
+        UserModel userModel = UserModel.builder()
+                .id(1L)
+                .email("test@test.it")
+                .firstName("Test")
+                .lastName("Test")
+                .phone("1234567890")
+                .role(UserRole.USER)
+                .createdAt(testUser.getCreatedAt())
+                .build();
+        AuthModel testAuthModel = new AuthModel("validToken", userModel);
+        when(authModelAssembler.toModel(any(AuthView.class))).thenReturn(testAuthModel);
+        
+        TokenValidationModel testTokenValidationModel = TokenValidationModel.builder().valid(true).userId(1L).email("test@test.it").role(UserRole.USER).message(null).build();
+        when(tokenValidationModelAssembler.toModel(any(TokenValidationView.class))).thenReturn(testTokenValidationModel);
     }
 
     
@@ -276,7 +301,7 @@ public class AuthControllerTest {
 
         @Test
         @DisplayName("400 Bad Request — wrong email throws UnauthorizedException")
-        void shouldThrowBadRequestExceptionOnDuplicateEmail() throws Exception {
+        void shouldThrowUnauthorizedExceptionOnWrongEmail() throws Exception {
             when(authService.login(any(LoginDto.class)))
                     .thenThrow(new UnauthorizedException("No user found with this email"));
 

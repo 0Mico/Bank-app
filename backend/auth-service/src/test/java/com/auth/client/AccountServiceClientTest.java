@@ -1,4 +1,4 @@
-package com.bankapp.auth.client;
+package com.auth.client;
 
 import com.auth.client.AccountServiceClient;
 import com.common.dto.AccountDTO;

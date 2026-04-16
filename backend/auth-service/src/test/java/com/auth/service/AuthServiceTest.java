@@ -1,4 +1,4 @@
-package com.bankapp.auth.service;
+package com.auth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;

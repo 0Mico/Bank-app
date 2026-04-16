@@ -1,4 +1,4 @@
-package com.bankapp.auth.controller;
+package com.auth.controller;
 
 import com.auth.controller.UserController;
 import com.auth.dto.ChangePasswordDto;
