@@ -1,11 +1,10 @@
-/*package com.bankapp.auth.service;
+package com.auth.service;
 
 import com.auth.client.AccountServiceClient;
 import com.auth.dto.ChangePasswordDto;
 import com.auth.entity.User;
 import com.auth.repository.UserRepository;
-import com.auth.service.UserService;
-import com.common.dto.AccountDTO;
+import com.common.model.AccountModel;
 import com.common.enums.UserRole;
 import com.common.exception.BadRequestException;
 import com.common.exception.ResourceNotFoundException;
@@ -59,6 +58,12 @@ class UserServiceTest {
         testUser.setCreatedAt(LocalDateTime.now());
     }
 
+    @Test
+    @DisplayName("Should return the userRepository")
+    void shouldReturnRepository() {
+        assertEquals(userRepository, userService.getRepository());
+    }
+
 
     @Nested
     @DisplayName("Tests for getUserById")
@@ -92,6 +97,32 @@ class UserServiceTest {
         @DisplayName("Should throw IllegalArgumentException when id is null")
         void shouldThrowIllegalArgumentExceptionWhenIdIsNull() {
             assertThrows(IllegalArgumentException.class, () -> userService.getUserById(null));
+        }
+    }
+
+
+    @Nested
+    @DisplayName("Tests for checkIfUserExists")
+    class CheckIfUserExistsTests {
+
+        @Test
+        @DisplayName("Should return true if user exists")
+        void shouldReturnTrueIfUserExists() {
+            when(userRepository.existsById(testUser.getId())).thenReturn(true);
+
+            assertTrue(userService.checkIfUserExists(testUser.getId()));
+
+            verify(userRepository, times(1)).existsById(testUser.getId());
+        }
+
+        @Test
+        @DisplayName("Should return false if user does not exist")
+        void shouldReturnFalseIfUserDoesNotExist() {
+            when(userRepository.existsById(testUser.getId())).thenReturn(false);
+
+            assertFalse(userService.checkIfUserExists(testUser.getId()));
+
+            verify(userRepository, times(1)).existsById(testUser.getId());
         }
     }
 
@@ -140,7 +171,7 @@ class UserServiceTest {
 
         @BeforeEach
         void setup() {
-            testAccountDTO = new AccountDTO();
+            testAccountDTO = new AccountModel();
             testAccountDTO.setId(1L);
             testAccountDTO.setUserId(testUser.getId());
             testAccountDTO.setIban("IT12345678901234567890");
@@ -197,6 +228,20 @@ class UserServiceTest {
         void shouldThrowIllegalArgumentExceptionWhenIbanIsTooLong() {
             String iban = "IT1234567890123456789012345678901234567890";
             assertThrows(IllegalArgumentException.class, () -> userService.getUserByIban(iban));
+        }
+
+        @Test
+        @DisplayName("Should throw ResourceNotFoundException when account exists but user does not")
+        void shouldThrowResourceNotFoundExceptionWhenAccountExistsButUserDoesNotExist() {
+            when(accountServiceClient.getAccountByIban(testAccountDTO.getIban())).thenReturn(testAccountDTO);
+            when(userRepository.findById(testUser.getId())).thenReturn(Optional.empty());
+
+            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
+                () -> userService.getUserByIban(testAccountDTO.getIban()));
+            assertEquals("User not found with id: " + testUser.getId(), exception.getMessage());
+
+            verify(accountServiceClient, times(1)).getAccountByIban(testAccountDTO.getIban());
+            verify(userRepository, times(1)).findById(testUser.getId());
         }
 
         @Test
@@ -289,7 +334,15 @@ class UserServiceTest {
             assertThrows(IllegalArgumentException.class, () -> userService.updateUser(null, updatedDto));
 
             verify(userRepository, never()).save(any(User.class));
-        }       
+        }
+
+        @Test
+        @DisplayName("Should throw IllegalArgumentException when userDto is null")
+        void shouldThrowIllegalArgumentExceptionWhenUserDtoIsNull() {
+            assertThrows(IllegalArgumentException.class, () -> userService.updateUser(testUser.getId(), null));
+
+            verify(userRepository, never()).save(any(User.class));
+        }
     }
 
 
@@ -402,4 +455,3 @@ class UserServiceTest {
         }
     }
 }
-*/

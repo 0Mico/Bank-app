@@ -37,7 +37,8 @@ public class UserService implements BaseUserService {
         if (id == null) {
             throw new IllegalArgumentException("User ID cannot be null");
         }
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", id));
     }
 
     @Override
@@ -45,7 +46,8 @@ public class UserService implements BaseUserService {
         if (email == null) {
             throw new IllegalArgumentException("Email cannot be null");
         }
-        return userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
     }
 
     // Used to show the name of the external account when clicking on a transaction
@@ -61,8 +63,8 @@ public class UserService implements BaseUserService {
 
     @Override
     public User updateUser(Long id, UserModel userDTO) {
-        if (id == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
+        if (id == null || userDTO == null) {
+            throw new IllegalArgumentException("User ID and UserDTO cannot be null");
         }
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", id));
