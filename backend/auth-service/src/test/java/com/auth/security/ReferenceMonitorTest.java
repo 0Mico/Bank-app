@@ -2,7 +2,6 @@ package com.auth.security;
 
 import com.auth.entity.RolePermission;
 import com.auth.repository.RolePermissionRepository;
-import com.auth.security.ReferenceMonitor;
 import com.auth.service.TokenService;
 import com.common.dto.TokenValidationDTO;
 import com.common.enums.UserRole;
@@ -142,6 +141,17 @@ class ReferenceMonitorTest {
 
                 assertThat(referenceMonitor.isAuthorized(request("/api/accounts/123", "get"))).isTrue();
             }
+
+            @Test
+            @DisplayName("Should match HTTP methods even if stored in lowercase in the database")
+            void matchesLowercaseMethodFromDb() {
+                when(tokenService.getRoleFromClaims(TOKEN)).thenReturn(UserRole.USER);
+                when(permissionRepository.findByRole("USER"))
+                        .thenReturn(List.of(permission("USER", "/api/accounts/**", "get,post")));
+
+                assertThat(referenceMonitor.isAuthorized(request("/api/accounts/123", "GET"))).isTrue();
+                assertThat(referenceMonitor.isAuthorized(request("/api/accounts/123", "POST"))).isTrue();
+            }
         }
 
         @Nested
@@ -200,6 +210,36 @@ class ReferenceMonitorTest {
                 referenceMonitor.isAuthorized(request("/api/transactions/1", "GET"));
 
                 verify(permissionRepository).findByRole("USER");
+            }
+
+            @Test
+            @DisplayName("Should deny access when the request is null")
+            void deniesAccessWhenRequestIsNull() {
+                assertThat(referenceMonitor.isAuthorized(null)).isFalse();
+            }
+
+            @Test
+            @DisplayName("Should deny access when request path is null")
+            void deniesAccessWhenRequestPathIsNull() {
+                TokenValidationDTO request = request(null, "GET");
+                assertThat(referenceMonitor.isAuthorized(request)).isFalse();
+            }
+
+            @Test
+            @DisplayName("Should deny access when HTTP method is null")
+            void deniesAccessWhenHttpMethodIsNull() {
+                TokenValidationDTO request = request("/api/test", null);
+                assertThat(referenceMonitor.isAuthorized(request)).isFalse();
+            }
+
+            @Test
+            @DisplayName("Should deny access when allowed actions in database is null")
+            void deniesAccessWhenAllowedActionsInDbIsNull() {
+                when(tokenService.getRoleFromClaims(TOKEN)).thenReturn(UserRole.USER);
+                when(permissionRepository.findByRole("USER"))
+                        .thenReturn(List.of(permission("USER", "/api/accounts/**", null)));
+
+                assertThat(referenceMonitor.isAuthorized(request("/api/accounts/1", "GET"))).isFalse();
             }
         }
     }

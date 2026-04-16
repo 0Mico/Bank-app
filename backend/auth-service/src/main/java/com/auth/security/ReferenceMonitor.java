@@ -46,16 +46,22 @@ public class ReferenceMonitor {
      * the specified HTTP method on the given request path.
      */
     public boolean isAuthorized(TokenValidationDTO request) {
+        if (request == null || request.getRequestPath() == null || request.getHttpMethod() == null) {
+            return false;
+        }
         String token = request.getToken();
         UserRole role = tokenService.getRoleFromClaims(token);
         String requestPath = request.getRequestPath();
-        String httpMethod = request.getHttpMethod();
+        String httpMethod = request.getHttpMethod().toUpperCase();
         List<RolePermission> permissions = permissionRepository.findByRole(role.name());
 
         return permissions.stream().anyMatch(permission -> {
+            if (permission.getAllowedActions() == null) {
+                return false;
+            }
             boolean pathMatches = matchesPattern(requestPath, permission.getResourcePattern());
-            boolean methodAllowed = Arrays.asList(permission.getAllowedActions().split(","))
-                    .contains(httpMethod.toUpperCase());
+            boolean methodAllowed = Arrays.stream(permission.getAllowedActions().split(","))
+                    .anyMatch(action -> action.trim().equalsIgnoreCase(httpMethod));
             return pathMatches && methodAllowed;
         });
     }
