@@ -71,6 +71,9 @@ public class AuthService {
             throw new IllegalArgumentException("Login request cannot be null");
         }
         User user = userService.getUserByEmail(request.getEmail());
+        if (user == null) {
+            throw new UnauthorizedException("No user found with this credentials");
+        }
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
             throw new UnauthorizedException("Wrong password");
         }

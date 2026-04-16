@@ -13,9 +13,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 
-import com.auth.service.AuthService;
-import com.auth.service.TokenService;
-import com.auth.factory.UserFactory;
+import com.auth.factory.ConcreteUserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,7 +29,6 @@ import com.auth.dto.LoginDto;
 import com.auth.dto.RegisterDto;
 import com.auth.entity.User;
 import com.auth.model.AuthView;
-import com.auth.repository.UserRepository;
 import com.auth.security.ReferenceMonitor;
 import com.common.dto.TokenValidationDTO;
 import com.common.model.TokenValidationView;
@@ -39,7 +36,6 @@ import com.common.enums.UserRole;
 import com.common.exception.BadRequestException;
 import com.common.exception.UnauthorizedException;
 
-import java.util.Optional;
 
 import io.jsonwebtoken.JwtException;
 
@@ -47,12 +43,12 @@ import io.jsonwebtoken.JwtException;
 @DisplayName("Auth Service Test class")
 public class AuthServiceTest {
 
-    @Mock private UserRepository userRepo;
+    @Mock private UserService userService;
     @Mock private TokenService tokenService;
     @Mock private AccountServiceClient accountServiceClient;
     @Mock private PasswordEncoder encoder;
     @Mock private ReferenceMonitor referenceMonitor;
-    @Mock private UserFactory userFactory;
+    @Mock private ConcreteUserFactory userFactory;
 
     @InjectMocks
     private AuthService authService;
@@ -83,9 +79,7 @@ public class AuthServiceTest {
         private RegisterDto request;
 
         @BeforeEach
-        void setup
-        
-        () {
+        void setup() {
             request = new RegisterDto();
             request.setEmail("test@test.it");
             request.setFirstName("Test");
@@ -95,11 +89,10 @@ public class AuthServiceTest {
         }
 
         @Test
-        @DisplayName("should register a new user correctly")
+        @DisplayName("Should register a new user correctly")
         void shouldRegisterANewUserCorrectly() {
-            when(userRepo.existsByEmail(request.getEmail())).thenReturn(false);
+            when(userService.getUserByEmail(request.getEmail())).thenReturn(null);
             when(userFactory.create(request)).thenReturn(testUser);
-            when(userRepo.save(any(User.class))).thenReturn(testUser);
             when(tokenService.generateToken(testUser.getId(), request.getEmail(), testUser.getRole())).thenReturn(mockToken);
 
             AuthView response = authService.register(request);
@@ -107,23 +100,38 @@ public class AuthServiceTest {
             assertEquals(mockToken, response.getToken());
             assertEquals(testUser.getEmail(), response.getUser().getEmail());
 
-            verify(userRepo, times(1)).existsByEmail(request.getEmail());
+            verify(userService, times(1)).getUserByEmail(request.getEmail());
             verify(userFactory, times(1)).create(request);
-            verify(userRepo, times(1)).save(any(User.class));
+            verify(userService, times(1)).save(any(User.class));
             verify(accountServiceClient, times(1)).createAccount(testUser.getId());
             verify(tokenService, times(1)).generateToken(testUser.getId(), request.getEmail(), testUser.getRole());
         }
 
         @Test
+        @DisplayName("Should register a user even if account creation fails")
+        void shouldRegisterEvenIfAccountCreationFails() {
+            when(userService.getUserByEmail(request.getEmail())).thenReturn(null);
+            when(userFactory.create(request)).thenReturn(testUser);
+            when(tokenService.generateToken(testUser.getId(), request.getEmail(), testUser.getRole())).thenReturn(mockToken);
+            when(accountServiceClient.createAccount(anyLong())).thenThrow(new RuntimeException("Account service down"));
+
+            AuthView response = authService.register(request);
+
+            assertEquals(mockToken, response.getToken());
+            verify(accountServiceClient, times(1)).createAccount(testUser.getId());
+            verify(userService, times(1)).save(any(User.class));
+        }
+
+        @Test
         @DisplayName("Should return BadRequestException if user already exists")
         void shouldReturnBadRequestExceptionIfUserAlreadyExists() {
-            when(userRepo.existsByEmail(request.getEmail())).thenReturn(true);
+            when(userService.getUserByEmail(request.getEmail())).thenReturn(testUser);
 
             BadRequestException exception = assertThrows(BadRequestException.class,
                  () -> authService.register(request));
             assertEquals("Email already registered: " + request.getEmail(), exception.getMessage());
 
-            verify(userRepo, times(1)).existsByEmail(request.getEmail());
+            verify(userService, times(1)).getUserByEmail(request.getEmail());
             verify(accountServiceClient, never()).createAccount(anyLong());
             verify(tokenService, never()).generateToken(anyLong(), any(String.class), any(UserRole.class));
         }
@@ -135,7 +143,7 @@ public class AuthServiceTest {
                 () -> authService.register(null));
             assertEquals("Registration request cannot be null", exception.getMessage());
 
-            verify(userRepo, never()).existsByEmail(anyString());
+            verify(userService, never()).getUserByEmail(anyString());
         }
     }
 
@@ -156,7 +164,7 @@ public class AuthServiceTest {
         @Test
         @DisplayName("Should login successfully and return token")
         void shouldLoginSuccessfully() {
-            when(userRepo.findByEmail(loginRequest.getEmail())).thenReturn(Optional.of(testUser));
+            when(userService.getUserByEmail(loginRequest.getEmail())).thenReturn(testUser);
             when(encoder.matches(loginRequest.getPassword(), testUser.getPasswordHash())).thenReturn(true);
             when(tokenService.generateToken(testUser.getId(), testUser.getEmail(), testUser.getRole())).thenReturn(mockToken);
 
@@ -169,11 +177,11 @@ public class AuthServiceTest {
         @Test
         @DisplayName("Should throw UnauthorizedException if user not found")
         void shouldThrowUnauthorizedExceptionIfUserNotFound() {
-            when(userRepo.findByEmail(loginRequest.getEmail())).thenReturn(Optional.empty());
+            when(userService.getUserByEmail(loginRequest.getEmail())).thenReturn(null);
 
             UnauthorizedException exception = assertThrows(UnauthorizedException.class,
                 () -> authService.login(loginRequest));
-            assertEquals("No user found with this email", exception.getMessage());
+            assertEquals("No user found with this credentials", exception.getMessage());
 
             verify(encoder, never()).matches(anyString(), anyString());
         }
@@ -181,7 +189,7 @@ public class AuthServiceTest {
         @Test
         @DisplayName("Should throw UnauthorizedException for wrong password")
         void shouldThrowUnauthorizedExceptionForWrongPassword() {
-            when(userRepo.findByEmail(loginRequest.getEmail())).thenReturn(Optional.of(testUser));
+            when(userService.getUserByEmail(loginRequest.getEmail())).thenReturn(testUser);
             when(encoder.matches(loginRequest.getPassword(), testUser.getPasswordHash())).thenReturn(false);
 
             UnauthorizedException exception = assertThrows(UnauthorizedException.class,
@@ -198,7 +206,7 @@ public class AuthServiceTest {
                 () -> authService.login(null));
             assertEquals("Login request cannot be null", exception.getMessage());
 
-            verify(userRepo, never()).findByEmail(anyString());
+            verify(userService, never()).getUserByEmail(anyString());
         }
     }
 
@@ -224,7 +232,7 @@ public class AuthServiceTest {
             when(tokenService.getUserIdFromClaims(mockToken)).thenReturn(testUser.getId());
             when(tokenService.getEmailFromClaims(mockToken)).thenReturn(testUser.getEmail());
             when(tokenService.getRoleFromClaims(mockToken)).thenReturn(testUser.getRole());
-            when(userRepo.existsById(testUser.getId())).thenReturn(true);
+            when(userService.checkIfUserExists(testUser.getId())).thenReturn(true);
             when(referenceMonitor.isAuthorized(validationRequest)).thenReturn(true);
 
             TokenValidationView response = authService.validateToken(validationRequest);
@@ -242,7 +250,7 @@ public class AuthServiceTest {
                     () -> authService.validateToken(validationRequest));
             assertEquals("Token has expired", exception.getMessage());
 
-            verify(userRepo, never()).existsById(anyLong());
+            verify(userService, never()).checkIfUserExists(anyLong());
         }
 
         @Test
@@ -252,7 +260,7 @@ public class AuthServiceTest {
             when(tokenService.getUserIdFromClaims(mockToken)).thenReturn(testUser.getId());
             when(tokenService.getEmailFromClaims(mockToken)).thenReturn(testUser.getEmail());
             when(tokenService.getRoleFromClaims(mockToken)).thenReturn(testUser.getRole());
-            when(userRepo.existsById(testUser.getId())).thenReturn(false);
+            when(userService.checkIfUserExists(testUser.getId())).thenReturn(false);
 
             UnauthorizedException excdeption = assertThrows(UnauthorizedException.class,
                     () -> authService.validateToken(validationRequest));
@@ -268,7 +276,7 @@ public class AuthServiceTest {
             when(tokenService.getUserIdFromClaims(mockToken)).thenReturn(testUser.getId());
             when(tokenService.getEmailFromClaims(mockToken)).thenReturn(testUser.getEmail());
             when(tokenService.getRoleFromClaims(mockToken)).thenReturn(testUser.getRole());
-            when(userRepo.existsById(testUser.getId())).thenReturn(true);
+            when(userService.checkIfUserExists(testUser.getId())).thenReturn(true);
             when(referenceMonitor.isAuthorized(validationRequest)).thenReturn(false);
 
             UnauthorizedException excdeption = assertThrows(UnauthorizedException.class,
