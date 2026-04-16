@@ -1,9 +1,10 @@
 package com.auth.service;
 
-import com.auth.service.TokenService;
 import com.common.enums.UserRole;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -91,5 +92,36 @@ public class TokenServiceTest {
         String token = expiredTokenService.generateToken(userId, email, role);
 
         assertThrows(ExpiredJwtException.class, () -> expiredTokenService.isTokenExpired(token));
+    }
+
+    @Test
+    @DisplayName("Should throw MalformedJwtException on malformed token")
+    void shouldThrowMalformedJwtExceptionOnMalformedToken() {
+        assertThrows(MalformedJwtException.class, () -> tokenService.getUserIdFromClaims("not-a-token"));
+    }
+
+    @Test
+    @DisplayName("Should throw SignatureException on invalid signature")
+    void shouldThrowSignatureExceptionOnInvalidSignature() {
+        TokenService otherTokenService = new TokenService("AnotherSecretKeyThatIsAtLeast32Chars", expiration);
+        String token = otherTokenService.generateToken(userId, email, role);
+
+        assertThrows(SignatureException.class, () -> tokenService.getUserIdFromClaims(token));
+    }
+
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when token is null")
+    void shouldThrowIllegalArgumentExceptionWhenTokenIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> tokenService.getUserIdFromClaims(null));
+        assertThrows(IllegalArgumentException.class, () -> tokenService.isTokenExpired(null));
+    }
+
+    @Test
+    @DisplayName("Should throw SignatureException when token is tampered")
+    void shouldThrowSignatureExceptionWhenTokenIsTampered() {
+        String token = tokenService.generateToken(userId, email, role);
+        String tamperedToken = token.substring(0, token.length() - 5) + "abcde";
+
+        assertThrows(SignatureException.class, () -> tokenService.getUserIdFromClaims(tamperedToken));
     }
 }
